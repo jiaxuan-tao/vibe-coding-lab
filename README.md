@@ -29,6 +29,9 @@
 - [AI 热点采集 Skill](ai-topic-collector-skill/README.md)
   面向 Codex 的 AI 热点采集流程，支持手动触发，也可以结合定时任务自动整理近 24 小时的 AI 动态。
 
+- [Web 应用验收 Skill](web-app-acceptance-skill/README.md)
+  面向 Codex 的中文交付前验收流程，结合只读项目检测、静态链接与资源检查、浏览器辅助验收和风险汇总。
+
 - [What to Eat｜今天吃什么](what-to-eat/README.md)
   帮你结束点餐纠结的趣味食堂转盘，支持直接抽一道菜、按菜系逐层选择、快速筛选和个人菜库。
   [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/what-to-eat/)
@@ -38,7 +41,7 @@
 ## Repository Structure｜仓库结构 📂
 
 - 根目录项目文件夹
-  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/` 和 `what-to-eat/`。
+  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/` 和 `what-to-eat/`。
 
 - `projects/`
   用于维护项目目录说明和后续归档信息。
