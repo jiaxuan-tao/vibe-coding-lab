@@ -12,9 +12,12 @@ class SkillStructureTests(unittest.TestCase):
 
         self.assertTrue(skill.startswith("---\nname: web-app-acceptance\n"))
         self.assertIn("description:", skill)
-        self.assertLess(skill.index("## 1. 项目检测"), skill.index("## 2. 构建验证"))
-        self.assertLess(skill.index("## 2. 构建验证"), skill.index("## 3. 静态检查"))
-        self.assertIn("未覆盖风险", skill)
+        self.assertLess(skill.index("## 1. 范围与关键路径"), skill.index("## 2. 证据采集"))
+        self.assertLess(skill.index("## 2. 证据采集"), skill.index("## 3. 风险分级"))
+        self.assertLess(skill.index("## 3. 风险分级"), skill.index("## 5. 发布建议"))
+        self.assertIn("阻塞", skill)
+        self.assertIn("有条件发布", skill)
+        self.assertIn("未覆盖范围", skill)
 
     def test_skill_documents_attribution_and_resources(self):
         readme = (SKILL_DIR / "README.md").read_text(encoding="utf-8")
@@ -24,6 +27,22 @@ class SkillStructureTests(unittest.TestCase):
         self.assertTrue((SKILL_DIR / "references" / "browser-acceptance-checklist.md").is_file())
         self.assertIn("Apache-2.0", readme)
         self.assertIn("anthropics/skills", upstream)
+
+    def test_readme_explains_product_decision_mechanism(self):
+        readme = (SKILL_DIR / "README.md").read_text(encoding="utf-8")
+
+        for heading in [
+            "它解决什么问题",
+            "决策模型",
+            "风险等级",
+            "输出示例",
+            "能力边界",
+            "AI 辅助开发说明",
+            "参考与许可",
+        ]:
+            self.assertIn(heading, readme)
+        self.assertIn("有条件发布", readme)
+        self.assertLess(readme.index("参考与许可"), len(readme))
 
     def test_repository_readme_links_to_skill(self):
         root_readme = (REPOSITORY_ROOT / "README.md").read_text(encoding="utf-8")
