@@ -47,6 +47,15 @@ class SkillStructureTests(unittest.TestCase):
         for value in ["一句话理由", "影响", "依据", "最小动作"]:
             self.assertIn(value, self.text)
 
+    def test_skill_wires_reference_and_read_only_structure_evidence(self):
+        for value in [
+            "references/prd-review-framework.md",
+            "scripts/inspect_prd.py",
+            "结构证据",
+            "不修改原文件",
+        ]:
+            self.assertIn(value, self.text)
+
     def test_gate_decision_is_limited_to_exactly_three_options(self):
         body = self.text.split("---", 2)[2]
         match = re.search(
