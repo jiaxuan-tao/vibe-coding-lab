@@ -10,6 +10,7 @@ README = ROOT / "README.md"
 UPSTREAM = ROOT / "UPSTREAM.md"
 LICENSE = ROOT / "LICENSE.txt"
 FORWARD_EVALUATION = ROOT / "tests" / "forward-evaluation.md"
+TRIGGER_EVALUATION = ROOT / "tests" / "trigger-evaluation.md"
 SPEC_KIT_TEMPLATE_URL = (
     "https://github.com/github/spec-kit/blob/main/templates/spec-template.md"
 )
@@ -114,6 +115,38 @@ class DocumentationTests(unittest.TestCase):
         self.assertIn("原始运行 ID", evaluation)
         self.assertIn("未捕获", evaluation)
         self.assertIn("无法追溯补录", evaluation)
+
+    def test_trigger_evaluation_records_blocker_without_fabricated_runs(self) -> None:
+        evaluation = self.read_required(TRIGGER_EVALUATION)
+
+        for marker in [
+            "Codex CLI",
+            "候选提交",
+            "调用方式",
+            "执行状态：阻塞",
+            "运行 ID：未生成",
+            "模型：不可观察",
+            "安全审查拒绝",
+        ]:
+            self.assertIn(marker, evaluation)
+        self.assertGreaterEqual(evaluation.count("### Case "), 4)
+        self.assertNotIn("$prd-decision-review", evaluation)
+        self.assertNotIn("选择结果：通过", evaluation)
+
+    def test_trigger_evaluation_labels_description_only_fallback(self) -> None:
+        evaluation = self.read_required(TRIGGER_EVALUATION)
+
+        for marker in [
+            "/root/trigger_eval_positive",
+            "/root/trigger_eval_negative",
+            "gpt-5.6-terra",
+            "reasoning high",
+            "独立描述选择评估",
+            "不等于运行时自动发现",
+        ]:
+            self.assertIn(marker, evaluation)
+        self.assertIn('"selected": true', evaluation)
+        self.assertGreaterEqual(evaluation.count('"selected": false'), 4)
 
     def test_readme_gate_table_has_exactly_three_supported_decisions(self) -> None:
         readme = self.read_required(README)

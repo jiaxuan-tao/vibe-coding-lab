@@ -46,7 +46,7 @@ Skill 不输出总分。它把关键发现分为阻塞项、需确认和可优�
 
 ## 🧭 使用方法
 
-按照当前 OpenAI 指南，将完整目录安装到用户级 Skills 目录：
+按照 [OpenAI 当前 Skills 指南](https://developers.openai.com/codex/skills/)，将完整目录安装到用户级 Skills 目录：
 
 ```bash
 git clone https://github.com/jiaxuan-tao/vibe-coding-lab.git
@@ -147,7 +147,7 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 - **判断口径**：`references/prd-review-framework.md` 提供强弱示例、常见失败模式和争议结论的校准规则。
 - **文本信号**：`scripts/inspect_prd.py` 使用 Python 标准库扫描全文关键词、占位词、模糊措辞和验收场景序列；它不是 Markdown 章节解析器。
 - **可执行测试**：`unittest` 覆盖检查脚本的输入与只读行为，以及 Skill 和文档的静态契约。
-- **行为证据**：`tests/forward-evaluation.md` 保存独立前向评估结果，属于文档化的行为证据，不是可执行 `unittest`。
+- **行为证据**：[`tests/forward-evaluation.md`](tests/forward-evaluation.md) 保存输出行为评估，[`tests/trigger-evaluation.md`](tests/trigger-evaluation.md) 保存 Skill 选择边界的真实执行尝试与外部发送阻塞；它们属于文档化的行为证据，不是可执行 `unittest`。
 - **运行边界**：不依赖数据库、远程模型 API、上游 CLI 或额外 Python 包。
 
 文本信号扫描与产品判断被刻意分开：关键词命中既不能证明某个章节存在，也不能证明内容质量；最终 Gate 仍需结合原文、证据强度、范围取舍和业务上下文。

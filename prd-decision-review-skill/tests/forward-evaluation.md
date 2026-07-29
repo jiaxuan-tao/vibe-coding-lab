@@ -7,6 +7,7 @@
 - Raw output sources: `.superpowers/sdd/forward-a-output.md`, `forward-a2-output.md`, `forward-b-output.md`, `forward-c-output.md`
 - Comparison baseline: `docs/superpowers/evals/2026-07-29-prd-decision-review-baseline.md`
 - Traceability limitation: these original runs did not capture their original run IDs or model metadata. The information is not present in the retained artifacts and cannot be recovered or retroactively filled in (`原始运行 ID` 与模型元数据当时未捕获，现已无法追溯补录).
+- Current selection-boundary attempt and blocker: [`trigger-evaluation.md`](trigger-evaluation.md)
 
 ## Scenario A: Vague idea
 
