@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from pathlib import Path
 import sys
@@ -66,6 +66,13 @@ class InspectDocumentTests(unittest.TestCase):
 
         self.assertEqual(report["acceptance_scenarios"], 2)
 
+    def test_does_not_count_out_of_order_acceptance_scenarios(self) -> None:
+        report = inspect_document(
+            "Given a signed-in user\nThen they see a confirmation\nWhen they submit the form\n"
+        )
+
+        self.assertEqual(report["acceptance_scenarios"], 0)
+
     def test_json_output_is_machine_readable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "prd.md"
@@ -81,10 +88,32 @@ class InspectDocumentTests(unittest.TestCase):
 
     def test_missing_file_returns_two(self) -> None:
         output = StringIO()
-        with redirect_stdout(output):
+        errors = StringIO()
+        with redirect_stdout(output), redirect_stderr(errors):
             exit_code = main(["does-not-exist.md"])
 
         self.assertEqual(exit_code, 2)
+        self.assertIn("error:", errors.getvalue())
+
+    def test_directory_input_returns_two_and_writes_error(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            errors = StringIO()
+            with redirect_stderr(errors):
+                exit_code = main([directory])
+
+        self.assertEqual(exit_code, 2)
+        self.assertIn("error:", errors.getvalue())
+
+    def test_non_utf8_file_returns_two_and_writes_error(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "invalid.md"
+            source.write_bytes(b"\xff\xfe")
+            errors = StringIO()
+            with redirect_stderr(errors):
+                exit_code = main([str(source)])
+
+        self.assertEqual(exit_code, 2)
+        self.assertIn("error:", errors.getvalue())
 
     def test_inspection_does_not_modify_source(self) -> None:
         original = "# 用户问题\nTODO\n"

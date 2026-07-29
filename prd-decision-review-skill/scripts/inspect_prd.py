@@ -39,7 +39,7 @@ def _section_matches(lines: list[str], patterns: tuple[str, ...]) -> list[str]:
 
 
 def _acceptance_scenarios(lines: list[str]) -> int:
-    """Count each Given block containing a later When and Then before next Given."""
+    """Count line-based Given, When, Then sequences in that order."""
     scenarios = 0
     for index, line in enumerate(lines):
         if not re.search(r"\bgiven\b", line, re.I):
@@ -50,8 +50,12 @@ def _acceptance_scenarios(lines: list[str]) -> int:
             len(block),
         )
         block = block[:next_given]
-        if any(re.search(r"\bwhen\b", item, re.I) for item in block) and any(
-            re.search(r"\bthen\b", item, re.I) for item in block
+        when_index = next(
+            (offset for offset, item in enumerate(block) if re.search(r"\bwhen\b", item, re.I)),
+            None,
+        )
+        if when_index is not None and any(
+            re.search(r"\bthen\b", item, re.I) for item in block[when_index + 1 :]
         ):
             scenarios += 1
     return scenarios
@@ -119,7 +123,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     try:
         text = source.read_text(encoding="utf-8")
-    except OSError as error:
+    except (OSError, UnicodeError) as error:
         print(f"error: cannot read {source}: {error}", file=sys.stderr)
         return 2
 
