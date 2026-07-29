@@ -25,8 +25,11 @@ class SkillStructureTests(unittest.TestCase):
         self.assertIn("当用户要求评审 PRD", match.group(1))
 
     def test_review_order_starts_with_problem_and_evidence(self):
-        required = ["用户问题", "证据与假设", "目标与指标", "MVP 范围",
-                    "关键流程", "需求与验收", "依赖与风险", "一致性"]
+        required = [
+            "输入分类", "用户问题", "证据与假设", "目标与指标", "MVP 范围",
+            "关键流程", "需求与验收", "依赖与风险", "一致性", "结论与下一步",
+            "按需修订",
+        ]
         body = self.text.split("---", 2)[2]
         positions = [body.index(item) for item in required]
         self.assertEqual(positions, sorted(positions))
@@ -43,6 +46,18 @@ class SkillStructureTests(unittest.TestCase):
     def test_output_contains_decision_reason_impact_evidence_and_action(self):
         for value in ["一句话理由", "影响", "依据", "最小动作"]:
             self.assertIn(value, self.text)
+
+    def test_gate_decision_is_limited_to_exactly_three_options(self):
+        body = self.text.split("---", 2)[2]
+        match = re.search(
+            r"结论只能从以下三项中选择，不得新增其他结论：(.+?)。",
+            body,
+        )
+        self.assertIsNotNone(match)
+        self.assertEqual(
+            set(match.group(1).split("、")),
+            {"可进入设计", "有条件进入", "暂不建议推进"},
+        )
 
 
 if __name__ == "__main__":

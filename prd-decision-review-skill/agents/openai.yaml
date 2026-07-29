@@ -1,4 +1,4 @@
 interface:
   display_name: "PRD 需求决策评审"
-  short_description: "判断 PRD 是否具备进入设计的条件"
+  short_description: "评审 PRD 的用户问题、MVP 范围与验收条件，判断是否可进入设计"
   default_prompt: "使用 $prd-decision-review 评审这份需求，区分事实、假设与待确认项，并给出推进结论。"
