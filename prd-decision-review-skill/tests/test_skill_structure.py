@@ -56,6 +56,10 @@ class SkillStructureTests(unittest.TestCase):
         ]:
             self.assertIn(value, self.text)
 
+    def test_vague_idea_outputs_brief_before_full_prd(self):
+        self.assertIn("可评审 Brief", self.text)
+        self.assertIn("不直接扩写完整 PRD", self.text)
+
     def test_gate_decision_is_limited_to_exactly_three_options(self):
         body = self.text.split("---", 2)[2]
         match = re.search(
