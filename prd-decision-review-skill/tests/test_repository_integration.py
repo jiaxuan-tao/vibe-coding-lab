@@ -27,12 +27,13 @@ class RepositoryIntegrationTests(unittest.TestCase):
             self.projects,
         )
 
-    def test_showcase_links_the_exact_prd_review_skill_url(self) -> None:
-        self.assertIn(
+    def test_showcase_excludes_the_prd_review_skill_card(self) -> None:
+        self.assertNotIn(
             "https://github.com/jiaxuan-tao/vibe-coding-lab/tree/main/"
             "prd-decision-review-skill",
             self.site,
         )
+        self.assertNotIn("PRD 需求决策评审 Skill", self.site)
 
 
 if __name__ == "__main__":
