@@ -4,13 +4,15 @@
 
 - 项目：[github/spec-kit](https://github.com/github/spec-kit)
 - 许可证：MIT
-- 参考范围：按优先级组织用户场景、可独立测试的场景、可衡量结果，以及对假设的显式记录。
+- 核对文件：[`templates/spec-template.md`](https://github.com/github/spec-kit/blob/main/templates/spec-template.md)
+- 参考范围：按优先级组织用户场景、说明可独立测试的价值、使用 GIVEN / WHEN / THEN 验收场景、定义可衡量结果，以及对假设的显式记录。
 
 ## OpenSpec
 
 - 项目：[Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec)
 - 许可证：MIT
-- 参考范围：先评审意图与范围，再检查可观察需求；使用 GIVEN / WHEN / THEN 场景表达验收；让变更规模与任务相匹配。
+- 核对文件：[`schemas/spec-driven/schema.yaml`](https://github.com/Fission-AI/OpenSpec/blob/main/schemas/spec-driven/schema.yaml)
+- 参考范围：先用 proposal 对齐变更意图、能力范围与影响，再描述用户或下游系统可观察的需求；当前 schema 使用 WHEN / THEN 场景，并要求任务足够小且可验证。
 
 ## 本项目的实现策略
 

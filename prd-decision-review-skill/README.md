@@ -74,7 +74,7 @@ python3 scripts/inspect_prd.py /path/to/product-requirements.md
 python3 scripts/inspect_prd.py /path/to/product-requirements.md --json
 ```
 
-脚本读取标题、占位词、模糊表述和 GIVEN / WHEN / THEN 场景，返回结构证据；它不修改源文件，也不自动给出质量分或 Gate 结论。
+脚本逐行扫描全文中的预定义关键词信号、占位词、模糊表述和按顺序出现的 GIVEN / WHEN / THEN 场景。它不解析 Markdown 标题或真正的章节边界：正文、示例或注释里的同名词也可能命中，因此可能误报。输出只适合作为人工评审的线索，必须结合原文人工解读；脚本不修改源文件，也不自动给出质量分或 Gate 结论。
 
 ## 🧾 输出示例
 
@@ -143,11 +143,12 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 
 - **评审流程**：`SKILL.md` 定义输入分类、八步评审顺序、三种 Gate 与按需修订边界。
 - **判断口径**：`references/prd-review-framework.md` 提供强弱示例、常见失败模式和争议结论的校准规则。
-- **结构证据**：`scripts/inspect_prd.py` 使用 Python 标准库只读检查章节、占位词、模糊措辞和验收场景。
-- **自动测试**：`unittest` 覆盖脚本输入、只读行为、Skill 契约、典型评审行为、文档结构和归属信息。
+- **文本信号**：`scripts/inspect_prd.py` 使用 Python 标准库扫描全文关键词、占位词、模糊措辞和验收场景序列；它不是 Markdown 章节解析器。
+- **可执行测试**：`unittest` 覆盖检查脚本的输入与只读行为，以及 Skill 和文档的静态契约。
+- **行为证据**：`tests/forward-evaluation.md` 保存独立前向评估结果，属于文档化的行为证据，不是可执行 `unittest`。
 - **运行边界**：不依赖数据库、远程模型 API、上游 CLI 或额外 Python 包。
 
-结构检查与产品判断被刻意分开：脚本只报告“材料里有什么”，最终 Gate 仍需结合证据强度、范围取舍和业务上下文。
+文本信号扫描与产品判断被刻意分开：关键词命中既不能证明某个章节存在，也不能证明内容质量；最终 Gate 仍需结合原文、证据强度、范围取舍和业务上下文。
 
 ### 项目结构
 
@@ -162,14 +163,14 @@ prd-decision-review-skill/
 ├── references/
 │   └── prd-review-framework.md      # 评审口径、示例与失败模式
 ├── scripts/
-│   └── inspect_prd.py               # 只读 PRD Markdown 结构检查
-└── tests/                           # 脚本、Skill 行为与文档契约测试
+│   └── inspect_prd.py               # 只读 PRD 文本信号扫描
+└── tests/                           # 可执行静态契约与前向评估记录
 ```
 
 ## ⚠️ 能力边界
 
 - 它是需求推进决策工具，不替代真实用户研究、数据分析、商业评估或正式评审会议。
-- 结构检查只能指出材料信号，不能证明用户问题真实，也不能自动作出 Gate 决策。
+- 关键词扫描可能因正文或示例命中而误报，只能提供材料线索，不能证明章节存在、用户问题真实或自动作出 Gate 决策。
 - “可进入设计”表示当前证据足以进入下一阶段，不保证产品最终取得商业成功。
 - 没有来源的数据、用户反馈和业务约束会保留为假设或待确认，不会被补写成事实。
 - 它不生成技术架构、实施任务或代码，也不根据章节数量计算 PRD 质量分。
@@ -183,8 +184,10 @@ prd-decision-review-skill/
 
 ## 📚 参考与许可
 
-本项目参考了 [GitHub Spec Kit](https://github.com/github/spec-kit) 的优先级用户场景、独立测试、可衡量结果与显式假设，以及 [OpenSpec](https://github.com/Fission-AI/OpenSpec) 的意图与范围评审顺序、可观察需求、GIVEN / WHEN / THEN 场景和适度变更原则。
+本项目参考了 GitHub Spec Kit 的 [`spec-template.md`](https://github.com/github/spec-kit/blob/main/templates/spec-template.md)：按优先级组织用户场景、说明独立测试、使用 GIVEN / WHEN / THEN 验收场景、定义可衡量结果并显式记录假设。
 
-本目录围绕 PRD 需求决策进行了聚焦的轻量重实现，没有包含或捆绑两个上游项目的 CLI、运行时代码或完整工程工作流。完整的来源、参考范围和差异说明见 [UPSTREAM.md](UPSTREAM.md)。
+同时参考了 OpenSpec 当前 [`spec-driven/schema.yaml`](https://github.com/Fission-AI/OpenSpec/blob/main/schemas/spec-driven/schema.yaml)：先用 proposal 对齐意图与范围，再描述可观察需求，以 WHEN / THEN 表达场景，并把任务控制在可完成、可验证的规模。
+
+本目录围绕 PRD 需求决策采用聚焦式重实现（focused reimplementation），没有包含或捆绑两个上游项目的 CLI、运行时代码或完整工程工作流。完整的来源、参考范围和差异说明见 [UPSTREAM.md](UPSTREAM.md)。
 
 本项目按 [MIT License](LICENSE.txt) 发布。GitHub Spec Kit 与 OpenSpec 也分别采用 MIT 许可；分发或改造时请保留本目录的许可证、来源说明，以及任何实际复用材料所要求的原始版权与许可声明。本项目不暗示与 GitHub、Fission AI 或上游维护者存在官方关联或背书。
