@@ -27,8 +27,12 @@ class RepositoryIntegrationTests(unittest.TestCase):
             self.projects,
         )
 
-    def test_showcase_links_the_prd_review_skill(self) -> None:
-        self.assertIn("prd-decision-review-skill", self.site)
+    def test_showcase_links_the_exact_prd_review_skill_url(self) -> None:
+        self.assertIn(
+            "https://github.com/jiaxuan-tao/vibe-coding-lab/tree/main/"
+            "prd-decision-review-skill",
+            self.site,
+        )
 
 
 if __name__ == "__main__":
