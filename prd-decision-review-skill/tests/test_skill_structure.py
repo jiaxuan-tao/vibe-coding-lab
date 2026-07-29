@@ -24,6 +24,25 @@ class SkillStructureTests(unittest.TestCase):
         self.assertIn("name: prd-decision-review", match.group(1))
         self.assertIn("当用户要求评审 PRD", match.group(1))
 
+    def test_frontmatter_trigger_is_limited_to_product_requirement_context(self):
+        match = re.match(r"^---\n(.*?)\n---", self.text, re.S)
+        self.assertIsNotNone(match)
+        description = next(
+            line.split(":", 1)[1].strip()
+            for line in match.group(1).splitlines()
+            if line.startswith("description:")
+        )
+
+        for marker in ["PRD", "产品需求文档", "需求立项语境"]:
+            self.assertIn(marker, description)
+        for adjacent_negative in [
+            "纯文案润色",
+            "技术架构设计",
+            "实施任务拆解",
+            "已完成 Web 产品的交付验收",
+        ]:
+            self.assertIn(adjacent_negative, description)
+
     def test_review_order_starts_with_problem_and_evidence(self):
         required = [
             "输入分类", "用户问题", "证据与假设", "目标与指标", "MVP 范围",

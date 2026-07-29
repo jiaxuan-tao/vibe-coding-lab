@@ -46,16 +46,18 @@ Skill 不输出总分。它把关键发现分为阻塞项、需确认和可优�
 
 ## 🧭 使用方法
 
-将完整目录安装到 Codex：
+按照当前 OpenAI 指南，将完整目录安装到用户级 Skills 目录：
 
 ```bash
 git clone https://github.com/jiaxuan-tao/vibe-coding-lab.git
-mkdir -p ~/.codex/skills/prd-decision-review
+mkdir -p "$HOME/.agents/skills/prd-decision-review"
 cp -R vibe-coding-lab/prd-decision-review-skill/. \
-  ~/.codex/skills/prd-decision-review/
+  "$HOME/.agents/skills/prd-decision-review/"
 ```
 
 请复制完整目录，因为 `SKILL.md` 会按输入情况读取评审参考或调用只读检查脚本。安装后重新打开 Codex 任务，让 Skill 被发现。
+
+**当前 Codex 构建的兼容路径**：部分仍使用旧版发现机制的构建会扫描 `$CODEX_HOME/skills`；未设置 `CODEX_HOME` 时通常对应 `$HOME/.codex/skills`。只有确认当前构建未发现 `.agents/skills` 中的 Skill 时，才将完整目录复制到 `$CODEX_HOME/skills/prd-decision-review`。这是针对特定构建的兼容方案，不是跨版本通用的首选安装位置。
 
 安装后，在 Codex 中提出：
 
@@ -66,7 +68,7 @@ cp -R vibe-coding-lab/prd-decision-review-skill/. \
 
 默认行为是评审，不会直接改写原文。只有明确要求修订时，Skill 才会在评审结论之后提供修订版，并继续标明假设和待确认项。
 
-如果输入是本地 Markdown PRD，可先运行零依赖结构检查：
+如果输入是本地 UTF-8 文本 PRD，可先运行零依赖结构检查；推荐使用 Markdown，方便人和 Codex 同时阅读：
 
 ```bash
 cd vibe-coding-lab/prd-decision-review-skill
@@ -137,7 +139,7 @@ cd vibe-coding-lab/prd-decision-review-skill
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-检查器接受 UTF-8 Markdown 文件，默认输出可读文本，使用 `--json` 可获得机器可读结果。文件不存在、目录输入或非 UTF-8 内容会返回退出码 2。
+检查器接受 UTF-8 文本文件，不限制扩展名，推荐使用 Markdown。它默认输出可读文本，使用 `--json` 可获得机器可读结果；文件不存在、目录输入或非 UTF-8 内容会返回退出码 2。
 
 ## 🛠️ 技术实现
 

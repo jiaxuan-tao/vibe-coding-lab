@@ -1,6 +1,6 @@
 ---
 name: prd-decision-review
-description: 当用户要求评审 PRD、判断需求是否值得推进、检查用户问题与 MVP 范围、补充成功指标或验收标准，或把模糊产品想法整理为可评审 Brief 时使用。
+description: 当用户要求评审 PRD 或产品需求文档，或在需求立项语境中判断需求是否值得推进、检查用户问题与 MVP 范围、补充成功指标或验收标准、把模糊产品想法整理为可评审 Brief 时使用；不用于纯文案润色、技术架构设计、实施任务拆解或已完成 Web 产品的交付验收。
 ---
 
 # PRD 需求决策评审
@@ -11,7 +11,7 @@ description: 当用户要求评审 PRD、判断需求是否值得推进、检查
 
 当请求包含完整 PRD，或用户对 Gate 结论有争议时，先阅读 `references/prd-review-framework.md`，再按本技能输出评审。参考中的示例用于校准判断，不可替代输入材料的证据。
 
-仅当存在本地 Markdown PRD 时，运行 `scripts/inspect_prd.py <文件路径>` 获取章节、占位词、模糊词和 GIVEN/WHEN/THEN 的结构证据。检查脚本不修改原文件；它的输出只能作为结构证据，不能代替产品判断，也不能作出 Gate 决策。没有本地 Markdown 文件时，不要求运行检查脚本。
+当存在本地 UTF-8 文本 PRD 时，运行 `scripts/inspect_prd.py <文件路径>` 获取章节、占位词、模糊词和 GIVEN/WHEN/THEN 的结构证据；推荐使用 Markdown 方便人和 Codex 阅读，但脚本不限制文件扩展名。检查脚本不修改原文件；它的输出只能作为结构证据，不能代替产品判断，也不能作出 Gate 决策。没有本地文本文件时，不要求运行检查脚本。
 
 ## 1. 输入分类
 

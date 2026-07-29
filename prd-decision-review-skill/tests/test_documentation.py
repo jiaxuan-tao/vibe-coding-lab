@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 README = ROOT / "README.md"
 UPSTREAM = ROOT / "UPSTREAM.md"
 LICENSE = ROOT / "LICENSE.txt"
+FORWARD_EVALUATION = ROOT / "tests" / "forward-evaluation.md"
 SPEC_KIT_TEMPLATE_URL = (
     "https://github.com/github/spec-kit/blob/main/templates/spec-template.md"
 )
@@ -76,16 +77,19 @@ class DocumentationTests(unittest.TestCase):
         self.assertEqual(positions, sorted(positions))
         self.assertIn("参考与许可", level_two_headings[-1])
 
-    def test_readme_has_valid_full_install_command_and_no_originality_claim(self) -> None:
+    def test_readme_has_primary_agents_install_and_labeled_compatibility_path(self) -> None:
         readme = self.read_required(README)
 
-        self.assertIn("~/.codex/skills/prd-decision-review", readme)
-        self.assertIn("mkdir -p ~/.codex/skills/prd-decision-review", readme)
+        self.assertIn("$HOME/.agents/skills/prd-decision-review", readme)
+        self.assertIn("mkdir -p \"$HOME/.agents/skills/prd-decision-review\"", readme)
         self.assertRegex(
             readme,
             r"cp -R vibe-coding-lab/prd-decision-review-skill/\."
-            r" \\\n  ~/.codex/skills/prd-decision-review/",
+            r" \\\n  \"\$HOME/\.agents/skills/prd-decision-review/\"",
         )
+        self.assertIn("当前 Codex 构建的兼容路径", readme)
+        self.assertIn("$CODEX_HOME/skills", readme)
+        self.assertNotIn("mkdir -p ~/.codex/skills/prd-decision-review", readme)
         for relative_path in [
             "SKILL.md",
             "references/prd-review-framework.md",
@@ -93,6 +97,23 @@ class DocumentationTests(unittest.TestCase):
         ]:
             self.assertTrue((ROOT / relative_path).is_file())
         self.assertNotIn("完全原创", readme)
+
+    def test_inspector_contract_accepts_utf8_text_with_markdown_recommended(self) -> None:
+        readme = self.read_required(README)
+        skill = self.read_required(ROOT / "SKILL.md")
+
+        for text in (readme, skill):
+            self.assertIn("UTF-8 文本", text)
+            self.assertIn("推荐使用 Markdown", text)
+        self.assertNotIn("仅当存在本地 Markdown PRD", skill)
+        self.assertNotIn("检查器接受 UTF-8 Markdown 文件", readme)
+
+    def test_forward_evaluation_discloses_missing_original_run_metadata(self) -> None:
+        evaluation = self.read_required(FORWARD_EVALUATION)
+
+        self.assertIn("原始运行 ID", evaluation)
+        self.assertIn("未捕获", evaluation)
+        self.assertIn("无法追溯补录", evaluation)
 
     def test_readme_gate_table_has_exactly_three_supported_decisions(self) -> None:
         readme = self.read_required(README)
