@@ -14,6 +14,7 @@
 - [`user-feedback-insight-skill/` 用户反馈洞察 Skill](../user-feedback-insight-skill/README.md)
 - [`computer-file-organizer-skill/` 电脑文件整理 Skill](../computer-file-organizer-skill/README.md)
 - [`what-to-eat/` What to Eat｜今天吃什么](../what-to-eat/README.md)
+- [`pool-chase-score/` Pool Chase Score｜台球追分计分台](../pool-chase-score/README.md)
 
 ## Project Structure｜单个项目结构
 

@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b2d25" />
+    <meta name="description" content="2–6 人共用一台手机的台球实时追分计分台" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>台球追分计分台</title>
+  </head>
+  <body>
+    <main id="app" class="app-shell">
+      <section id="home-view" class="view home-view" aria-labelledby="home-title">
+        <header class="brand-bar">
+          <div class="brand-mark" aria-hidden="true">9</div>
+          <div>
+            <p class="overline">POOL CHASE SCORE</p>
+            <h1 id="home-title">台球追分计分台</h1>
+          </div>
+          <button id="home-history" class="icon-button" type="button" aria-label="查看历史记录" title="查看历史记录">
+            <span data-icon="history"></span>
+          </button>
+        </header>
+
+        <div class="home-stage">
+          <figure class="home-visual">
+            <img src="assets/pool-table-home.webp" alt="绿色台呢上的台球" />
+            <figcaption>一台手机 · 2–6 人 · 实时联动</figcaption>
+          </figure>
+          <div class="home-status" id="active-session-summary" hidden></div>
+          <div class="home-actions">
+            <button id="continue-session" class="command-button command-button--primary" type="button" hidden>
+              <span data-icon="play"></span>
+              继续今日追分
+            </button>
+            <button id="start-session" class="command-button command-button--primary" type="button">
+              <span data-icon="play"></span>
+              开始今日追分
+            </button>
+            <button id="open-history" class="command-button command-button--secondary" type="button">
+              <span data-icon="history"></span>
+              历史记录
+            </button>
+          </div>
+        </div>
+        <footer class="privacy-note">无需登录 · 数据仅保存在这台设备</footer>
+      </section>
+
+      <section id="setup-view" class="view setup-view" aria-labelledby="setup-title" hidden>
+        <header class="view-header">
+          <button id="setup-back" class="icon-button" type="button" aria-label="返回上一步" title="返回上一步">
+            <span data-icon="chevron" class="icon-flip"></span>
+          </button>
+          <div>
+            <p id="setup-step-label" class="overline">STEP 1 / 4</p>
+            <h2 id="setup-title">选择球友</h2>
+          </div>
+          <span id="setup-progress-value" class="header-badge">1/4</span>
+        </header>
+        <div class="setup-progress" aria-hidden="true"><span id="setup-progress-bar"></span></div>
+
+        <form id="setup-form" class="setup-content" novalidate>
+          <section id="setup-players" class="setup-step" data-step="1">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">本次参与</p>
+                <h3>谁来追分</h3>
+              </div>
+              <span id="player-count-label">3 / 6 人</span>
+            </div>
+            <div id="player-input-list" class="player-input-list"></div>
+            <button id="add-player" class="text-command" type="button">
+              <span data-icon="plus"></span>
+              添加球友
+            </button>
+          </section>
+
+          <section id="setup-scores" class="setup-step" data-step="2" hidden>
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">初始积分</p>
+                <h3>从多少分开始</h3>
+              </div>
+            </div>
+            <div id="score-preset-control" class="segmented-control" role="radiogroup" aria-label="初始积分预设">
+              <label><input type="radio" name="score-preset" value="100" checked />全员 100</label>
+              <label><input type="radio" name="score-preset" value="0" />全员 0</label>
+              <label><input type="radio" name="score-preset" value="custom" />分别设置</label>
+            </div>
+            <div id="initial-score-list" class="initial-score-list"></div>
+          </section>
+
+          <section id="setup-rules" class="setup-step" data-step="3" hidden>
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">计分规则</p>
+                <h3>这一场怎么算</h3>
+              </div>
+            </div>
+            <div id="rule-template-control" class="segmented-control" role="radiogroup" aria-label="计分规则模板">
+              <label><input type="radio" name="rule-template" value="14710" checked />1 / 4 / 7 / 10</label>
+              <label><input type="radio" name="rule-template" value="blank" />空白规则</label>
+            </div>
+            <div id="rule-list" class="rule-list"></div>
+            <button id="add-rule" class="text-command" type="button">
+              <span data-icon="plus"></span>
+              添加计分事件
+            </button>
+            <div id="settlement-preview" class="settlement-preview" aria-live="polite"></div>
+          </section>
+
+          <section id="setup-order" class="setup-step" data-step="4" hidden>
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">第一局顺序</p>
+                <h3>排好上场次序</h3>
+              </div>
+            </div>
+            <ol id="setup-order-list" class="order-list"></ol>
+          </section>
+
+          <p id="setup-error" class="form-error" role="alert"></p>
+        </form>
+
+        <footer class="setup-footer">
+          <button id="setup-next" class="command-button command-button--primary" type="button">
+            下一步
+            <span data-icon="chevron"></span>
+          </button>
+          <button id="start-first-rack" class="command-button command-button--primary" type="button" hidden>
+            <span data-icon="play"></span>
+            开始第 1 局
+          </button>
+        </footer>
+      </section>
+
+      <section id="score-view" class="view score-view" data-player-count="3" aria-labelledby="score-title" hidden>
+        <header class="score-header">
+          <div>
+            <p id="session-time" class="overline">今日追分 · 00:00</p>
+            <h2 id="score-title">第 <span id="rack-number">1</span> 局</h2>
+          </div>
+          <div class="score-header-actions">
+            <span id="save-indicator" class="save-indicator">已保存</span>
+            <button id="score-menu" class="icon-button" type="button" aria-label="更多操作" title="更多操作">
+              <span data-icon="more-horizontal"></span>
+            </button>
+          </div>
+        </header>
+
+        <section id="player-score-list" class="player-score-list" aria-label="玩家积分"></section>
+
+        <section class="recent-strip" aria-labelledby="recent-title">
+          <div class="recent-heading">
+            <h3 id="recent-title">本局记录</h3>
+            <button id="undo-event" class="icon-button icon-button--quiet" type="button" aria-label="撤销上一步" title="撤销上一步" disabled>
+              <span data-icon="undo-2"></span>
+            </button>
+          </div>
+          <ol id="recent-events" class="recent-events"></ol>
+        </section>
+
+        <section class="action-dock" aria-label="计分操作">
+          <div class="action-group">
+            <p>局内事件</p>
+            <div id="in-rack-actions" class="action-grid action-grid--minor"></div>
+          </div>
+          <div class="action-group">
+            <p>本局结果</p>
+            <div id="terminal-actions" class="action-grid"></div>
+          </div>
+          <p id="selection-hint" class="selection-hint">先选择一名玩家</p>
+        </section>
+      </section>
+
+      <section id="history-view" class="view history-view" aria-labelledby="history-title" hidden>
+        <header class="view-header">
+          <button id="history-back" class="icon-button" type="button" aria-label="返回首页" title="返回首页">
+            <span data-icon="chevron" class="icon-flip"></span>
+          </button>
+          <div>
+            <p class="overline">LOCAL RECORDS</p>
+            <h2 id="history-title">追分记录</h2>
+          </div>
+          <button id="clear-history" class="icon-button icon-button--quiet" type="button" aria-label="清空历史" title="清空历史">
+            <span data-icon="trash-2"></span>
+          </button>
+        </header>
+        <div id="history-list" class="history-list"></div>
+        <article id="history-detail" class="history-detail" hidden></article>
+      </section>
+    </main>
+
+    <dialog id="counterparty-dialog" class="app-dialog">
+      <div class="dialog-header">
+        <div><p class="overline">结算对象</p><h2>谁是主要负方</h2></div>
+        <button class="icon-button dialog-close" type="button" aria-label="关闭选择" title="关闭选择">
+          <span data-icon="x"></span>
+        </button>
+      </div>
+      <div id="counterparty-options" class="counterparty-options"></div>
+    </dialog>
+
+    <dialog id="event-editor-dialog" class="app-dialog">
+      <div class="dialog-header">
+        <div><p class="overline">修改记录</p><h2>重新选择事件</h2></div>
+        <button class="icon-button dialog-close" type="button" aria-label="关闭修改" title="关闭修改">
+          <span data-icon="x"></span>
+        </button>
+      </div>
+      <div id="event-editor-content"></div>
+    </dialog>
+
+    <dialog id="end-session-dialog" class="app-dialog">
+      <div class="dialog-header">
+        <div><p class="overline">结束今日追分</p><h2>确认保存最终成绩？</h2></div>
+        <button class="icon-button dialog-close" type="button" aria-label="关闭确认" title="关闭确认">
+          <span data-icon="x"></span>
+        </button>
+      </div>
+      <p>结束后本次记录将变为只读，当前累计积分会写入历史。</p>
+      <div class="dialog-actions">
+        <button id="cancel-end-session" class="command-button command-button--secondary" type="button">继续计分</button>
+        <button id="confirm-end-session" class="command-button command-button--danger" type="button">结束并查看成绩</button>
+      </div>
+    </dialog>
+
+    <aside id="rack-result-sheet" class="bottom-sheet" aria-labelledby="rack-result-title" hidden>
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <p class="overline">RACK COMPLETE</p>
+      <h2 id="rack-result-title">本局结算</h2>
+      <div id="rack-result-scores"></div>
+      <div class="next-order-heading">
+        <h3>下一局建议顺序</h3>
+        <button id="adjust-order" class="text-command" type="button">
+          <span data-icon="grip-vertical"></span>
+          调整
+        </button>
+      </div>
+      <ol id="next-order-list" class="order-list"></ol>
+      <div class="sheet-actions">
+        <button id="undo-rack-result" class="command-button command-button--secondary" type="button">
+          <span data-icon="undo-2"></span>
+          撤销本局结果
+        </button>
+        <button id="start-next-rack" class="command-button command-button--primary" type="button">
+          <span data-icon="play"></span>
+          开始下一局
+        </button>
+      </div>
+    </aside>
+
+    <div id="score-more-menu" class="popover-menu" hidden>
+      <button id="void-rack" type="button">作废并结束本局</button>
+      <button id="request-end-session" type="button">结束今日追分</button>
+    </div>
+
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

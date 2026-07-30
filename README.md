@@ -45,12 +45,16 @@
   帮你结束点餐纠结的趣味食堂转盘，支持直接抽一道菜、按菜系逐层选择、快速筛选和个人菜库。
   [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/what-to-eat/)
 
+- [Pool Chase Score 台球追分计分台](pool-chase-score/README.md)
+  供 2–6 名球友共用一台手机的实时追分工具，支持自定义规则、联动计分、跨局累计、误操作修正和本地历史。
+  [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/pool-chase-score/)
+
 ---
 
 ## Repository Structure｜仓库结构 📂
 
 - 根目录项目文件夹
-  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`user-feedback-insight-skill/`、`computer-file-organizer-skill/` 和 `what-to-eat/`。
+  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`user-feedback-insight-skill/`、`computer-file-organizer-skill/`、`what-to-eat/` 和 `pool-chase-score/`。
 
 - `projects/`
   用于维护项目目录说明和后续归档信息。

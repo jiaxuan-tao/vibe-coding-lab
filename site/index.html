@@ -16,21 +16,21 @@
       body { margin: 0; min-height: 100vh; }
       header { padding: 76px max(24px, calc((100vw - 1180px) / 2)) 46px; background: #fff; border-bottom: 1px solid #e2e4ec; }
       .eyebrow { margin: 0 0 12px; color: #6656e8; font-size: 13px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
-      h1 { margin: 0; font-size: clamp(36px, 5vw, 62px); letter-spacing: -2.5px; }
+      h1 { margin: 0; font-size: clamp(36px, 5vw, 62px); letter-spacing: 0; }
       .intro { max-width: 720px; margin: 20px 0 0; color: #6c7183; font-size: 17px; line-height: 1.8; }
       main { width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 48px 0 80px; }
       .section-title { display: flex; align-items: end; justify-content: space-between; margin-bottom: 22px; }
       .section-title h2 { margin: 0; font-size: 24px; }
       .section-title span { color: #8a8fa0; font-size: 13px; }
       .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
-      article { overflow: hidden; border: 1px solid #dde0e9; border-radius: 18px; background: #fff; box-shadow: 0 10px 30px rgba(40, 43, 70, .06); }
+      article { overflow: hidden; border: 1px solid #dde0e9; border-radius: 8px; background: #fff; box-shadow: 0 10px 30px rgba(40, 43, 70, .06); }
       article img { width: 100%; aspect-ratio: 16 / 9; display: block; object-fit: cover; object-position: top; border-bottom: 1px solid #e4e6ee; background: #f2f3f8; }
       .card-body { padding: 24px; }
       .number { color: #6656e8; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
       article h3 { margin: 9px 0 10px; font-size: 22px; }
       article p { min-height: 54px; margin: 0; color: #6c7183; font-size: 14px; line-height: 1.7; }
       .actions { display: flex; gap: 10px; margin-top: 20px; }
-      .actions a { padding: 10px 14px; border: 1px solid #d9dce7; border-radius: 9px; color: #4f5466; font-size: 13px; font-weight: 600; text-decoration: none; }
+      .actions a { padding: 10px 14px; border: 1px solid #d9dce7; border-radius: 6px; color: #4f5466; font-size: 13px; font-weight: 600; text-decoration: none; }
       .actions a:first-child { color: #fff; border-color: #6656e8; background: #6656e8; }
       footer { padding: 30px 24px; color: #8a8fa0; text-align: center; font-size: 12px; }
       @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } header { padding-top: 52px; } }
@@ -88,6 +88,15 @@
             <h3>What to Eat｜今天吃什么</h3>
             <p>帮你结束点餐纠结的趣味食堂转盘，支持直接抽一道菜、按菜系逐层选择和管理个人菜库。</p>
             <div class="actions"><a href="what-to-eat/">在线体验</a><a href="https://github.com/jiaxuan-tao/vibe-coding-lab/tree/main/what-to-eat">查看源码</a></div>
+          </div>
+        </article>
+        <article>
+          <img src="assets/pool-chase-score.png" alt="台球追分计分台实时联动计分界面" />
+          <div class="card-body">
+            <span class="number">PROJECT 06</span>
+            <h3>Pool Chase Score 台球追分计分台</h3>
+            <p>供 2–6 名球友共用一台手机的实时追分工具，支持规则编辑、联动计分、跨局累计和本地历史。</p>
+            <div class="actions"><a href="pool-chase-score/">在线体验</a><a href="https://github.com/jiaxuan-tao/vibe-coding-lab/tree/main/pool-chase-score">查看源码</a></div>
           </div>
         </article>
       </section>

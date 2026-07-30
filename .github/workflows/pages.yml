@@ -28,6 +28,7 @@ jobs:
           cache-dependency-path: |
             prompt-manager/package-lock.json
             what-to-eat/package-lock.json
+            pool-chase-score/package-lock.json
       - name: Install Prompt Manager
         working-directory: prompt-manager
         run: npm ci
@@ -43,6 +44,14 @@ jobs:
       - name: Test What to Eat
         working-directory: what-to-eat
         run: npm test
+      - name: Install Pool Chase Score
+        working-directory: pool-chase-score
+        run: |
+          npm ci
+          npx playwright install chromium
+      - name: Test Pool Chase Score
+        working-directory: pool-chase-score
+        run: npm test
       - name: Install What to Eat browser tests
         working-directory: what-to-eat
         run: |
@@ -51,12 +60,15 @@ jobs:
       - name: Test What to Eat in Chromium
         working-directory: what-to-eat
         run: npm run test:browser
+      - name: Test Pool Chase Score in Chromium
+        working-directory: pool-chase-score
+        run: npm run test:browser
       - name: Build Prompt Manager
         working-directory: prompt-manager
         run: npm run build
       - name: Assemble portfolio site
         run: |
-          mkdir -p _site/assets _site/poker-ev-coach _site/prompt-manager _site/vibe-coding-prompt-library _site/what-to-eat/assets
+          mkdir -p _site/assets _site/poker-ev-coach _site/prompt-manager _site/vibe-coding-prompt-library _site/what-to-eat/assets _site/pool-chase-score/assets
           cp site/index.html _site/index.html
           cp site/favicon.svg _site/favicon.svg
           cp prompt-manager/docs/screenshots/home.png _site/assets/prompt-manager.png
@@ -64,11 +76,14 @@ jobs:
           cp vibe-coding-prompt-library/assets/vibe-coding-prompt-library-preview.png _site/assets/vibe-coding-prompt-library.png
           cp quota-float-native/docs/images/quota-states.png _site/assets/quota-float-native.png
           cp what-to-eat/docs/images/what-to-eat-preview.png _site/assets/what-to-eat.png
+          cp pool-chase-score/docs/images/pool-chase-score-preview.png _site/assets/pool-chase-score.png
           cp -R prompt-manager/dist/. _site/prompt-manager/
           cp poker-ev-coach/index.html poker-ev-coach/styles.css poker-ev-coach/app.js poker-ev-coach/poker.js poker-ev-coach/decision.js poker-ev-coach/amount-controls.js _site/poker-ev-coach/
           cp -R vibe-coding-prompt-library/app/. _site/vibe-coding-prompt-library/
           cp what-to-eat/*.html what-to-eat/*.css what-to-eat/*.js what-to-eat/*.svg _site/what-to-eat/
           cp -R what-to-eat/assets/. _site/what-to-eat/assets/
+          cp pool-chase-score/*.html pool-chase-score/*.css pool-chase-score/*.js pool-chase-score/*.webmanifest _site/pool-chase-score/
+          cp -R pool-chase-score/assets/. _site/pool-chase-score/assets/
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
