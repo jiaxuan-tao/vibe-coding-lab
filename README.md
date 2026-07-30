@@ -38,6 +38,9 @@
 - [用户反馈洞察 Skill](user-feedback-insight-skill/README.md)
   面向 Codex 的证据驱动反馈分析流程，将访谈、工单、问卷和评论整理为可追溯的产品问题、矛盾与验证机会。
 
+- [电脑文件整理 Skill](computer-file-organizer-skill/README.md)
+  面向 Codex 的安全文件整理流程，先预览下载、桌面或指定文件夹的分类与重复项，确认后执行，并支持不覆盖的撤销。
+
 - [What to Eat｜今天吃什么](what-to-eat/README.md)
   帮你结束点餐纠结的趣味食堂转盘，支持直接抽一道菜、按菜系逐层选择、快速筛选和个人菜库。
   [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/what-to-eat/)
@@ -47,7 +50,7 @@
 ## Repository Structure｜仓库结构 📂
 
 - 根目录项目文件夹
-  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`user-feedback-insight-skill/` 和 `what-to-eat/`。
+  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`user-feedback-insight-skill/`、`computer-file-organizer-skill/` 和 `what-to-eat/`。
 
 - `projects/`
   用于维护项目目录说明和后续归档信息。

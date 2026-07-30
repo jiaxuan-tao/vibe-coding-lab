@@ -1,0 +1,4 @@
+interface:
+  display_name: "电脑文件整理"
+  short_description: "安全整理下载、桌面或指定文件夹，先预览再执行并支持撤销"
+  default_prompt: "使用 $computer-file-organizer 先扫描并规划这个文件夹的整理方式，未经我确认不要移动文件。"
