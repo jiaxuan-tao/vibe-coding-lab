@@ -243,7 +243,7 @@ function renderScoreInputs() {
 
 function renderRuleRows() {
   $("#rule-list").innerHTML = setupState.rules.map((rule, index) => `
-    <div class="rule-row" data-testid="rule-row" data-rule-id="${rule.id}">
+    <div class="rule-row" data-testid="rule-row" data-setup-rule-id="${rule.id}">
       <label class="switch-control" title="启用或停用">
         <input data-rule-field="enabled" type="checkbox" ${rule.enabled ? "checked" : ""} />
         <span>${String(index + 1).padStart(2, "0")}</span>
@@ -783,8 +783,8 @@ document.addEventListener("click", (event) => {
     renderRuleRows();
     hydrateIcons($("#setup-rules"));
   } else if (target.dataset.action === "remove-rule") {
-    const row = target.closest("[data-rule-id]");
-    setupState.rules = setupState.rules.filter((rule) => rule.id !== row.dataset.ruleId);
+    const row = target.closest("[data-setup-rule-id]");
+    setupState.rules = setupState.rules.filter((rule) => rule.id !== row.dataset.setupRuleId);
     renderRuleRows();
     hydrateIcons($("#setup-rules"));
   } else if (target.dataset.orderDirection) {
@@ -879,8 +879,8 @@ document.addEventListener("input", (event) => {
     const player = setupState.players.find((candidate) => candidate.id === row.dataset.playerId);
     player.initialScore = Number(event.target.value);
   } else if (event.target.dataset.ruleField) {
-    const ruleRow = event.target.closest("[data-rule-id]");
-    const rule = setupState.rules.find((candidate) => candidate.id === ruleRow.dataset.ruleId);
+    const ruleRow = event.target.closest("[data-setup-rule-id]");
+    const rule = setupState.rules.find((candidate) => candidate.id === ruleRow.dataset.setupRuleId);
     const field = event.target.dataset.ruleField;
     if (field === "value") rule.value = Number(event.target.value);
     else if (field === "enabled" || field === "endsRack") rule[field] = event.target.checked;
@@ -915,3 +915,11 @@ document.addEventListener("keydown", (event) => {
 
 hydrateIcons();
 renderHome();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {
+      // The app remains fully usable when installation is unavailable.
+    });
+  });
+}
