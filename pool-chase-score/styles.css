@@ -1035,6 +1035,7 @@ select:focus-visible {
   }
 
   .player-score-list {
+    align-content: start;
     gap: 5px;
     padding-top: 6px;
     padding-bottom: 6px;

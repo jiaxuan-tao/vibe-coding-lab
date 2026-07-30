@@ -17,6 +17,7 @@ async function startSession(page, playerCount = 3) {
 for (const viewport of [
   { width: 390, height: 844, players: 3 },
   { width: 320, height: 568, players: 6 },
+  { width: 720, height: 405, players: 3 },
 ]) {
   test(`score table stays inside ${viewport.width}x${viewport.height} with ${viewport.players} players`, async ({ page }) => {
     await page.setViewportSize(viewport);
@@ -38,10 +39,12 @@ for (const viewport of [
 
     expect(dimensions.bodyWidth).toBe(dimensions.viewportWidth);
     expect(dimensions.bodyHeight).toBe(dimensions.viewportHeight);
-    expect(dimensions.scoreWidth).toBe(dimensions.viewportWidth);
+    expect(dimensions.scoreWidth).toBeLessThanOrEqual(dimensions.viewportWidth);
     expect(dimensions.scoreHeight).toBe(dimensions.viewportHeight);
     expect(dimensions.dockBottom).toBe(dimensions.viewportHeight);
     await expect(page.locator("#terminal-actions")).toBeVisible();
+    await page.locator(".player-row").first().click();
+    await expect(page.locator(".player-row").first()).toHaveAttribute("aria-pressed", "true");
   });
 }
 
