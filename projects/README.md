@@ -11,6 +11,7 @@
 - [`poker-ev-coach/`](../poker-ev-coach/README.md)
 - [`quota-float-native/`](../quota-float-native/README.md)
 - [`prd-decision-review-skill/` PRD 需求决策评审 Skill](../prd-decision-review-skill/README.md)
+- [`user-feedback-insight-skill/` 用户反馈洞察 Skill](../user-feedback-insight-skill/README.md)
 - [`what-to-eat/` What to Eat｜今天吃什么](../what-to-eat/README.md)
 
 ## Project Structure｜单个项目结构

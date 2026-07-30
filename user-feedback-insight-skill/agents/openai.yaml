@@ -1,0 +1,4 @@
+interface:
+  display_name: "用户反馈洞察"
+  short_description: "从访谈、工单、问卷和应用评论中提炼可追溯的产品机会与验证建议"
+  default_prompt: "使用 $user-feedback-insight 分析这批用户反馈，保留证据、矛盾与样本限制。"
