@@ -1,4 +1,4 @@
-const CACHE_NAME = "pool-chase-score-v1";
+const CACHE_NAME = "pool-chase-score-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -9,7 +9,8 @@ const APP_SHELL = [
   "./session.js",
   "./storage.js",
   "./manifest.webmanifest",
-  "./assets/pool-table-home.webp",
+  "./assets/pool-table-home-v2.webp",
+  "./assets/pool-table-home-v2-mobile.webp",
   "./assets/app-icon-192.png",
   "./assets/app-icon-512.png",
 ];

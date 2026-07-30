@@ -58,6 +58,36 @@ test("all icon-only controls expose an accessible name", async ({ page }) => {
   expect(unnamed).toEqual([]);
 });
 
+for (const viewport of [
+  { width: 390, height: 844, asset: "pool-table-home-v2-mobile.webp" },
+  { width: 1440, height: 900, asset: "pool-table-home-v2.webp" },
+]) {
+  test(`home hero stays focused inside ${viewport.width}x${viewport.height}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("./");
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
+
+    await expect(page.locator("#home-history")).toBeVisible();
+    await expect(page.locator("#open-history")).toHaveCount(0);
+    await expect(page.locator("#start-session")).toBeVisible();
+    await expect(page.locator(".home-visual img")).toBeVisible();
+    expect(await page.locator(".home-visual img").evaluate(async (image, asset) => {
+      await image.decode();
+      return new URL(image.currentSrc).pathname.endsWith(asset) && image.naturalWidth > 0;
+    }, viewport.asset)).toBe(true);
+
+    const dimensions = await page.evaluate(() => ({
+      width: document.body.scrollWidth,
+      height: document.body.scrollHeight,
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight,
+    }));
+    expect(dimensions.width).toBe(dimensions.viewportWidth);
+    expect(dimensions.height).toBe(dimensions.viewportHeight);
+  });
+}
+
 test("the installed app shell reloads without a network connection", async ({ page, context }) => {
   await page.goto("./");
   await page.waitForFunction(async () => {

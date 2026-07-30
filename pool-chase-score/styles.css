@@ -163,55 +163,54 @@ select:focus-visible {
 }
 
 .home-stage {
-  width: min(100% - 32px, 620px);
+  position: relative;
+  width: 100%;
+  min-height: 0;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 22px;
   margin: 0 auto;
-  padding: 26px 0;
+  overflow: hidden;
 }
 
 .home-visual {
-  position: relative;
-  min-height: 260px;
+  position: absolute;
+  inset: 0;
   margin: 0;
   overflow: hidden;
-  border: 2px solid var(--line-strong);
-  border-radius: 8px;
   background: var(--felt-800);
-  box-shadow: 8px 8px 0 rgba(199, 154, 59, 0.68);
+}
+
+.home-visual picture {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .home-visual img {
   width: 100%;
   height: 100%;
-  min-height: 260px;
   display: block;
   object-fit: cover;
-}
-
-.home-visual figcaption {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  padding: 8px 10px;
-  border: 1px solid var(--paper);
-  border-radius: 4px;
-  color: var(--paper);
-  background: rgba(7, 29, 24, 0.9);
-  font-size: 0.78rem;
-  font-weight: 700;
+  object-position: center;
 }
 
 .home-status {
+  position: absolute;
+  z-index: 2;
+  right: 16px;
+  bottom: calc(92px + env(safe-area-inset-bottom));
+  left: 16px;
   padding: 14px 16px;
   border-left: 4px solid var(--brass);
-  background: rgba(244, 240, 229, 0.08);
+  background: rgba(7, 29, 24, 0.9);
+  box-shadow: 4px 4px 0 rgba(199, 154, 59, 0.7);
 }
 
 .home-actions {
+  position: absolute;
+  z-index: 2;
+  right: 16px;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  left: 16px;
   display: grid;
   gap: 10px;
 }
@@ -252,14 +251,6 @@ select:focus-visible {
   opacity: 0.42;
   box-shadow: none;
   cursor: not-allowed;
-}
-
-.privacy-note {
-  padding: 14px 18px calc(14px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--line);
-  color: var(--paper-muted);
-  text-align: center;
-  font-size: 0.75rem;
 }
 
 .setup-view {
@@ -993,17 +984,12 @@ select:focus-visible {
 }
 
 @media (min-width: 720px) {
-  .home-stage {
-    width: min(100% - 56px, 720px);
-  }
-
-  .home-actions {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .home-actions .command-button[hidden] + .command-button--primary,
-  .home-actions .command-button--primary:first-child {
-    grid-column: 1 / -1;
+  .home-actions,
+  .home-status {
+    right: auto;
+    left: 50%;
+    width: min(calc(100% - 56px), 680px);
+    transform: translateX(-50%);
   }
 
   .score-view {
@@ -1058,6 +1044,10 @@ select:focus-visible {
 
   .action-dock {
     padding-top: 6px;
+  }
+
+  .home-visual img {
+    object-position: center bottom;
   }
 }
 

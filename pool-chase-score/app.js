@@ -730,7 +730,7 @@ document.addEventListener("click", (event) => {
   } else if (target.id === "continue-session") {
     activeSession = loadAppData(localStorage).activeSession;
     renderScore();
-  } else if (target.id === "open-history" || target.id === "home-history") {
+  } else if (target.id === "home-history") {
     renderHistory();
   } else if (target.id === "history-back") {
     renderHome();

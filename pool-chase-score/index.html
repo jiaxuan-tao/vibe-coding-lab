@@ -25,8 +25,10 @@
 
         <div class="home-stage">
           <figure class="home-visual">
-            <img src="assets/pool-table-home.webp" alt="绿色台呢上的台球" />
-            <figcaption>一台手机 · 2–6 人 · 实时联动</figcaption>
+            <picture>
+              <source media="(max-width: 719px)" srcset="assets/pool-table-home-v2-mobile.webp" />
+              <img src="assets/pool-table-home-v2.webp" alt="三位球友在台球桌边比赛，并用桌沿手机记录比分" />
+            </picture>
           </figure>
           <div class="home-status" id="active-session-summary" hidden></div>
           <div class="home-actions">
@@ -38,13 +40,8 @@
               <span data-icon="play"></span>
               开始今日追分
             </button>
-            <button id="open-history" class="command-button command-button--secondary" type="button">
-              <span data-icon="history"></span>
-              历史记录
-            </button>
           </div>
         </div>
-        <footer class="privacy-note">无需登录 · 数据仅保存在这台设备</footer>
       </section>
 
       <section id="setup-view" class="view setup-view" aria-labelledby="setup-title" hidden>
