@@ -59,8 +59,8 @@ test("all icon-only controls expose an accessible name", async ({ page }) => {
 });
 
 for (const viewport of [
-  { width: 390, height: 844, asset: "pool-table-home-v2-mobile.webp" },
-  { width: 1440, height: 900, asset: "pool-table-home-v2.webp" },
+  { width: 390, height: 844, asset: "pool-table-home-anime-mobile.webp" },
+  { width: 1440, height: 900, asset: "pool-table-home-anime.webp" },
 ]) {
   test(`home hero stays focused inside ${viewport.width}x${viewport.height}`, async ({ page }) => {
     await page.setViewportSize(viewport);

@@ -35,7 +35,9 @@ test("UI contract: home keeps one history entry and no redundant captions", asyn
   assert.doesNotMatch(html, /id="open-history"/);
   assert.doesNotMatch(html, /一台手机 · 2–6 人 · 实时联动/);
   assert.doesNotMatch(html, /无需登录 · 数据仅保存在这台设备/);
-  assert.match(html, /assets\/pool-table-home-v2\.webp/);
+  assert.match(html, /assets\/pool-table-home-anime\.webp/);
+  assert.match(html, /assets\/pool-table-home-anime-mobile\.webp/);
+  assert.doesNotMatch(html, /pool-table-home-v2/);
 });
 
 test("UI contract: icon-only controls have accessible labels and tooltips", async () => {
