@@ -6,7 +6,7 @@
 
 [🎱 在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/pool-chase-score/) · [🧭 使用方法](#-使用方法) · [🔒 数据与隐私](#-数据与隐私)
 
-![台球追分计分台多人现场追分首页](docs/images/pool-chase-score-preview.png)
+![台球追分计分台动漫竞技首页](docs/images/pool-chase-score-preview.png)
 
 ---
 
