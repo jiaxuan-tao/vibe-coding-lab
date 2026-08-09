@@ -6,7 +6,7 @@
 
 **Architecture:** Extract only the active React review flow from `jiaxuan-tao/ai-review-workspace` into `ai-review-workspace/`, replace the legacy Supabase-heavy state layer with browser-local Zustand stores, and deploy the Vite build below the Lab Pages base path. Keep the original standalone repository as the historical record and make it private only after the migrated deployment passes verification.
 
-**Tech Stack:** React 18, Vite 6, React Router 6, Zustand 5, Framer Motion, Lucide React, Vitest, Playwright smoke checks, GitHub Actions, GitHub Pages.
+**Tech Stack:** React 19, Vite 7, React Router 8 declarative mode, Zustand 5, Framer Motion, Lucide React, Vitest, Playwright smoke checks, GitHub Actions, GitHub Pages.
 
 ## Global Constraints
 
@@ -95,15 +95,15 @@ Create `ai-review-workspace/package.json` with no Supabase, Axios, jsPDF, Canvas
   "dependencies": {
     "framer-motion": "^12.6.0",
     "lucide-react": "^0.469.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router": "^8.3.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^5.1.1",
     "jsdom": "^26.1.0",
-    "vite": "^6.0.7",
+    "vite": "^7.2.4",
     "vitest": "^3.2.4"
   }
 }
@@ -250,7 +250,7 @@ export default defineConfig({
 
 - [ ] **Step 2: Switch to hash routing and remove dead redirects**
 
-Replace `BrowserRouter` with `HashRouter`. Keep only `/`, `/demo`, `/home`, `/study`, `/study-plans`, `/notes`, `/flashcards`, `/quiz`, and the catch-all redirect. Do not retain routes for login, OAuth, billing, assignments, grades, analytics, habits, focus, leaderboard, import, settings, or profile.
+Upgrade the declarative routing dependency to `react-router@^8.3.0` and remove `react-router-dom`. Update active imports to use `react-router`, then replace `BrowserRouter` with `HashRouter`. Keep only `/`, `/demo`, `/home`, `/study`, `/study-plans`, `/notes`, `/flashcards`, `/quiz`, and the catch-all redirect. Do not retain routes for login, OAuth, billing, assignments, grades, analytics, habits, focus, leaderboard, import, settings, or profile. The project and Pages workflow must use Node 22.22.0 or newer, React/React DOM 19.2.7 or newer, and Vite 7 or newer to satisfy the React Router 8 baseline.
 
 - [ ] **Step 3: Remove the legacy service worker registration**
 
