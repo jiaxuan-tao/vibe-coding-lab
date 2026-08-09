@@ -203,7 +203,7 @@ Use `create()` and `persist()` from Zustand. Use stable storage names `ai-review
 
 - [ ] **Step 4: Trim demo data to active exports**
 
-Keep only `DEMO_USER`, `DEMO_NOTES`, `DEMO_DECKS`, `DEMO_QUIZ_HISTORY`, `DEMO_STUDY_PLANS`, and `DEMO_REVIEW_QUIZ`. Set the demo user's display name to `演示同学` and remove course, grade, assignment, event, leaderboard, and other unreachable sample data.
+Keep only `DEMO_USER`, `DEMO_NOTES`, `DEMO_DECKS`, `DEMO_STUDY_PLANS`, and `DEMO_REVIEW_QUIZ`. Set the demo user's display name to `演示同学` and remove quiz history, course, grade, assignment, event, leaderboard, and other unreachable sample data.
 
 - [ ] **Step 5: Add AI fallback tests**
 
