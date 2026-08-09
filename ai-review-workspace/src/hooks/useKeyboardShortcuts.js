@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 const SHORTCUTS = [
   { key: 'gh', label: '前往今日复习', path: '/home' },

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom'
+import { HashRouter, Navigate, Routes, Route } from 'react-router'
 import { initAuthSync } from './stores'
 import Layout from './components/Layout'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           {/* Public demo: no account is needed for the core review flow. */}
           <Route path="/" element={<Navigate to="/demo" replace />} />
@@ -32,7 +32,7 @@ function App() {
 
           <Route path="*" element={<Navigate to="/demo" replace />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </ErrorBoundary>
   )
 }

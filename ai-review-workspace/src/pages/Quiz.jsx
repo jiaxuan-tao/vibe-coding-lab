@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { ArrowRight, BookOpen, CircleCheck, Puzzle, Sparkles, Trophy, ThumbsUp, X } from 'lucide-react'
 import { C, fonts, tint, btnPrimary, btnGhost } from '../utils/theme'
 import { PageHeader, Card } from '../components/ui'

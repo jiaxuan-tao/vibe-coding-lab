@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router'
 import { KeyRound, Menu, Keyboard, Moon, Sun } from 'lucide-react'
 import Sidebar from './Sidebar'
 import AISettingsModal from './AISettingsModal'

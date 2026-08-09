@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { BookOpen, CalendarCheck, CheckCircle2, CircleAlert, FileText, Layers, Puzzle, ArrowRight, Target } from 'lucide-react'
 import { useAuthStore, useFlashcardsStore, useNotesStore, useStudyPlansStore, useUIStore } from '../stores'
 import { C, fonts, tint } from '../utils/theme'
