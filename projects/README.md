@@ -15,6 +15,7 @@
 - [`computer-file-organizer-skill/` 电脑文件整理 Skill](../computer-file-organizer-skill/README.md)
 - [`what-to-eat/` What to Eat｜今天吃什么](../what-to-eat/README.md)
 - [`pool-chase-score/` Pool Chase Score｜台球追分计分台](../pool-chase-score/README.md)
+- [`ai-review-workspace/` AI 复习工作台](../ai-review-workspace/README.md)
 
 ## Project Structure｜单个项目结构
 

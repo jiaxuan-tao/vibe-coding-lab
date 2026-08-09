@@ -49,6 +49,10 @@
   供 2–6 名球友共用一台手机的实时追分工具，支持自定义规则、联动计分、跨局累计、误操作修正和本地历史。
   [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/pool-chase-score/)
 
+- [AI 复习工作台](ai-review-workspace/README.md)
+  从学习资料、复习计划和记忆卡片进入测验，再根据薄弱点反馈选择下一步复习行动。
+  [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/ai-review-workspace/)
+
 ---
 
 ## Repository Structure｜仓库结构 📂
