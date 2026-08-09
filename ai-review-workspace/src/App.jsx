@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom'
+import { initAuthSync } from './stores'
 import Layout from './components/Layout'
 import ErrorBoundary from './components/ErrorBoundary'
 import Home from './pages/Home'
@@ -9,6 +11,8 @@ import Quiz from './pages/Quiz'
 import Demo from './pages/Demo'
 
 function App() {
+  useEffect(() => { initAuthSync() }, [])
+
   return (
     <ErrorBoundary>
       <BrowserRouter>
