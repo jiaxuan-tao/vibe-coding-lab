@@ -1,21 +1,14 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { useAuthStore } from '../stores'
 import { initializeDemoWorkspace } from './demoWorkspace'
 
 export default function Demo() {
   const navigate = useNavigate()
-  const { enterDemoMode, isAuthenticated, isDemo } = useAuthStore()
 
   useEffect(() => {
-    if (isAuthenticated && !isDemo) {
-      navigate('/home', { replace: true })
-      return
-    }
-    enterDemoMode()
     initializeDemoWorkspace()
     navigate('/home', { replace: true })
-  }, [])
+  }, [navigate])
 
   return (
     <div style={{

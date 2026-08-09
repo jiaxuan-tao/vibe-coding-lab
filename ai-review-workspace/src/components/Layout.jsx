@@ -5,13 +5,12 @@ import Sidebar from './Sidebar'
 import AISettingsModal from './AISettingsModal'
 import ToastContainer from './ToastContainer'
 import ShortcutModal from './ShortcutModal'
-import { useUIStore, useAuthStore } from '../stores'
+import { useUIStore } from '../stores'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
 import { applyTheme, C, fonts, tint } from '../utils/theme'
 
 const Layout = () => {
   const { toggleSidebarMobile, theme, toggleTheme } = useUIStore()
-  const { isDemo } = useAuthStore()
   const location = useLocation()
   const [showShortcuts, setShowShortcuts] = useState(false)
   const [showAISettings, setShowAISettings] = useState(false)
@@ -66,22 +65,19 @@ const Layout = () => {
         flexDirection: 'column',
         zIndex: 1,
       }}>
-        {/* Demo banner */}
-        {isDemo && (
-          <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '8px 24px', gap: 12,
-            background: `linear-gradient(90deg, ${tint(C.purpleDark, 0.16)} 0%, ${tint(C.pink, 0.14)} 100%)`,
-            borderBottom: `1px solid ${tint(C.purpleDark, 0.35)}`,
-            flexShrink: 0,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-              <span style={{ fontFamily: fonts.heading, fontSize: 13, fontWeight: 600, color: C.purple, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                体验模式：示例内容仅保存在当前浏览器
-              </span>
-            </div>
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '8px 24px', gap: 12,
+          background: `linear-gradient(90deg, ${tint(C.purpleDark, 0.16)} 0%, ${tint(C.pink, 0.14)} 100%)`,
+          borderBottom: `1px solid ${tint(C.purpleDark, 0.35)}`,
+          flexShrink: 0,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
+            <span style={{ fontFamily: fonts.heading, fontSize: 13, fontWeight: 600, color: C.purple, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              本地工作台：内容仅保存在当前浏览器
+            </span>
           </div>
-        )}
+        </div>
 
         {/* Topbar */}
         <header style={{

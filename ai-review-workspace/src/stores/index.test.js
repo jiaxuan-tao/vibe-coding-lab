@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it } from 'vitest'
 import {
-  useAuthStore,
   useFlashcardsStore,
   useNotesStore,
   useStudyPlansStore,
@@ -11,17 +10,10 @@ import {
 describe('focused review stores', () => {
   beforeEach(() => {
     localStorage.clear()
-    useAuthStore.setState({ user: null, isAuthenticated: false, isDemo: false, isLoading: false, _hasHydrated: true })
     useNotesStore.setState({ notes: [] })
     useFlashcardsStore.setState({ decks: [] })
     useStudyPlansStore.setState({ plans: [] })
     useUIStore.setState({ qwenApiKey: '', theme: 'dark', toasts: [] })
-  })
-
-  it('enters demo mode without external authentication', () => {
-    useAuthStore.getState().enterDemoMode()
-    expect(useAuthStore.getState()).toMatchObject({ isAuthenticated: true, isDemo: true })
-    expect(useAuthStore.getState().user.name).toBe('演示同学')
   })
 
   it('creates and updates browser-local notes', () => {

@@ -1,21 +1,20 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import { BookOpen, CalendarCheck, CheckCircle2, CircleAlert, FileText, Layers, Puzzle, ArrowRight, Target } from 'lucide-react'
-import { useAuthStore, useFlashcardsStore, useNotesStore, useStudyPlansStore, useUIStore } from '../stores'
+import { useFlashcardsStore, useNotesStore, useStudyPlansStore, useUIStore } from '../stores'
 import { C, fonts, tint } from '../utils/theme'
 import { Card, SectionTitle, StatCard } from '../components/ui'
 import { getReviewFeedback } from '../utils/reviewFeedback'
 
 export default function Home() {
   const navigate = useNavigate()
-  const { user } = useAuthStore()
   const { notes } = useNotesStore()
   const { decks } = useFlashcardsStore()
   const { plans } = useStudyPlansStore()
   const theme = useUIStore(state => state.theme)
   const feedback = getReviewFeedback()
 
-  const name = user?.name || '同学'
+  const name = '同学'
   const today = new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' })
   const cardCount = useMemo(() => (decks || []).reduce((total, deck) => total + (deck.cards || []).length, 0), [decks])
   const reviewTasks = [

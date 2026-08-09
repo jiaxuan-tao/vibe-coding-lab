@@ -10,6 +10,7 @@
     "dev": "vite",
     "test": "vitest run",
     "build": "vite build",
+    "test:browser": "npm run build && playwright test --config=playwright.config.js",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.1",
+    "@playwright/test": "^1.62.1",
     "jsdom": "^26.1.0",
     "vite": "^7.2.4",
     "vitest": "^3.2.4"

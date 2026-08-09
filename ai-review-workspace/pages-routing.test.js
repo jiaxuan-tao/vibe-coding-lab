@@ -1,18 +1,15 @@
 // @vitest-environment node
 
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-const routerConsumers = [
-  'src/App.jsx',
-  'src/components/Layout.jsx',
-  'src/components/ProtectedRoute.jsx',
-  'src/components/Sidebar.jsx',
-  'src/hooks/useKeyboardShortcuts.js',
-  'src/pages/Demo.jsx',
-  'src/pages/Home.jsx',
-  'src/pages/Quiz.jsx',
-]
+function sourceFiles(directory) {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name)
+    return entry.isDirectory() ? sourceFiles(path) : [path]
+  })
+}
 
 describe('Pages routing', () => {
   it('uses hash routing without react-router-dom', () => {
@@ -20,6 +17,14 @@ describe('Pages routing', () => {
 
     expect(app).toContain('HashRouter')
     expect(app).not.toContain('BrowserRouter')
-    expect(routerConsumers.map(file => readFileSync(file, 'utf8')).join('\n')).not.toContain('react-router-dom')
+    const routerImports = sourceFiles('src')
+      .filter(file => /\.[jt]sx?$/.test(file))
+      .flatMap((file) => Array.from(
+        readFileSync(file, 'utf8').matchAll(/from\s+['"](react-router(?:-dom)?)['"]/g),
+        match => match[1],
+      ))
+
+    expect(routerImports).not.toHaveLength(0)
+    expect(routerImports).toEqual(routerImports.map(() => 'react-router'))
   })
 })

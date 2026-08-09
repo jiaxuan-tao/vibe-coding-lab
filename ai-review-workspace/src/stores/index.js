@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { DEMO_USER } from '../utils/demoData'
 
 function createId() {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
@@ -9,32 +8,6 @@ function createId() {
 
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
-
-export const useAuthStore = create(
-  persist(
-    (set) => ({
-      user: null,
-      isAuthenticated: false,
-      isDemo: false,
-      isLoading: true,
-      _hasHydrated: false,
-      enterDemoMode: () => set({
-        user: { ...DEMO_USER },
-        isAuthenticated: true,
-        isDemo: true,
-        isLoading: false,
-        _hasHydrated: true,
-      }),
-    }),
-    {
-      name: 'ai-review-auth',
-      partialize: ({ user, isAuthenticated, isDemo }) => ({ user, isAuthenticated, isDemo }),
-      onRehydrateStorage: () => () => {
-        useAuthStore.setState({ isLoading: false, _hasHydrated: true })
-      },
-    },
-  ),
-)
 
 export const useNotesStore = create(
   persist(
@@ -117,7 +90,3 @@ export const useUIStore = create(
     { name: 'ai-review-ui' },
   ),
 )
-
-export function initAuthSync() {
-  useAuthStore.setState({ isLoading: false, _hasHydrated: true })
-}

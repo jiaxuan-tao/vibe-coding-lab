@@ -1,14 +1,3 @@
-export const DEMO_USER = {
-  id: 'demo-user-001',
-  name: '演示同学',
-  email: 'demo@review-workspace.local',
-  avatar: null,
-  isDemo: true,
-  streak: 7,
-  totalStudyHours: 142,
-  joinDate: '2025-09-01'
-}
-
 export const DEMO_NOTES = [
   {
     id: 'note-demo-1',

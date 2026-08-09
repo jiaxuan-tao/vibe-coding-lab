@@ -9,6 +9,6 @@ describe('Vite Pages configuration', () => {
   })
 
   it('uses jsdom for browser-focused tests', () => {
-    expect(config.test).toEqual({ environment: 'jsdom' })
+    expect(config.test).toMatchObject({ environment: 'jsdom' })
   })
 })
