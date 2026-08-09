@@ -1,0 +1,40 @@
+{
+  "name": "AI 复习工作台",
+  "short_name": "AI 复习",
+  "description": "将学习资料转成复习计划、记忆卡片、知识测验和薄弱点反馈。",
+  "start_url": "/home",
+  "display": "standalone",
+  "background_color": "#0b0e14",
+  "theme_color": "#0b0e14",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "学习资料",
+      "short_name": "资料",
+      "url": "/notes",
+      "description": "查看和整理学习资料"
+    },
+    {
+      "name": "记忆卡片",
+      "short_name": "卡片",
+      "url": "/flashcards",
+      "description": "复习关键知识点"
+    },
+    {
+      "name": "知识测验",
+      "short_name": "测验",
+      "url": "/quiz",
+      "description": "检查本轮复习效果"
+    }
+  ]
+}

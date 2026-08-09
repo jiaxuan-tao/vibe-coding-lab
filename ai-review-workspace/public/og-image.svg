@@ -1,0 +1,26 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0B0E14"/>
+  <rect x="60" y="60" width="1080" height="510" rx="30" fill="#121826" stroke="#2B416F" stroke-width="2"/>
+  <rect x="100" y="105" width="72" height="72" rx="18" fill="#5A8BFF"/>
+  <text x="136" y="155" text-anchor="middle" font-family="serif" font-size="42" font-weight="700" fill="#0B0E14">复</text>
+  <text x="200" y="140" font-family="sans-serif" font-size="36" font-weight="700" fill="#E8EBF4">AI 复习工作台</text>
+  <text x="200" y="172" font-family="sans-serif" font-size="20" fill="#9AA1B5">从资料到复习反馈</text>
+  <text x="100" y="280" font-family="sans-serif" font-size="54" font-weight="700" fill="#E8EBF4">把学习资料变成</text>
+  <text x="100" y="350" font-family="sans-serif" font-size="54" font-weight="700" fill="#93AEFF">可执行的复习闭环</text>
+  <text x="100" y="414" font-family="sans-serif" font-size="24" fill="#9AA1B5">复习计划 · 记忆卡片 · 知识测验 · 薄弱点反馈</text>
+  <rect x="100" y="462" width="160" height="48" rx="24" fill="#1A2E56" stroke="#5A8BFF"/>
+  <text x="180" y="493" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700" fill="#AFC6FF">学习资料</text>
+  <rect x="276" y="462" width="160" height="48" rx="24" fill="#1A2E56" stroke="#5A8BFF"/>
+  <text x="356" y="493" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700" fill="#AFC6FF">复习计划</text>
+  <rect x="452" y="462" width="160" height="48" rx="24" fill="#1A2E56" stroke="#5A8BFF"/>
+  <text x="532" y="493" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700" fill="#AFC6FF">知识测验</text>
+  <rect x="760" y="130" width="300" height="340" rx="22" fill="#0F1521" stroke="#263A60" stroke-width="2"/>
+  <text x="800" y="185" font-family="sans-serif" font-size="20" font-weight="700" fill="#E8EBF4">本轮复习</text>
+  <rect x="800" y="215" width="220" height="16" rx="8" fill="#2C4478"/>
+  <rect x="800" y="215" width="142" height="16" rx="8" fill="#5A8BFF"/>
+  <rect x="800" y="270" width="220" height="54" rx="12" fill="#171F30"/>
+  <text x="824" y="303" font-family="sans-serif" font-size="17" fill="#D6DEEE">复习概率分布</text>
+  <rect x="800" y="340" width="220" height="54" rx="12" fill="#171F30"/>
+  <text x="824" y="373" font-family="sans-serif" font-size="17" fill="#D6DEEE">完成知识测验</text>
+  <circle cx="1014" cy="367" r="12" fill="#3ABF82"/>
+</svg>
