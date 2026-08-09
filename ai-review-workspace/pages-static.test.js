@@ -17,6 +17,8 @@ describe('Pages static entrypoints', () => {
     expect(index).toContain(pagesUrl)
     expect(index).not.toContain('ai-review-workspace.vercel.app')
     expect(index).not.toContain('shiorii.tech')
+    expect(index).not.toContain('fonts.googleapis.com')
+    expect(index).not.toContain('fonts.gstatic.com')
     expect(manifest.start_url).toBe('./#/home')
     expect(manifest.icons[0].src).toBe('./favicon.svg')
     expect(manifest.shortcuts.map(shortcut => shortcut.url)).toEqual(['./#/notes', './#/flashcards', './#/quiz'])

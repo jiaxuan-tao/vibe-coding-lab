@@ -14,6 +14,10 @@ export default defineConfig({
       ? { launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE } }
       : {}),
   },
+  projects: [
+    { name: 'desktop', use: { viewport: { width: 1440, height: 900 } } },
+    { name: 'mobile', use: { viewport: { width: 390, height: 844 } } },
+  ],
   webServer: {
     command: 'node scripts/serve-dist.mjs',
     url: `http://127.0.0.1:${port}${appPath}`,

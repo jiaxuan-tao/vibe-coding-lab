@@ -1,5 +1,8 @@
 import { Component } from 'react'
 import { RefreshCw } from 'lucide-react'
+import { fonts } from '../utils/theme'
+
+const systemMono = "ui-monospace, 'SFMono-Regular', Consolas, monospace"
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -30,7 +33,7 @@ export default class ErrorBoundary extends Component {
           border: '1px solid rgba(255,77,106,0.3)',
           display: 'flex', alignItems: 'center', gap: 10,
         }}>
-          <span style={{ fontFamily: 'VT323', fontSize: 15, color: '#ff4d6a' }}>
+          <span style={{ fontFamily: systemMono, fontSize: 15, color: '#ff4d6a' }}>
             Component error — refresh to try again
           </span>
           <button
@@ -56,10 +59,10 @@ export default class ErrorBoundary extends Component {
         }}>
           <span style={{ color: '#fff', fontSize: 24 }}>栞</span>
         </div>
-        <p style={{ fontFamily: '"Press Start 2P"', fontSize: 11, color: '#ff4d6a' }}>
+        <p style={{ fontFamily: fonts.heading, fontSize: 11, fontWeight: 700, color: '#ff4d6a' }}>
           SOMETHING WENT WRONG
         </p>
-        <p style={{ fontFamily: 'VT323', fontSize: 16, color: '#606080', maxWidth: 400, textAlign: 'center' }}>
+        <p style={{ fontFamily: systemMono, fontSize: 16, color: '#606080', maxWidth: 400, textAlign: 'center' }}>
           {this.state.error?.message || 'An unexpected error occurred.'}
         </p>
         <button
@@ -67,7 +70,7 @@ export default class ErrorBoundary extends Component {
           style={{
             padding: '10px 20px', borderRadius: 8, cursor: 'pointer',
             background: 'rgba(196,77,255,0.15)', border: '1px solid rgba(196,77,255,0.4)',
-            color: '#c44dff', fontFamily: '"Press Start 2P"', fontSize: 9,
+            color: '#c44dff', fontFamily: fonts.heading, fontSize: 9, fontWeight: 700,
             display: 'flex', alignItems: 'center', gap: 6,
           }}
         >

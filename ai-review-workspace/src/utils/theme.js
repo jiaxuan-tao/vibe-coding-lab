@@ -17,9 +17,11 @@ const LIGHT_COLORS = {
 
 export const C = { ...DARK_COLORS }
 
+const systemSans = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif"
+
 export const fonts = {
-  heading: "'Space Grotesk', sans-serif",
-  body: "'Manrope', sans-serif",
+  heading: systemSans,
+  body: systemSans,
 }
 
 export const radius = { sm: 8, md: 12, lg: 16, xl: 20, pill: 999 }

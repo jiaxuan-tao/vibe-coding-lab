@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useUIStore } from '../stores'
-import { C } from '../utils/theme'
+import { C, fonts } from '../utils/theme'
 
 const STYLES = {
   success: { color: C.greenDark, border: 'rgba(77,255,145,0.4)', icon: '✓' },
@@ -30,7 +30,7 @@ const ToastContainer = () => {
                 background: C.card, border: `1px solid ${s.border}`,
                 borderRadius: 12, padding: '12px 14px',
                 boxShadow: '0 12px 32px rgba(0,0,0,0.5)',
-                fontFamily: "'Manrope', sans-serif", fontSize: 13, color: C.text,
+                fontFamily: fonts.body, fontSize: 13, color: C.text,
               }}
             >
               <span style={{ color: s.color, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>{s.icon}</span>

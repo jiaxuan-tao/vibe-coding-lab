@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { initializeDemoWorkspace } from './demoWorkspace'
+import { fonts } from '../utils/theme'
 
 export default function Demo() {
   const navigate = useNavigate()
@@ -13,7 +14,7 @@ export default function Demo() {
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: '#0b0e14', color: '#e8ebf4', fontFamily: "'Space Grotesk', sans-serif", fontSize: 15,
+      background: '#0b0e14', color: '#e8ebf4', fontFamily: fonts.body, fontSize: 15,
     }}>
       <div style={{ textAlign: 'center' }}>
         <div className="pulse" style={{
