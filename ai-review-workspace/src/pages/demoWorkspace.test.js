@@ -1,40 +1,41 @@
-import { describe, expect, it } from 'vitest'
+// @vitest-environment jsdom
+import { beforeEach, describe, expect, it } from 'vitest'
+import { useFlashcardsStore, useNotesStore, useStudyPlansStore } from '../stores'
 import { DEMO_DECKS, DEMO_NOTES, DEMO_STUDY_PLANS } from '../utils/demoData'
-import { getDemoWorkspaceSeeds } from './demoWorkspace'
+import { getReviewFeedback, saveReviewFeedback } from '../utils/reviewFeedback'
+import { initializeDemoWorkspace } from './demoWorkspace'
 
 describe('demo workspace initialization', () => {
-  it('keeps all existing local workspace collections unchanged', () => {
-    const notes = [{ id: 'local-note', title: '本地资料' }]
-    const decks = [{ id: 'local-deck', name: '本地卡片组' }]
-    const plans = [{ id: 'local-plan', subject: '本地计划' }]
-
-    const seeds = getDemoWorkspaceSeeds({ notes, decks, plans })
-
-    expect(seeds.notes).toBeNull()
-    expect(seeds.decks).toBeNull()
-    expect(seeds.plans).toBeNull()
-    expect(notes).toEqual([{ id: 'local-note', title: '本地资料' }])
-    expect(decks).toEqual([{ id: 'local-deck', name: '本地卡片组' }])
-    expect(plans).toEqual([{ id: 'local-plan', subject: '本地计划' }])
+  beforeEach(() => {
+    localStorage.clear()
+    useNotesStore.setState({ notes: [] })
+    useFlashcardsStore.setState({ decks: [] })
+    useStudyPlansStore.setState({ plans: [] })
   })
 
-  it('supplies demo data only for empty local collections', () => {
-    const seeds = getDemoWorkspaceSeeds({ notes: [], decks: [], plans: [] })
+  it('preserves existing local collections and review feedback', () => {
+    const notes = [{ id: 'local-note', title: '本地资料', content: '内容' }]
+    const decks = [{ id: 'local-deck', name: '本地卡片组', cards: [] }]
+    const plans = [{ id: 'local-plan', subject: '本地计划', weeks: [] }]
+    const feedback = { score: 2, total: 3, completedAt: 1234 }
+    useNotesStore.getState().replaceNotes(notes)
+    useFlashcardsStore.getState().replaceDecks(decks)
+    useStudyPlansStore.getState().setStudyPlans(plans)
+    saveReviewFeedback(feedback)
 
-    expect(seeds.notes).toBe(DEMO_NOTES)
-    expect(seeds.decks).toBe(DEMO_DECKS)
-    expect(seeds.plans).toBe(DEMO_STUDY_PLANS)
+    initializeDemoWorkspace()
+
+    expect(useNotesStore.getState().notes).toEqual(notes)
+    expect(useFlashcardsStore.getState().decks).toEqual(decks)
+    expect(useStudyPlansStore.getState().plans).toEqual(plans)
+    expect(getReviewFeedback()).toEqual(feedback)
   })
 
-  it('fills an empty collection without replacing the other local collections', () => {
-    const notes = [{ id: 'local-note', title: '本地资料' }]
-    const decks = [{ id: 'local-deck', name: '本地卡片组' }]
-    const seeds = getDemoWorkspaceSeeds({ notes, decks, plans: [] })
+  it('fills empty local collections with demo data', () => {
+    initializeDemoWorkspace()
 
-    expect(seeds.notes).toBeNull()
-    expect(seeds.decks).toBeNull()
-    expect(seeds.plans).toBe(DEMO_STUDY_PLANS)
-    expect(notes).toEqual([{ id: 'local-note', title: '本地资料' }])
-    expect(decks).toEqual([{ id: 'local-deck', name: '本地卡片组' }])
+    expect(useNotesStore.getState().notes).toEqual(DEMO_NOTES)
+    expect(useFlashcardsStore.getState().decks).toEqual(DEMO_DECKS)
+    expect(useStudyPlansStore.getState().plans).toEqual(DEMO_STUDY_PLANS)
   })
 })

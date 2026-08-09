@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuthStore, useNotesStore, useFlashcardsStore, useStudyPlansStore } from '../stores'
-import { getDemoWorkspaceSeeds } from './demoWorkspace'
+import { useAuthStore } from '../stores'
+import { initializeDemoWorkspace } from './demoWorkspace'
 
 export default function Demo() {
   const navigate = useNavigate()
@@ -13,14 +13,7 @@ export default function Demo() {
       return
     }
     enterDemoMode()
-    const seeds = getDemoWorkspaceSeeds({
-      notes: useNotesStore.getState().notes,
-      decks: useFlashcardsStore.getState().decks,
-      plans: useStudyPlansStore.getState().plans,
-    })
-    if (seeds.notes) useNotesStore.getState().replaceNotes(seeds.notes)
-    if (seeds.decks) useFlashcardsStore.getState().replaceDecks(seeds.decks)
-    if (seeds.plans) useStudyPlansStore.getState().setStudyPlans(seeds.plans)
+    initializeDemoWorkspace()
     navigate('/home', { replace: true })
   }, [])
 
