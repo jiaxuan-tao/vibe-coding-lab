@@ -70,13 +70,6 @@ export const DEMO_DECKS = [
   }
 ]
 
-// Pre-seeded quiz history for demo mode
-export const DEMO_QUIZ_HISTORY = [
-  { date: Date.now() - 86400000 * 2, score: 4, total: 5, title: '概率论：核心概念' },
-  { date: Date.now() - 86400000 * 5, score: 3, total: 4, title: '包豪斯：设计史要点' },
-  { date: Date.now() - 86400000 * 9, score: 4, total: 5, title: '用户研究：访谈方法' },
-]
-
 export const DEMO_STUDY_PLANS = [
   {
     id: 'plan-demo-1',

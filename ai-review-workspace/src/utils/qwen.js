@@ -6,7 +6,7 @@ const QWEN_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/complet
 
 function getStoredKey() {
   try {
-    const state = JSON.parse(localStorage.getItem('shiori-ui') || '{}')
+    const state = JSON.parse(localStorage.getItem('ai-review-ui') || '{}')
     return state?.state?.qwenApiKey || null
   } catch { return null }
 }

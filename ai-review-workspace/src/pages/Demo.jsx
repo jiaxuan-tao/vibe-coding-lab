@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore, useNotesStore, useFlashcardsStore, useStudyPlansStore } from '../stores'
-import { DEMO_NOTES, DEMO_DECKS, DEMO_QUIZ_HISTORY, DEMO_STUDY_PLANS } from '../utils/demoData'
-import { clearReviewFeedback } from '../utils/reviewFeedback'
+import { getDemoWorkspaceSeeds } from './demoWorkspace'
 
 export default function Demo() {
   const navigate = useNavigate()
@@ -14,11 +13,14 @@ export default function Demo() {
       return
     }
     enterDemoMode()
-    useNotesStore.getState().replaceNotes(DEMO_NOTES)
-    useFlashcardsStore.getState().replaceDecks(DEMO_DECKS)
-    useStudyPlansStore.getState().setStudyPlans(DEMO_STUDY_PLANS)
-    localStorage.setItem('shiori-quiz-history', JSON.stringify(DEMO_QUIZ_HISTORY))
-    clearReviewFeedback()
+    const seeds = getDemoWorkspaceSeeds({
+      notes: useNotesStore.getState().notes,
+      decks: useFlashcardsStore.getState().decks,
+      plans: useStudyPlansStore.getState().plans,
+    })
+    if (seeds.notes) useNotesStore.getState().replaceNotes(seeds.notes)
+    if (seeds.decks) useFlashcardsStore.getState().replaceDecks(seeds.decks)
+    if (seeds.plans) useStudyPlansStore.getState().setStudyPlans(seeds.plans)
     navigate('/home', { replace: true })
   }, [])
 
