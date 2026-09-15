@@ -1,12 +1,9 @@
 {
   "source": "https://github.com/beautfulmt/PM-K12--skills",
   "commit": "9ffaeec62a55d50dc26aca8308d9aac67e237501",
-  "append_only": {
-    "README.md": {
-      "prefix_bytes": 14362,
-      "prefix_sha256": "ecf66c2d453506413faa39977d5da98fa41bd09a28f039ce1e8150031058fef6"
-    }
-  },
+  "documentation_only": [
+    "README.md"
+  ],
   "files": {
     ".gitattributes": "9ffca255639c1a2a5833da15780b27e383649bf0965b1aeeb3a3700aa7d6596b",
     ".gitignore": "60c9bdd905fcf45ac485c680d32e9773962cf061b6f041dcddd033911558a672",

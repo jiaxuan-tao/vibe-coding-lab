@@ -1,4 +1,3 @@
-import re
 import unittest
 from pathlib import Path
 
@@ -7,23 +6,31 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DocumentationTest(unittest.TestCase):
-    def test_readme_explains_codex_installation_and_safe_operation(self):
+    def test_readme_matches_repository_style_and_explains_safe_operation(self):
         text = (ROOT / "README.md").read_text(encoding="utf-8")
 
         for expected in (
-            "Codex 使用说明",
+            "# 产品经理 AI 工作流 Skill",
+            "🎯 它解决什么问题",
+            "🧭 四阶段工作流",
+            "✨ 核心能力",
+            "🛠️ 安装与使用",
+            "📁 项目结构",
+            "⚠️ 能力边界",
             "$edu-pm-workflow",
             "--no-launcher",
             "LaunchAgent",
             "卸载",
             "python3 -m unittest",
             "TA说",
-            "示例边界",
         ):
             self.assertIn(expected, text)
 
+        for private_wording in ("面试", "讲述稿", "INTERVIEW-GUIDE.md"):
+            self.assertNotIn(private_wording, text)
+
     def test_public_descriptions_omit_author_attribution(self):
-        for relative in ("README.md", "INTERVIEW-GUIDE.md", "agents/openai.yaml"):
+        for relative in ("README.md", "agents/openai.yaml"):
             text = (ROOT / relative).read_text(encoding="utf-8")
             for attribution in (
                 "产品我不会", "beautfulmt", "PM-K12--skills", "原作者",
@@ -33,25 +40,8 @@ class DocumentationTest(unittest.TestCase):
         self.assertFalse((ROOT / "UPSTREAM.md").exists())
         self.assertFalse((ROOT / "UPSTREAM-PERMISSION.md").exists())
 
-    def test_interview_guide_keeps_contribution_and_demo_boundaries_clear(self):
-        text = (ROOT / "INTERVIEW-GUIDE.md").read_text(encoding="utf-8")
-
-        for expected in (
-            "30 秒版",
-            "2 分钟版",
-            "本轮新生成的脱敏演示",
-            "没有用于当时的生产上线",
-            "需求洞察",
-            "数据分析",
-        ):
-            self.assertIn(expected, text)
-
-        short_version = re.search(
-            r"## 30 秒版\n\n(.+?)\n\n## 2 分钟版", text, re.DOTALL
-        ).group(1)
-        spoken_text = re.sub(r"[*`\s]", "", short_version)
-        self.assertGreaterEqual(len(spoken_text), 100)
-        self.assertLessEqual(len(spoken_text), 140)
+    def test_private_talking_script_is_not_published(self):
+        self.assertFalse((ROOT / "INTERVIEW-GUIDE.md").exists())
 
     def test_runtime_validation_record_is_reproducible_and_honest(self):
         text = (ROOT / "tests/behavior/runtime-validation.md").read_text(encoding="utf-8")
@@ -80,7 +70,7 @@ class DocumentationTest(unittest.TestCase):
         self.assertNotIn("/tmp/pm-workflow-python-playwright", portable)
 
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        self.assertIn("本地运行验证范围", readme)
+        self.assertIn("🧪 本地验证", readme)
         self.assertIn("tests/behavior/runtime-validation.md", readme)
 
 

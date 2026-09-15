@@ -15,21 +15,17 @@ class UpstreamIntegrityTest(unittest.TestCase):
         )
         self.assertEqual(len(manifest["files"]), 27)
         for relative, expected in manifest["files"].items():
-            if relative == "SKILL.md" or relative in manifest["append_only"]:
+            if relative == "SKILL.md" or relative in manifest["documentation_only"]:
                 continue
             actual = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
             self.assertEqual(actual, expected, relative)
 
-    def test_readme_preserves_the_complete_upstream_prefix(self):
+    def test_readme_is_the_only_documentation_only_integrity_exception(self):
         manifest = json.loads((ROOT / "upstream-manifest.json").read_text(encoding="utf-8"))
-        rule = manifest["append_only"]["README.md"]
-        actual = (ROOT / "README.md").read_bytes()
-
-        self.assertEqual(rule["prefix_bytes"], 14362)
-        self.assertGreaterEqual(len(actual), rule["prefix_bytes"])
+        self.assertEqual(manifest["documentation_only"], ["README.md"])
         self.assertEqual(
-            hashlib.sha256(actual[: rule["prefix_bytes"]]).hexdigest(),
-            rule["prefix_sha256"],
+            manifest["files"]["README.md"],
+            "ecf66c2d453506413faa39977d5da98fa41bd09a28f039ce1e8150031058fef6",
         )
 
     def test_skill_allows_only_codex_frontmatter_line_removal(self):
