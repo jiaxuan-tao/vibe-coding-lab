@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>纪念日新增弹窗｜业务流程图</title>
+<style>
+:root{--flow-accent:#5b5bd6;--ink:#30285b;--line:#8d82b1;--border:#cbc4e7;--soft:#faf9ff}
+*{box-sizing:border-box}body{margin:0;padding:32px 24px;background:#f8f8fc;color:var(--ink);font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif}.chart-container{position:relative;max-width:1200px;min-width:1080px;margin:0 auto 24px;padding:28px 24px;background:#fff;border:1px solid #ece9f6;border-radius:14px;box-shadow:0 2px 12px rgba(48,40,91,.05);overflow:auto}h1{margin:0 0 6px;text-align:center;font-size:22px}.subtitle{margin:0 0 22px;text-align:center;color:#8b86a3;font-size:13px}.flow-canvas{display:block;width:1120px;height:920px;margin:0 auto}.node{fill:var(--soft);stroke:var(--border);stroke-width:1.5}.terminal{fill:#efeaff;stroke:#b9aee6}.edge{fill:none;stroke:var(--line);stroke-width:2;marker-end:url(#arrow)}.node-text{fill:var(--ink);font-size:15px;font-weight:600;text-anchor:middle;dominant-baseline:middle}.edge-label{fill:#fff;stroke:#ece9f6;stroke-width:1}.edge-label-text{fill:var(--ink);font-size:14px;text-anchor:middle;dominant-baseline:middle}.legend{display:flex;justify-content:center;gap:18px;margin-top:8px;color:#6f6985;font-size:13px}.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:20px;height:12px;border:1.5px solid var(--border);background:var(--soft);display:inline-block}.legend .decision{transform:rotate(45deg);width:12px;height:12px}
+</style>
+</head>
+<body>
+<main class="chart-container" aria-labelledby="flowTitle">
+  <h1 id="flowTitle">纪念日新增弹窗 · 保存业务流程</h1>
+  <p class="subtitle">隔离演示｜校验、保存结果与重试状态</p>
+  <svg class="flow-canvas" viewBox="0 0 1120 920" role="img" aria-label="从填写表单到校验、保存成功或失败重试的业务流程">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8d82b1"/></marker>
+    </defs>
+
+    <path class="edge" d="M560 70 V115"/>
+    <path class="edge" d="M560 175 V220"/>
+    <path class="edge" d="M560 310 V360"/>
+    <path class="edge" d="M560 420 V465"/>
+    <path class="edge" d="M560 555 V605"/>
+    <path class="edge" d="M560 665 V710"/>
+    <path class="edge" d="M560 770 V830"/>
+
+    <path class="edge" d="M470 265 H245 V360"/>
+    <path class="edge" d="M245 420 V445 H430 V145 H460"/>
+    <path class="edge" d="M470 510 H245 V605"/>
+    <path class="edge" d="M245 665 V690 H410 V390 H460"/>
+
+    <rect class="node terminal" x="485" y="30" width="150" height="40" rx="20"/>
+    <text class="node-text" x="560" y="50">开始</text>
+
+    <rect class="node" x="460" y="115" width="200" height="60" rx="10"/>
+    <text class="node-text" x="560" y="145">填写名称与日期</text>
+
+    <polygon class="node" points="560,220 650,265 560,310 470,265"/>
+    <text class="node-text" x="560" y="265">输入是否合法</text>
+
+    <rect class="node" x="135" y="360" width="220" height="60" rx="10"/>
+    <text class="node-text" x="245" y="382">显示字段错误</text>
+    <text class="node-text" x="245" y="402">保留输入且弹窗不关闭</text>
+
+    <rect class="node" x="460" y="360" width="200" height="60" rx="10"/>
+    <text class="node-text" x="560" y="382">进入保存中</text>
+    <text class="node-text" x="560" y="402">禁止重复提交</text>
+
+    <polygon class="node" points="560,465 650,510 560,555 470,510"/>
+    <text class="node-text" x="560" y="510">保存是否成功</text>
+
+    <rect class="node" x="135" y="605" width="220" height="60" rx="10"/>
+    <text class="node-text" x="245" y="627">显示保存失败</text>
+    <text class="node-text" x="245" y="647">保留输入并允许重试</text>
+
+    <rect class="node" x="460" y="605" width="200" height="60" rx="10"/>
+    <text class="node-text" x="560" y="635">关闭新增弹窗</text>
+
+    <rect class="node" x="460" y="710" width="200" height="60" rx="10"/>
+    <text class="node-text" x="560" y="740">刷新纪念日列表</text>
+
+    <rect class="node terminal" x="485" y="830" width="150" height="40" rx="20"/>
+    <text class="node-text" x="560" y="850">结束</text>
+
+    <rect class="edge-label" x="580" y="318" width="50" height="28" rx="6"/>
+    <text class="edge-label-text" x="605" y="332">是</text>
+    <rect class="edge-label" x="360" y="246" width="50" height="28" rx="6"/>
+    <text class="edge-label-text" x="385" y="260">否</text>
+    <rect class="edge-label" x="580" y="563" width="50" height="28" rx="6"/>
+    <text class="edge-label-text" x="605" y="577">是</text>
+    <rect class="edge-label" x="360" y="491" width="50" height="28" rx="6"/>
+    <text class="edge-label-text" x="385" y="505">否</text>
+    <rect class="edge-label" x="294" y="432" width="100" height="28" rx="6"/>
+    <text class="edge-label-text" x="344" y="446">修正后重试</text>
+    <rect class="edge-label" x="280" y="676" width="100" height="28" rx="6"/>
+    <text class="edge-label-text" x="330" y="690">再次保存</text>
+  </svg>
+  <div class="legend" aria-label="图例"><span><i></i>处理步骤</span><span><i class="decision"></i>结果判断</span><span>箭头：状态流转</span></div>
+</main>
+
+<script type="text/plain" id="mermaid-config">
+mermaid.initialize({
+  startOnLoad: true,
+  securityLevel: 'loose',
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#faf9ff', primaryBorderColor: '#cbc4e7',
+    primaryTextColor: '#30285b', lineColor: '#8d82b1',
+    textColor: '#30285b', fontSize: '15px'
+  },
+  flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'linear', nodeSpacing: 60, rankSpacing: 70, padding: 18 }
+});
+</script>
+<script type="text/plain" id="mermaid-source">
+flowchart TD
+  A([开始]) --> B[填写名称与日期]
+  B --> C{输入是否合法}
+  C -- 否 --> D[显示字段错误；保留输入且弹窗不关闭]
+  D -- 修正后重试 --> B
+  C -- 是 --> E[进入保存中；禁止重复提交]
+  E --> F{保存是否成功}
+  F -- 否 --> G[显示保存失败；保留输入并允许重试]
+  G -- 再次保存 --> E
+  F -- 是 --> H[关闭新增弹窗]
+  H --> I[刷新纪念日列表]
+  I --> J([结束])
+</script>
+</body>
+</html>

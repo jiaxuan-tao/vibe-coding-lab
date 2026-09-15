@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM Workflow"
+  short_description: "Create and maintain product management deliverables"
+  default_prompt: "Use $edu-pm-workflow to turn this product request into the appropriate reviewed and validated artifacts."

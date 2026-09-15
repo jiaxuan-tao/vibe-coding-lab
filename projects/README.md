@@ -10,6 +10,7 @@
 - [`prompt-manager/`](../prompt-manager/README.md)
 - [`poker-ev-coach/`](../poker-ev-coach/README.md)
 - [`quota-float-native/`](../quota-float-native/README.md)
+- [`pm-workflow-codex-skill/` 产品经理 AI 工作流 Skill](../pm-workflow-codex-skill/README.md)
 - [`prd-decision-review-skill/` PRD 需求决策评审 Skill](../prd-decision-review-skill/README.md)
 - [`user-feedback-insight-skill/` 用户反馈洞察 Skill](../user-feedback-insight-skill/README.md)
 - [`computer-file-organizer-skill/` 电脑文件整理 Skill](../computer-file-organizer-skill/README.md)

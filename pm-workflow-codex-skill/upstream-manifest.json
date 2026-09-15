@@ -1,0 +1,39 @@
+{
+  "source": "https://github.com/beautfulmt/PM-K12--skills",
+  "commit": "9ffaeec62a55d50dc26aca8308d9aac67e237501",
+  "append_only": {
+    "README.md": {
+      "prefix_bytes": 14362,
+      "prefix_sha256": "ecf66c2d453506413faa39977d5da98fa41bd09a28f039ce1e8150031058fef6"
+    }
+  },
+  "files": {
+    ".gitattributes": "9ffca255639c1a2a5833da15780b27e383649bf0965b1aeeb3a3700aa7d6596b",
+    ".gitignore": "60c9bdd905fcf45ac485c680d32e9773962cf061b6f041dcddd033911558a672",
+    "README.md": "ecf66c2d453506413faa39977d5da98fa41bd09a28f039ce1e8150031058fef6",
+    "SKILL.md": "a19cf103f90fd703ad5cb27f274edcbf949494f9c6d4a55d961c0390562a364c",
+    "assets/config/mcp.json.example": "179bcb3c892e7627351a0979519e6f4a6b6aef4dfffde5a16b0c38da9611b168",
+    "assets/scripts/install_launcher.sh": "9378d7790c3c7af25887fdb56fac2f5842ce2b40c4f79468b3a3801ca083b4d0",
+    "assets/scripts/pm_bootstrap.py": "c17d93c337bc877c65412935245ce0b5d9993845b113b4b482b2657df96ca1ef",
+    "assets/scripts/pm_launchagent.py": "0831852205b67b1356ea269d221f591246058ca881f7be40d04296bf0c3314d0",
+    "assets/scripts/pm_runtime.py": "f4adda6fc9ba27374867a9f3e37546ff4417dbc2fd8cede4cb1a5678355bf1c5",
+    "assets/scripts/prototype-export-client.js": "5c25e4852e6f5754cb22dbdc2ffc1cf4d554e0e6e97c2ea482f4d87c0ced443b",
+    "assets/scripts/prototype_launcher.py": "39cd24cb937dc34ea881a22b626d5a154b3778358b994c8aa70d5990a9d87ad0",
+    "assets/scripts/prototype_server.py": "8507cde3f369092b79a981f2f4a9c27fa34b346bc4cb7b3f3091a0d5016cb2f2",
+    "assets/scripts/start_service.py": "bab9be1746a0356774d4322005f8406c360d1d27dcc603ef3411e0ee1275f2c7",
+    "assets/scripts/validate_prd.py": "e3937ced5f7c64a36fde91b5857ac85a30ae55e26d249abbdff47200be794236",
+    "assets/scripts/启动原型导出服务.bat": "f9dc7228565026e5a62e526fadf976ddf04aded5e9947b8a0934deaaf881ac42",
+    "assets/scripts/启动原型导出服务.command": "2569c1d12cc93bff95effcdc60e7c691c0af6e3a800f18cf5337c77ffe916900",
+    "assets/templates/pencil-draw-prompt.md": "137a70a8bffd0da54c2105602df5d4742dd321e0bc473e967ed41f465bc25457",
+    "assets/templates/prd-content.html": "f9066fd10455c9067cabb97dc5f6b6c798e5eb48375746f2cf0a42339fb5be58",
+    "assets/templates/关键点.md": "e0340756a7c05c383ab5bc5f95824154ce7f4d14e4f16bf069aec6ccb5d762d2",
+    "assets/workflows/edu-pm-acceptance.md": "80d7da48008c4ead443dd0e8f7c1265cc34cfc4733de961a2ba0b3c7f33885c9",
+    "assets/workflows/edu-pm-data-analysis.md": "fd00d59039a975fadf842578e1be927a0ebc16ee682026d22a431591049baf6a",
+    "assets/workflows/edu-pm-demand.md": "84eccd162bb87171cad4b960aed21873dc75fdeaab2e53752a26c9feeab41ca6",
+    "assets/workflows/edu-pm-prd.md": "9f4d0e8fc62d3af69ff3a30c3c859f85f0543cf311fb142f1900466ea6a0596e",
+    "scripts/init.bat": "8dd2b5e80bb5070ecec6ee02ed8563c9fe4787b63ad327f841ebd07d16e4fba8",
+    "scripts/init.sh": "dfef2c3530bfce219b12d05e4338bf19d18cb369077d70dd08bd9e78c9d4110c",
+    "scripts/initialize.py": "d25ac54314440d933d9c6f25ec11933f69b6897f5e20bcf5d2441a965e820b61",
+    "scripts/known_hashes.json": "d2779d72d876ed18ab42784d728025736556d5f0465857b4123cdc0d0cc5acc2"
+  }
+}

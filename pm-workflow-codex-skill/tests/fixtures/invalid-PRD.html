@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Fixture PRD</title></head>
+<body>
+<main id="prdContent">
+<style>
+  #prdContent { color: #222; font: 14px/1.6 sans-serif; }
+  #prdContent table { width: 100%; border-collapse: collapse; }
+  #prdContent th, #prdContent td { border: 1px solid #ccc; padding: 8px; }
+</style>
+
+<h1 class="doc-title">学习计划 · 产品需求文档（PRD）</h1>
+<p class="doc-sub">中学生 · 学生端 · v1.0</p>
+
+<h2>📋 项目信息</h2>
+<table class="meta-table"><tbody>
+<tr><td>项目名称</td><td>学习计划</td></tr>
+<tr><td>版本号</td><td>v1.0</td></tr>
+<tr><td>文档负责人</td><td>产品团队</td></tr>
+<tr><td>需求状态</td><td>评审中</td></tr>
+<tr><td>目标用户</td><td>中学生</td></tr>
+<tr><td>涉及端</td><td>学生端</td></tr>
+<tr><td>功能入口</td><td>首页学习计划入口</td></tr>
+<tr><td>关联文件</td><td>脱敏测试材料</td></tr>
+</tbody></table>
+
+<h2>📝 版本记录</h2>
+<table class="version-table"><colgroup><col><col><col><col></colgroup>
+<thead><tr><th>版本</th><th>日期</th><th>修订人</th><th>修订说明</th></tr></thead>
+<tbody><tr><td>v1.0</td><td>2026-09-13</td><td>产品团队</td><td>建立脱敏测试基线</td></tr></tbody></table>
+
+<h2>一、需求背景</h2>
+<p>学生需要在一个页面查看当天学习任务。</p>
+<p>任务分散会增加查找成本并影响完成率。</p>
+<p class="source-note">本 fixture 仅用于格式校验，不含真实业务数据。</p>
+
+<h2>二、需求目标</h2>
+<p><strong>让学生快速确认当天待完成的学习任务。</strong></p>
+<table class="goal-table">
+<colgroup><col><col><col><col><col></colgroup>
+<thead><tr><th>用户结果</th><th>衡量指标</th><th>统计口径</th><th>预期方向</th><th>目标值</th></tr></thead>
+<tbody><tr><td>看清当天任务</td><td>任务查看率</td><td>查看任务人数占活跃人数比例</td><td>↑</td><td>待基线确认</td></tr></tbody></table>
+
+<h2>三、需求概述（功能清单）</h2>
+<div class="scope-card"><b>本期范围</b><ul><li>展示当天学习任务。</li></ul></div>
+<div class="risk-card"><b>本期不做什么 / 暂不展开</b><ul><li>不包含跨周计划。</li></ul></div>
+<table class="overview-table"><thead><tr><th>模块</th><th>一级功能</th><th>说明</th></tr></thead>
+<tbody><tr><td>1</td><td>任务列表</td><td>展示当天任务与完成状态</td></tr></tbody></table>
+
+<h2>四、业务流程图</h2>
+<iframe class="flow-frame" src="../流程图/fixture-flow.html"></iframe>
+
+<h2>五、交互流程图</h2>
+<iframe class="flow-frame screen-frame" src="../流程图/fixture-screenflow.html"></iframe>
+
+<h2>六、详细方案</h2>
+<table class="scheme-table">
+<colgroup><col class="c-mod"><col class="c-fn"><col class="c-proto"><col></colgroup>
+<thead><tr><th>一级模块</th><th>二级功能</th><th>原型</th><th>描述</th></tr></thead>
+<tbody><tr>
+  <td class="mod">1<br>任务列表</td>
+  <td class="fn">1.1 查看任务详情</td>
+  <td class="proto"><iframe src="../原型/fixture-prototype.html#modal"></iframe></td>
+  <td class="desc">
+    <div class="desc-block"><b>【页面元素】</b><p>1、任务标题、状态与截止时间。</p></div>
+    <div class="desc-block"><p>1、点击任务卡片 → 打开任务详情弹层。</p></div>
+  </td>
+</tr></tbody></table>
+
+<h2>七、数据埋点</h2>
+<table class="tracking-table"><colgroup><col><col><col><col><col><col></colgroup>
+<thead><tr><th>序号</th><th>埋点名</th><th>埋点中文名</th><th>埋点类型</th><th>埋点参数</th><th>参数值</th></tr></thead>
+<tbody><tr><td>1</td><td>task_detail_open</td><td>打开任务详情</td><td>点击</td><td>task_type</td><td>practice</td></tr></tbody></table>
+
+<h2>八、时序图</h2>
+<pre class="seq-code"><code>sequenceDiagram
+  participant 学生
+  participant 学生端
+  学生-&gt;&gt;学生端: 查看任务详情</code></pre>
+
+<h3>待后续确认的产品口径</h3>
+<ul><li>任务查看率目标值 —— 卡在：基线数据；影响：目标阈值。</li></ul>
+</main>
+</body>
+</html>

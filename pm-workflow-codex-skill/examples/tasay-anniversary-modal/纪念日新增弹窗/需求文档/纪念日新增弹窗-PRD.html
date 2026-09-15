@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>纪念日新增弹窗 · PRD</title>
+<style>
+body{margin:0;background:#f7f8fc;color:#1f2937;font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif}.page{max-width:1400px;margin:0 auto;padding:30px 28px 120px}.prototype-sidebar{display:none;position:fixed;right:0;top:0;width:var(--panel-w);height:100vh;background:#1a1a2e;color:#fff;z-index:20;flex-direction:column}.sidebar-header{padding:18px;display:flex;justify-content:space-between;font-weight:800}.sidebar-header button{border:0;background:transparent;color:#fff;font-size:20px;cursor:pointer}.preview-context{padding:0 18px 12px;color:#c2bfda;font-size:12px;line-height:1.5}.page-selector{padding:0 18px 8px}.page-selector select{width:100%;padding:8px;border-radius:7px}.preview-zoom{display:flex;align-items:center;gap:6px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,.1)}.preview-zoom button{border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:4px 9px;background:#343451;color:#fff;cursor:pointer}.preview-zoom span{min-width:82px;text-align:center;color:#c8c5e7;font-size:12px}.device-shell{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:20px}.device-wrapper{flex:0 0 auto}.device-wrapper iframe{border:0;transform-origin:top left;background:#fff}.prototype-resizer{position:absolute;left:-4px;top:0;width:8px;height:100%;cursor:col-resize}body.dual-pane{padding-right:calc(var(--panel-w) + 36px)}body.dual-pane .prototype-sidebar{display:flex}.fab-group{position:fixed;right:28px;bottom:28px;display:flex;gap:10px;z-index:30}.fab-group button,.copy-all-fab{border:0;border-radius:10px;padding:12px 16px;background:#5b5bd6;color:#fff;font-weight:800;cursor:pointer;box-shadow:0 5px 16px rgba(48,46,130,.22)}body.dual-pane .fab-group{right:calc(var(--panel-w) + 28px)}.copy-all-fab{position:fixed;left:28px;bottom:28px;background:#fff;color:#3e3e88;border:1px solid #d9d9f2}.copy-toast{position:fixed;left:28px;bottom:78px;z-index:31;background:#292847;color:#fff;border-radius:9px;padding:9px 12px;opacity:0;transition:.2s}.copy-toast.show{opacity:1}.save-note{position:fixed;right:28px;bottom:82px;z-index:31;background:#292847;color:#fff;padding:8px 12px;border-radius:8px;font-size:12px;display:none}.save-note.show{display:block}.prototype-frame{position:relative;overflow:hidden;width:100%;border:1px solid #e4e2f0;border-radius:8px;background:#fff}.prototype-iframe{position:absolute;top:0;left:0;border:0;transform-origin:top left}
+</style></head><body>
+<aside class="prototype-sidebar" aria-label="交互原型预览"><div class="sidebar-header"><span>交互原型预览</span><button type="button" onclick="toggleDualPane()">×</button></div><div class="preview-context">本面板展示新生成的隔离演示原型；保存结果为浏览器内模拟，不连接真实服务。</div><div class="page-selector"><select id="pageSelect" onchange="switchPage(this.value)"></select></div><div class="preview-zoom"><button type="button" onclick="zoomPreview(-1)">－</button><span id="previewZoomLabel">适配</span><button type="button" onclick="zoomPreview(1)">＋</button><button type="button" onclick="fitPreview()">适配</button></div><div class="device-shell"><div class="device-wrapper" id="deviceWrapper"><iframe id="prototypeFrame" title="纪念日新增弹窗演示"></iframe></div></div><div class="prototype-resizer" aria-hidden="true"></div></aside>
+<main id="prdContent" class="page">
+<style>
+:root{--pm-accent:#5b5bd6;--pm-ink:#1f2937;--pm-heading:#3f3c7e;--pm-line:#dfdef0;--pm-soft:#f1f0fb;--panel-w:520px}#prdContent{max-width:1336px;background:#fff;border:1px solid #ebeaf3;border-radius:14px;padding:34px;box-shadow:0 2px 14px rgba(40,37,85,.05)}.doc-title{font-size:30px;margin:0;color:var(--pm-ink)}.doc-sub{margin:9px 0 28px;color:#707386}h2{margin:30px 0 14px;padding-left:11px;border-left:5px solid var(--pm-accent);font-size:21px;color:var(--pm-heading)}h3{font-size:16px;color:var(--pm-heading);margin:22px 0 10px}p,li{font-size:14px;line-height:1.75}table{width:100%;table-layout:fixed;border-collapse:collapse;margin:12px 0 18px}th,td{border:1px solid var(--pm-line);padding:10px 12px;vertical-align:top;word-break:break-word;font-size:13px;line-height:1.65}th{background:var(--pm-soft);color:#34316e;text-align:left}.meta-table td:first-child{width:160px;background:#fafaff;font-weight:700}.version-table col:nth-child(1){width:90px}.version-table col:nth-child(2){width:120px}.version-table col:nth-child(3){width:120px}.scheme-table col.c-mod{width:100px}.scheme-table col.c-fn{width:120px}.scheme-table col.c-proto{width:360px}.tracking-table col:nth-child(1){width:65px}.tracking-table col:nth-child(2){width:145px}.tracking-table col:nth-child(4){width:90px}.scope-card,.risk-card,.alert{border-radius:10px;padding:13px 16px;margin:12px 0}.scope-card{background:#f1f1ff;border-left:4px solid var(--pm-accent)}.risk-card{background:#fff9e9;border-left:4px solid #d29b20}.alert{background:#fff7d9;border:1px solid #f0d47c}.desc-block{margin:0 0 14px}.desc-block:last-child{margin-bottom:0}.desc-block b{color:#34316e}.desc-block p{margin:5px 0;line-height:1.6}.asset-note{font-size:12px;margin:7px 0 0}.asset-note a{color:#514db2}.source-note{color:#6b7280}.business-flow-frame{display:block;width:100%;height:1080px;border:0;background:transparent}.no-edit{pointer-events:none}.save-btn-container{display:none}.status-tag{display:inline-block;background:#fff0f2;color:#a52038;border-radius:99px;padding:1px 7px;font-size:12px}
+</style>
+<h1 class="doc-title">纪念日新增弹窗 · 产品需求文档（PRD）</h1><p class="doc-sub">目标用户待确认 · 涉及端待确认 · V1.1（隔离演示）</p>
+<div class="alert"><strong>演示边界：</strong>用户输入表明这是一个真实历史问题；本轮 PRD、原型和验收清单为新生成的隔离演示，未用于当时的生产发布。</div>
+<h2>📋 项目信息</h2><table class="meta-table"><tbody><tr><td>项目名称</td><td>纪念日新增弹窗</td></tr><tr><td>版本号</td><td>V1.1（隔离演示）</td></tr><tr><td>文档负责人</td><td>待确认</td></tr><tr><td>需求状态</td><td>可交付研发的隔离演示方案</td></tr><tr><td>目标用户</td><td>待确认</td></tr><tr><td>涉及端</td><td>待确认</td></tr><tr><td>功能入口</td><td>纪念日列表的“新增”入口，具体位置待确认</td></tr><tr><td>关联文件</td><td>本需求目录下的隔离演示 PRD、业务流程图、原型与验收清单</td></tr></tbody></table>
+<h2>📝 版本记录</h2><table class="version-table"><colgroup><col><col><col><col></colgroup><thead><tr><th>版本</th><th>日期</th><th>修订人</th><th>修订说明</th></tr></thead><tbody><tr><td>V1.1</td><td>2026-09-14</td><td>待确认</td><td>补充保存业务流程图并校正取消/关闭行为与示例资源路径；影响研发流程理解与原型验收。</td></tr><tr><td>V1.0</td><td>2026-09-14</td><td>待确认</td><td>新增背景、目标、范围、单窗状态方案和待确认口径，用于隔离演示；影响研发、测试与后续产品确认。</td></tr></tbody></table>
+<h2>一、需求背景</h2><p>用户在纪念日列表中打开新增弹窗并填写名称与日期时，会遇到未填名称、未填日期、日期非法或保存失败的情况。</p><p>历史问题是上述任一情况发生后弹窗仍会关闭，已填写内容丢失；用户需要重新输入，且无法判断失败原因。</p><p class="source-note">证据：用户输入描述的真实历史问题。当前没有可引用的历史数据或用户反馈明细，数据口径待确认。</p>
+<h2>二、需求目标</h2><p><strong>让用户在新增纪念日时清楚完成校验与保存：失败可修正且输入不丢失，成功后看到已更新的列表。</strong></p><table class="goal-table"><colgroup><col><col><col><col><col></colgroup><thead><tr><th>用户结果</th><th>衡量指标</th><th>统计口径</th><th>预期方向</th><th>目标值</th></tr></thead><tbody><tr><td>用户在输入不完整或日期不合法时能留在弹窗内修正</td><td>校验失败后仍保留输入的会话占比</td><td>发生校验失败后，名称和日期仍可见且可编辑的会话数 / 校验失败会话数</td><td>↑</td><td>待基线确认</td></tr><tr><td>用户在保存未成功时不丢失已填内容</td><td>保存失败后保留输入的会话占比</td><td>保存失败后弹窗未关闭且已填字段仍可见的会话数 / 保存失败会话数</td><td>↑</td><td>待基线确认</td></tr><tr><td>用户成功新增后能立即在列表看到结果</td><td>成功后列表刷新可见率</td><td>保存成功后弹窗关闭且列表出现新增项的会话数 / 保存成功会话数</td><td>↑</td><td>待基线确认</td></tr></tbody></table>
+<h3>待后续确认的产品口径</h3><ul><li>指标的历史基线、统计周期、责任人和目标值 —— 卡在：产品/数据负责人待确认；影响：成功指标无法设定数值目标。</li><li>目标用户、涉及端与入口位置 —— 卡在：产品负责人待确认；影响：范围与验收环境需明确。</li><li>日期格式、范围、时区及统一失败文案 —— 卡在：产品/设计负责人待确认；影响：最终校验规则与界面文案。</li><li>埋点字典与参数枚举 —— 卡在：数据负责人待确认；影响：事件可实施性。</li></ul>
+<h2>三、需求概述（功能清单）</h2><div class="scope-card"><b>本期范围</b><ul><li>纪念日新增弹窗内的名称和日期必填校验。</li><li>日期非法时的页内提示与输入保留。</li><li>保存未成功时保留输入、展示失败反馈并允许再次保存。</li><li>保存成功后关闭弹窗并刷新当前纪念日列表。</li></ul></div><div class="risk-card"><b>本期不做什么 / 暂不展开</b><ul><li>不变更纪念日编辑、删除、提醒或列表筛选；这些不属于本次问题修复范围。</li><li>不定义日期业务范围、时区、失败分类或统一设计规范；缺少已确认口径，留待后续确认。</li><li>不接入真实服务、真实账号、生产数据或生产发布。</li></ul></div><table class="overview-table"><thead><tr><th>模块</th><th>一级功能</th><th>说明</th></tr></thead><tbody><tr><td>纪念日列表</td><td>新增弹窗</td><td>提交前校验名称与日期；提交失败保留输入；提交成功关闭弹窗并更新列表。</td></tr></tbody></table><h3>3.1 提交结果共享规则</h3><table class="rule-table"><thead><tr><th>结果状态</th><th>弹窗状态</th><th>列表状态</th></tr></thead><tbody><tr><td>名称为空、日期为空或日期非法</td><td>保持打开，显示对应字段提示，保留已输入内容</td><td>不刷新</td></tr><tr><td>保存未成功</td><td>保持打开，显示失败提示，保留名称和日期并允许重试</td><td>不刷新</td></tr><tr><td>保存成功</td><td>关闭</td><td>刷新，并展示新增项</td></tr></tbody></table>
+<h2>四、业务流程图</h2><iframe class="business-flow-frame" src="../流程图/纪念日新增弹窗-flow.html" title="纪念日新增弹窗保存业务流程图"></iframe>
+<h2>五、详细方案</h2><table class="scheme-table"><colgroup><col class="c-mod"><col class="c-fn"><col class="c-proto"><col></colgroup><thead><tr><th>一级模块</th><th>二级功能</th><th>原型</th><th>描述</th></tr></thead><tbody>
+<tr data-preview="form"><td class="mod" rowspan="6">纪念日新增弹窗</td><td class="fn">默认状态</td><td class="proto"><div class="prototype-frame" data-pw="430" data-ph="760"><iframe class="prototype-iframe" src="../原型/纪念日新增弹窗-prototype.html#form" title="新增弹窗默认状态"></iframe></div><p class="asset-note"><a href="../原型/纪念日新增弹窗-prototype.html#form">打开可点击原型</a></p></td><td class="desc"><div class="desc-block"><b>【页面元素】</b><p>1、纪念日列表顶部含“新增”按钮；列表展示脱敏演示条目。</p><p>2、新增弹窗含标题“新增纪念日”、关闭按钮、名称输入框、日期输入框、取消和保存按钮。</p><p>3、日期输入框以 YYYY-MM-DD 为演示占位格式，最终格式待确认。</p></div><div class="desc-block"><b>【交互说明】</b><p>1、点击“新增” → 打开空白新增弹窗。</p><p>2、点击取消或关闭按钮 → 关闭弹窗，不新增条目。</p><p>3、输入名称和日期后点击保存 → 进入保存结果判断。</p></div><div class="desc-block"><b>【边界说明】</b><p>1、用户点击保存但两个字段均未填写 → 弹窗保持打开并分别提示。</p><p>2、用户关闭弹窗后的草稿是否保留 → 待确认，本期不定义跨关闭保留。</p></div></td></tr>
+<tr data-preview="name-empty"><td class="fn">名称为空状态</td><td class="proto"><div class="prototype-frame" data-pw="430" data-ph="760"><iframe class="prototype-iframe" src="../原型/纪念日新增弹窗-prototype.html#name-empty" title="名称为空状态"></iframe></div></td><td class="desc"><div class="desc-block"><b>【页面元素】</b><p>1、名称输入框显示错误描边与提示“请填写名称”。</p><p>2、日期已填写时继续展示原日期内容。</p></div><div class="desc-block"><b>【交互说明】</b><p>1、名称为空时点击保存 → 弹窗不关闭，名称框显示提示。</p><p>2、继续输入名称 → 用户可再次点击保存。</p></div><div class="desc-block"><b>【边界说明】</b><p>1、名称仅由空白字符组成 → 按未填写处理。</p></div></td></tr>
+<tr data-preview="date-empty"><td class="fn">日期为空状态</td><td class="proto"><div class="prototype-frame" data-pw="430" data-ph="760"><iframe class="prototype-iframe" src="../原型/纪念日新增弹窗-prototype.html#date-empty" title="日期为空状态"></iframe></div></td><td class="desc"><div class="desc-block"><b>【页面元素】</b><p>1、日期输入框显示错误描边与提示“请选择日期”。</p><p>2、名称已填写时继续展示原名称内容。</p></div><div class="desc-block"><b>【交互说明】</b><p>1、日期为空时点击保存 → 弹窗不关闭，日期框显示提示。</p><p>2、补充日期 → 用户可再次点击保存。</p></div><div class="desc-block"><b>【边界说明】</b><p>1、名称与日期同时为空 → 两个字段同时提示，两个输入均保持可编辑。</p></div></td></tr>
+<tr data-preview="date-invalid"><td class="fn">日期非法状态</td><td class="proto"><div class="prototype-frame" data-pw="430" data-ph="760"><iframe class="prototype-iframe" src="../原型/纪念日新增弹窗-prototype.html#date-invalid" title="日期非法状态"></iframe></div></td><td class="desc"><div class="desc-block"><b>【页面元素】</b><p>1、日期输入框保留用户输入的原始内容，并显示错误描边。</p><p>2、字段下方显示“请输入有效日期（YYYY-MM-DD）”。</p></div><div class="desc-block"><b>【交互说明】</b><p>1、输入不能组成实际日期的内容后点击保存 → 弹窗不关闭并提示日期非法。</p><p>2、修改为有效日期 → 用户可再次点击保存。</p></div><div class="desc-block"><b>【边界说明】</b><p>1、最终日期范围、闰年规则展示方式与时区口径 → 待确认。</p></div></td></tr>
+<tr data-preview="api-failure"><td class="fn">保存失败状态</td><td class="proto"><div class="prototype-frame" data-pw="430" data-ph="760"><iframe class="prototype-iframe" src="../原型/纪念日新增弹窗-prototype.html#api-failure" title="保存失败状态"></iframe></div></td><td class="desc"><div class="desc-block"><b>【页面元素】</b><p>1、弹窗保持打开，名称与日期继续展示用户提交前的内容。</p><p>2、保存按钮恢复可点击，按钮上方展示“保存失败，请检查网络后重试。已填写内容已保留。”</p></div><div class="desc-block"><b>【交互说明】</b><p>1、保存未成功 → 弹窗不关闭，不刷新列表，展示失败反馈。</p><p>2、用户修改或不修改已填内容后再次点击保存 → 再次进入保存结果判断。</p></div><div class="desc-block"><b>【边界说明】</b><p>1、连续保存未成功 → 每次保持当前输入，不叠加多条失败提示。</p><p>2、失败原因分类、重试次数和统一反馈文案 → 待确认。</p></div></td></tr>
+<tr data-preview="success"><td class="fn">保存成功状态</td><td class="proto"><div class="prototype-frame" data-pw="430" data-ph="760"><iframe class="prototype-iframe" src="../原型/纪念日新增弹窗-prototype.html#success" title="保存成功状态"></iframe></div></td><td class="desc"><div class="desc-block"><b>【页面元素】</b><p>1、新增弹窗关闭，列表中出现本次新增的脱敏演示条目。</p><p>2、页面显示“保存成功”的轻提示。</p></div><div class="desc-block"><b>【交互说明】</b><p>1、保存成功 → 关闭弹窗并刷新当前列表。</p><p>2、刷新完成后 → 用户可在列表中看到新增条目。</p></div><div class="desc-block"><b>【边界说明】</b><p>1、列表刷新未成功时的展示与恢复策略 → 待确认；本期核心规则仍是保存成功后才关闭弹窗。</p></div></td></tr>
+</tbody></table>
+<h2>六、数据埋点</h2><table class="tracking-table"><colgroup><col><col><col><col><col><col></colgroup><thead><tr><th>序号</th><th>埋点名</th><th>埋点中文名</th><th>埋点类型</th><th>埋点参数</th><th>参数值</th></tr></thead><tbody><tr><td>1</td><td>anniversary_modal_submit</td><td>纪念日新增提交</td><td>点击</td><td>待确认（用户提供参考）</td><td>待确认（用户提供参考）</td></tr><tr><td>2</td><td>anniversary_validation_result</td><td>纪念日字段校验结果</td><td>提交结果</td><td>待确认（用户提供参考）</td><td>待确认（用户提供参考）</td></tr><tr><td>3</td><td>anniversary_save_result</td><td>纪念日保存结果</td><td>提交结果</td><td>待确认（用户提供参考）</td><td>待确认（用户提供参考）</td></tr></tbody></table>
+<h3>待后续确认的产品口径</h3><ul><li>日期格式、范围与时区 —— 卡在：产品负责人待确认；影响：日期非法的最终判定。</li><li>保存失败文案、失败分类和重试策略 —— 卡在：产品/设计负责人待确认；影响：失败反馈一致性。</li><li>列表刷新未成功时的处理 —— 卡在：产品/研发负责人待确认；影响：成功后的可见结果定义。</li><li>埋点字典、指标基线与目标值 —— 卡在：数据负责人待确认；影响：效果评估与埋点实施。</li></ul>
+</main>
+<button class="copy-all-fab" type="button" onclick="copyAllContent()">📋 一键复制全文</button><div class="copy-toast" id="copyToast"></div><div class="fab-group"><button id="dualPaneToggle" type="button" aria-pressed="false" onclick="toggleDualPane()">双栏预览</button><button class="save-btn" type="button" onclick="notifySave()">保存并通知AI</button></div><div class="save-note" id="saveNote">此隔离演示不覆盖文件；请在工作区保存修改。</div>
+<script>
+const CATALOG=[{value:'form',label:'P1 · 默认状态',url:'../原型/纪念日新增弹窗-prototype.html#form',w:430,h:760},{value:'name-empty',label:'P2 · 名称为空',url:'../原型/纪念日新增弹窗-prototype.html#name-empty',w:430,h:760},{value:'date-empty',label:'P3 · 日期为空',url:'../原型/纪念日新增弹窗-prototype.html#date-empty',w:430,h:760},{value:'date-invalid',label:'P4 · 日期非法',url:'../原型/纪念日新增弹窗-prototype.html#date-invalid',w:430,h:760},{value:'api-failure',label:'P5 · 保存失败',url:'../原型/纪念日新增弹窗-prototype.html#api-failure',w:430,h:760},{value:'success',label:'P6 · 保存成功',url:'../原型/纪念日新增弹窗-prototype.html#success',w:430,h:760}];let previewPage='form',previewZoom=null;const ZOOM_STEPS=[.25,.5,.75,1,1.25,1.5,2,3];function currentCfg(){return CATALOG.find(x=>x.value===previewPage)||CATALOG[0]}function renderSelect(){const s=document.getElementById('pageSelect');s.innerHTML=CATALOG.map(x=>`<option value="${x.value}">${x.label}</option>`).join('');s.value=previewPage}function scalePreview(){const shell=document.querySelector('.device-shell'),wrap=document.getElementById('deviceWrapper'),frame=document.getElementById('prototypeFrame'),cfg=currentCfg(),fit=Math.max(120,shell.clientWidth-40)/cfg.w,scale=previewZoom==null?fit:previewZoom;frame.style.width=cfg.w+'px';frame.style.height=cfg.h+'px';frame.style.transform='scale('+scale+')';wrap.style.width=Math.round(cfg.w*scale)+'px';wrap.style.height=Math.round(cfg.h*scale)+'px';document.getElementById('previewZoomLabel').textContent=Math.round(scale*100)+'%'+(previewZoom==null?' · 适配':'')}function switchPage(v){previewPage=v;renderSelect();if(!document.body.classList.contains('dual-pane'))return;document.getElementById('prototypeFrame').src=currentCfg().url;requestAnimationFrame(scalePreview)}function toggleDualPane(){const on=document.body.classList.toggle('dual-pane'),btn=document.getElementById('dualPaneToggle');btn.textContent=on?'收起预览':'双栏预览';btn.setAttribute('aria-pressed',String(on));if(on){const f=document.getElementById('prototypeFrame');if(!f.src)f.src=currentCfg().url;requestAnimationFrame(scalePreview);setTimeout(scalePreview,250)}}function currentPreviewScale(){if(previewZoom!=null)return previewZoom;const shell=document.querySelector('.device-shell');return Math.max(120,shell.clientWidth-40)/currentCfg().w}function zoomPreview(dir){const now=currentPreviewScale(),steps=dir>0?ZOOM_STEPS:[...ZOOM_STEPS].reverse(),next=steps.find(s=>dir>0?s>now+.0001:s<now-.0001);previewZoom=next==null?Math.max(.25,Math.min(3,now)):next;scalePreview()}function fitPreview(){previewZoom=null;scalePreview()}function scalePrototypes(){document.querySelectorAll('.prototype-frame').forEach(frame=>{const pw=+frame.dataset.pw||430,ph=+frame.dataset.ph||760,iframe=frame.querySelector('iframe'),w=frame.clientWidth||320,s=w/pw;iframe.style.width=pw+'px';iframe.style.height=ph+'px';iframe.style.transform='scale('+s+')';frame.style.height=Math.round(ph*s)+'px'})}function toast(t){const n=document.getElementById('copyToast');n.textContent=t;n.classList.add('show');setTimeout(()=>n.classList.remove('show'),2400)}async function copyAllContent(){const clone=document.getElementById('prdContent').cloneNode(true);clone.querySelectorAll('iframe').forEach(f=>{const p=document.createElement('p');p.textContent='原型预览：'+f.getAttribute('title')+'（隔离演示链接保留在原文档）';f.replaceWith(p)});clone.querySelectorAll('[contenteditable]').forEach(x=>x.removeAttribute('contenteditable'));try{await navigator.clipboard.writeText(clone.innerText);toast('已复制正文文本；隔离演示未启动本地截图服务，原型图未内联。')}catch(e){toast('复制失败，请手动选择正文内容。')}}function notifySave(){const n=document.getElementById('saveNote');n.classList.add('show');setTimeout(()=>n.classList.remove('show'),2500)}window.addEventListener('resize',()=>{scalePreview();scalePrototypes()});window.addEventListener('message',e=>{if(e.data&&e.data.type==='page-changed'&&CATALOG.some(x=>x.value===e.data.page)){previewPage=e.data.page;renderSelect()}});window.addEventListener('load',()=>{renderSelect();scalePrototypes();const m=location.hash.match(/preview=([\w-]+)/);if(m&&CATALOG.some(x=>x.value===m[1])){previewPage=m[1];toggleDualPane()}});document.querySelector('.prototype-resizer').addEventListener('mousedown',e=>{const start=e.clientX,old=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--panel-w'))||520;function move(ev){document.documentElement.style.setProperty('--panel-w',Math.max(380,Math.min(900,old+start-ev.clientX))+'px');scalePreview()}function up(){document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up)}document.addEventListener('mousemove',move);document.addEventListener('mouseup',up)});
+</script>
+<script src="../../scripts/prototype-export-client.js?v=20260915-prd"></script>
+<script>
+(function(){
+  var mediaCache = new Map();   // src → dataUrl，同一次会话复用（iframe 与 img 共用）
+  var MAX_IMG_WIDTH = 2000;     // 粘出去的图片宽度上限，见 ⑤ 体积控制（1200 会让放大看时发虚）
+
+  // 服务下发的是 2 倍图（一张能到 3MB），直接塞剪贴板会几十 MB。
+  // data: URL 不会污染 canvas，所以缩放可以在本页做完，不用再依赖任何图像库。
+  function shrinkDataUrl(dataUrl, maxWidth){
+    return new Promise(function(resolve){
+      var im = new Image();
+      im.onload = function(){
+        if(!im.naturalWidth || im.naturalWidth <= maxWidth){ resolve(dataUrl); return; }
+        try{
+          var r = maxWidth / im.naturalWidth;
+          var c = document.createElement('canvas');
+          c.width = Math.round(im.naturalWidth * r);
+          c.height = Math.round(im.naturalHeight * r);
+          var ctx = c.getContext('2d');
+          ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);  // JPEG 没有透明通道，先铺白底
+          ctx.drawImage(im, 0, 0, c.width, c.height);
+          resolve(c.toDataURL('image/jpeg', 0.9));
+        }catch(e){ resolve(dataUrl); }   // 缩放失败就用原图，不能因此丢图
+      };
+      im.onerror = function(){ resolve(dataUrl); };
+      im.src = dataUrl;
+    });
+  }
+
+  // ① 先剥交互骨架，iframe/img 都先留着
+  function stripSkeleton(){
+    var clone = document.body.cloneNode(true);
+    // 页面 CSS 在 <head> 里，克隆 body 带不走 → 原型列截图会按 1200px 原图把表格撑爆、
+    // 描述列被挤成一行一个字。趁 clone 与实时 DOM 还一一对应，把实际显示宽度固化成内联样式。
+    var live = document.body.querySelectorAll('img'), copies = clone.querySelectorAll('img');
+    for(var i=0; i<live.length && i<copies.length; i++){
+      var w = Math.round(live[i].getBoundingClientRect().width);
+      if(w > 0){ copies[i].style.width = w + 'px'; copies[i].style.height = 'auto'; }
+      copies[i].style.maxWidth = '100%';
+    }
+    clone.querySelectorAll('.prototype-sidebar, .fab-group, .copy-all-fab, .copy-toast, .col-resizer, .row-resizer, .row-ctrl, .pm-anchor, .editable-table-remove, script, noscript').forEach(function(n){ n.remove(); });
+    clone.querySelectorAll('.editable-table-wrap').forEach(function(w){ var t=w.querySelector('table'); if(t) w.replaceWith(t); else w.remove(); });
+    return clone;
+  }
+
+  // ② 只扫 clone 里活下来的节点，逐个取 base64
+  async function collectMedia(clone){
+    var jobs = [];
+    clone.querySelectorAll('iframe[src]').forEach(function(el){
+      jobs.push({ el: el, src: el.getAttribute('src'), kind: 'frame' });
+    });
+    clone.querySelectorAll('img[src]').forEach(function(el){
+      var s = el.getAttribute('src');
+      if(s && !/^data:/i.test(s)) jobs.push({ el: el, src: s, kind: 'asset' });
+    });
+
+    var out = { ok:0, fail:0, serviceDown:false, jobs: jobs };
+    if(!jobs.length) return out;
+    if(typeof window.snapshotPrototypeViaServer !== 'function' || typeof window.inlineAssetViaServer !== 'function'){
+      out.serviceDown = true; out.fail = jobs.length; return out;
+    }
+
+    var srcs = [];
+    jobs.forEach(function(j){ if(srcs.indexOf(j.src) === -1) srcs.push(j.src); });
+
+    // 先把"服务在不在"一次性问清楚，再逐张取图。
+    // 别靠嗅探第一张的报错文案来判断服务死活——那既不准，又会让每张图都白等一遍探测。
+    // 这一步最慢：健康探测 8s + 唤起 launcher + 等浏览器冷启动最多 30s，实测服务确实没起时约 39s，
+    // 所以必须挂常驻 toast 说明在等什么，不能让用户对着不动的界面猜。
+    if(mediaCache.size < srcs.length){
+      showToast('正在唤起原型导出服务（首次启动较慢，最长约 40 秒）…', false, true);
+      try{
+        await window.ensureExportServerReady();
+      }catch(e){
+        console.warn('[copy-all] 导出服务不可用', e);
+        out.serviceDown = true; out.fail = srcs.length; return out;
+      }
+    }
+
+    for(var i=0;i<srcs.length;i++){
+      var src = srcs[i];
+      if(mediaCache.has(src)){ out.ok++; continue; }
+      showToast('正在生成图片 '+(i+1)+'/'+srcs.length+'…', false, true);
+      var kind = jobs.filter(function(j){ return j.src === src; })[0].kind;
+      try{
+        var data = kind === 'frame'
+          ? await window.snapshotPrototypeViaServer(src, {})
+          : await window.inlineAssetViaServer(src, {});
+        mediaCache.set(src, await shrinkDataUrl(data.dataUrl, MAX_IMG_WIDTH)); out.ok++;
+      }catch(e){
+        console.warn('[copy-all] 取图失败', src, e);
+        out.fail++;   // 单张失败不影响其余，最后由 toast 如实报数
+      }
+    }
+    return out;
+  }
+
+  // ③ 落图 + 清编辑痕迹 + 补排版
+  function finalizeClone(clone, jobs){
+    (jobs||[]).forEach(function(j){
+      var url = mediaCache.get(j.src);
+      if(j.kind === 'frame'){
+        if(!url){ j.el.remove(); return; }              // 原型取图失败 → 退回删除
+        var img = document.createElement('img');
+        img.src = url;
+        img.alt = j.el.getAttribute('title') || '原型预览';
+        img.style.cssText = 'max-width:100%;height:auto;border:1px solid #e5e3f5;border-radius:8px;';
+        j.el.replaceWith(img);
+      } else if(url){
+        j.el.setAttribute('src', url);                  // 截图内联失败 → 保留原样，由 toast 如实报数
+      }
+    });
+    clone.querySelectorAll('[contenteditable]').forEach(function(el){ el.removeAttribute('contenteditable'); });
+    ['data-changed','data-original','data-orig','data-pm-tracked'].forEach(function(a){ clone.querySelectorAll('['+a+']').forEach(function(el){ el.removeAttribute(a); }); });
+    clone.querySelectorAll('.edited-cell').forEach(function(el){ el.classList.remove('edited-cell'); });
+    clone.querySelectorAll('table').forEach(function(t){ t.style.borderCollapse='collapse'; t.style.width='100%'; });
+    clone.querySelectorAll('th,td').forEach(function(c){ c.style.border='1px solid #ccc'; c.style.padding='6px 10px'; c.style.verticalAlign='top'; });
+    clone.querySelectorAll('th').forEach(function(c){ if(!c.style.background) c.style.background='#f2f1f8'; });
+    clone.querySelectorAll('img').forEach(function(img){
+      try{ if(!/^data:/i.test(img.getAttribute('src')||'')) img.setAttribute('src', img.src); }catch(e){}
+    });
+    return clone;
+  }
+
+  function showToast(msg, err, sticky){
+    var t=document.querySelector('.copy-toast');
+    if(!t){ t=document.createElement('div'); t.className='copy-toast'; document.body.appendChild(t); }
+    t.textContent=msg; t.style.background= err? '#c0392b' : '#2a2459'; t.classList.add('show');
+    clearTimeout(showToast._t);
+    if(!sticky) showToast._t=setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  }
+
+  async function writeClipboard(html, text){
+    try{
+      if(navigator.clipboard && window.ClipboardItem){
+        await navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([html],{type:'text/html'}),
+          'text/plain': new Blob([text],{type:'text/plain'})
+        })]);
+        return true;
+      }
+      throw new Error('no async clipboard');
+    }catch(e){
+      var holder=document.createElement('div'); holder.setAttribute('contenteditable','true');
+      holder.style.cssText='position:fixed;left:-99999px;top:0;opacity:0;'; holder.innerHTML=html;
+      document.body.appendChild(holder);
+      var range=document.createRange(); range.selectNodeContents(holder);
+      var sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      var okc=document.execCommand('copy'); sel.removeAllRanges(); holder.remove();
+      if(!okc) throw new Error('execCommand 拒绝');
+      return true;
+    }
+  }
+
+  async function copyAllContent(){
+    try{
+      var clone = stripSkeleton();
+      var media = await collectMedia(clone);
+      finalizeClone(clone, media.jobs);
+      await writeClipboard('<meta charset="utf-8">'+clone.innerHTML, clone.innerText);
+      if(media.serviceDown)     showToast('导出服务未启动，已按纯文本复制（原型图缺失）', true);
+      else if(media.fail)       showToast('已复制全文，含 '+media.ok+' 张图，'+media.fail+' 张生成失败已跳过', true);
+      else if(media.ok)         showToast('已复制全文（含 '+media.ok+' 张图），可直接粘贴到钉钉/飞书/Word');
+      else                      showToast('已复制全文，可直接粘贴到钉钉/飞书/Word');
+    }catch(e){
+      showToast('复制失败，请手动全选复制：'+(e.message||e), true);
+    }
+  }
+  window.copyAllContent=copyAllContent;
+})();
+
+(function(){
+  function showSaveStatus(message, error){
+    var note=document.getElementById('saveNote');
+    note.textContent=message;
+    note.style.background=error?'#c0392b':'#292847';
+    note.classList.add('show');
+    clearTimeout(showSaveStatus._timer);
+    showSaveStatus._timer=setTimeout(function(){ note.classList.remove('show'); },2600);
+  }
+  async function notifySave(){
+    var name='纪念日新增弹窗-PRD.html';
+    var content='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+    if(typeof window.showSaveFilePicker==='function'){
+      try{
+        var handle=await window.showSaveFilePicker({suggestedName:name,types:[{description:'HTML 文档',accept:{'text/html':['.html']}}]});
+        var writable=await handle.createWritable();
+        await writable.write(content);
+        await writable.close();
+        showSaveStatus('已保存 PRD 文件');
+        return;
+      }catch(error){
+        if(error&&error.name==='AbortError') return;
+        console.warn('[prd-save] 文件句柄保存失败，改为下载副本',error);
+      }
+    }
+    try{
+      var blob=new Blob([content],{type:'text/html;charset=utf-8'});
+      var url=URL.createObjectURL(blob);
+      var link=document.createElement('a');
+      link.href=url;link.download=name;document.body.appendChild(link);link.click();link.remove();
+      setTimeout(function(){URL.revokeObjectURL(url);},0);
+      showSaveStatus('当前浏览器不支持直接覆盖，已下载 PRD 副本');
+    }catch(error){
+      showSaveStatus('保存失败，请手动另存页面：'+(error.message||error),true);
+    }
+  }
+  window.notifySave=notifySave;
+})();
+</script></body></html>

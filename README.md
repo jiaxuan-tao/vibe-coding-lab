@@ -32,6 +32,9 @@
 - [Web 交付风险评审 Skill](web-app-acceptance-skill/README.md)
   面向 Codex 的中文发布决策流程，以关键用户路径、实际证据、风险分级和未覆盖范围给出可发布、有条件发布或不建议发布的建议。
 
+- [产品经理 AI 工作流 Skill](pm-workflow-codex-skill/README.md)
+  串联需求洞察、PRD 与交互原型、功能验收和数据分析，支持双栏预览、带图复制与本地截图导出，附 TA说脱敏验证案例。
+
 - [PRD 需求决策评审 Skill](prd-decision-review-skill/README.md)
   面向 Codex 的中文需求决策流程，区分证据、假设与待确认事项，收敛 MVP 范围，并给出可进入设计、有条件进入或暂不建议推进的 Gate 结论。
 
@@ -58,7 +61,7 @@
 ## Repository Structure｜仓库结构 📂
 
 - 根目录项目文件夹
-  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`user-feedback-insight-skill/`、`computer-file-organizer-skill/`、`what-to-eat/` 和 `pool-chase-score/`。
+  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`pm-workflow-codex-skill/`、`user-feedback-insight-skill/`、`computer-file-organizer-skill/`、`what-to-eat/` 和 `pool-chase-score/`。
 
 - `projects/`
   用于维护项目目录说明和后续归档信息。
