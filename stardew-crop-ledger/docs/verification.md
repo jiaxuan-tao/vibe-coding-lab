@@ -20,3 +20,9 @@
 ## 限制
 
 主要浏览器自动化环境为 Chromium；未逐一实测 Safari、Firefox、所有移动浏览器和低端真机。网络离线时首次不能加载尚未缓存的网页；没有声明安装式PWA或完整离线保证。计算器是公开数据经济估算工具，不是游戏存档模拟。
+
+## 正式站点
+
+代码提交 `ce075f0` 的 [Pages 构建与部署](https://github.com/jiaxuan-tao/vibe-coding-lab/actions/runs/38676238895) 均成功。
+
+在 [正式地址](https://jiaxuan-tao.github.io/vibe-coding-lab/stardew-crop-ledger/) 实测通过：修改地块后重新计算、手机收益明细、大型后台预测完成、总览页面入口、既有 AI 复习工作台和 Skill 入口保留、无纯黑界面文字、本地素材与字体加载。该次浏览器检查未捕获脚本异常或 HTTP 资源错误。
