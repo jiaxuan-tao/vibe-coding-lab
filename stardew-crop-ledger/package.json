@@ -1,0 +1,12 @@
+{
+  "name": "stardew-crop-ledger",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 5188 --bind 127.0.0.1",
+    "test": "node --test tests/*.test.js",
+    "test:browser": "playwright test",
+    "build": "node scripts/build.js"
+  },
+  "devDependencies": { "@playwright/test": "1.61.1" }
+}

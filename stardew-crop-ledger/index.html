@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#775027">
+  <meta name="description" content="星露谷作物收益计算器，比较不同季节、肥料和加工方式下的利润，规划下一季的农场。">
+  <title>星露谷作物账本 · Stardew Crop Ledger</title>
+  <link rel="icon" href="assets/crops/blueberry.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="farm-app">
+    <header class="app-header">
+      <div class="title-sign"><img src="assets/crops/strawberry.png" alt=""><h1>星露谷作物账本</h1></div>
+      <button id="help" class="icon-button wood-button" title="计算口径与说明" aria-label="计算口径与说明" data-icon="settings"></button>
+    </header>
+    <nav id="seasons" class="seasons" aria-label="种植季节">
+      <button data-season="0" aria-pressed="false"><img src="assets/crops/bluejazz.png" alt="">春季</button>
+      <button data-season="1" aria-pressed="true"><img src="assets/crops/sunflower.png" alt="">夏季</button>
+      <button data-season="2" aria-pressed="false"><img src="assets/crops/pumpkin.png" alt="">秋季</button>
+      <button data-season="3" aria-pressed="false"><img src="assets/crops/powdermelon.png" alt="">冬季</button>
+      <button data-season="4" aria-pressed="false"><img src="assets/crops/ancientfruit.png" alt="">温室</button>
+    </nav>
+    <div class="ledger-frame">
+      <section class="conditions" aria-labelledby="conditions-title">
+        <div class="wood-heading"><img src="assets/crops/greenbean.png" alt=""><h2 id="conditions-title">种植条件</h2><button id="reset" class="icon-button" title="恢复默认设置" aria-label="恢复默认设置" data-icon="rotate-ccw"></button></div>
+        <form id="settings-form" novalidate>
+          <div class="basic-settings">
+            <label class="field" id="day-field"><span>当前日期</span><span class="stepper"><button type="button" data-step="current-day:-1" aria-label="前一天" title="前一天" data-icon="minus"></button><input id="current-day" type="number" min="1" max="28" value="1" aria-label="当前日期"><span class="unit">日</span><button type="button" data-step="current-day:1" aria-label="后一天" title="后一天" data-icon="plus"></button></span></label>
+            <label class="field" id="duration-field" hidden><span>计算天数</span><span class="input-unit"><input id="duration" type="number" min="1" max="1120" value="112"><span>天</span></span></label>
+            <label class="field"><span>耕地数量</span><span class="input-unit"><input id="planted" type="number" min="1" max="10000" value="60"><span>块</span></span></label>
+            <label class="field"><span>种子预算</span><span class="input-unit"><input id="budget" type="number" min="0" max="100000000" value="" placeholder="不限" aria-describedby="budget-note"><span>g</span></span></label>
+            <p class="field-note" id="budget-note">0 表示不限</p>
+            <div class="field selling-field"><label for="produce">出售方式</label><select id="produce"><option value="0">直接出售</option><option value="2">酿酒桶</option><option value="1">罐头瓶</option><option value="3">种子生产器</option><option value="4">脱水机</option><option value="5">磨坊</option></select></div>
+            <label class="field"><span>肥料</span><select id="fertilizer"><option value="0">不使用</option><option value="1">初级肥料</option><option value="2">高级肥料</option><option value="5">顶级肥料</option><option value="3">生长激素</option><option value="4">高级生长激素</option><option value="6">顶级生长激素</option></select></label>
+            <label class="field"><span>耕种等级</span><select id="level"></select></label>
+          </div>
+          <details id="advanced">
+            <summary>高级设置<span data-icon="chevron"></span></summary>
+            <div class="advanced-content">
+              <fieldset><legend>种子与成本</legend>
+                <div class="check-row"><label><input id="seed-pierre" type="checkbox" checked>皮埃尔</label><label><input id="seed-joja" type="checkbox" checked>Joja</label><label><input id="seed-special" type="checkbox" checked>特殊来源</label></div>
+                <label class="check"><input id="buy-seed" type="checkbox" checked>计入种子成本</label>
+                <label class="check"><input id="buy-fert" type="checkbox" checked>计入肥料成本</label>
+                <label id="fertilizer-source-field" class="field" hidden><span>激素购买处</span><select id="fertilizer-source"><option value="0">皮埃尔 · 150 g</option><option value="1">桑迪 · 80 g</option></select></label>
+                <label class="check"><input id="replant" type="checkbox">用种子生产器留种补种</label>
+                <label class="check"><input id="nextyear" type="checkbox">为下一年预留种子</label>
+                <label class="check" id="cross-field"><input id="cross-season" type="checkbox">连续计算到下一季</label>
+              </fieldset>
+              <fieldset id="processing-settings"><legend>加工方式</legend>
+                <label class="field" id="equipment-field"><span>设备数量</span><span class="input-unit"><input id="equipment" type="number" min="0" max="10000" value="0"><span>台</span></span></label>
+                <p class="field-note" id="equipment-note">0 表示不限；不模拟加工耗时</p>
+                <label class="check"><input id="sell-raw" type="checkbox" checked>无法加工的作物直接出售</label>
+                <label class="check" id="excess-field"><input id="sell-excess" type="checkbox" checked>剩余原料直接出售</label>
+                <label class="check" id="by-harvest-field"><input id="by-harvest" type="checkbox">脱水机按每次收获分别加工</label>
+                <label class="field" id="aging-field"><span>陈酿品质</span><select id="aging"><option value="0">不陈酿</option><option value="1">银星</option><option value="2">金星</option><option value="3">铱星</option></select></label>
+              </fieldset>
+              <fieldset><legend>技能与食物</legend>
+                <label class="check"><input id="tiller" type="checkbox">农耕人（耕种 5 级）</label>
+                <label class="field"><span>耕种职业</span><select id="profession"><option value="0">无</option><option value="1">农业学家</option><option value="2">工匠</option></select></label>
+                <label class="field"><span>采集等级</span><select id="foraging-level"></select></label>
+                <label class="check"><input id="gatherer" type="checkbox">收集者（采集 5 级）</label>
+                <label class="check"><input id="botanist" type="checkbox">植物学家（采集 10 级）</label>
+                <label class="field"><span>食物加成</span><select id="food"><option value="0">不使用</option><option value="1">枫糖棒 / 薯饼 · +1</option><option value="2">完整早餐 / 爆炒青椒 / 椰汁汤 · +2</option><option value="3">农夫午餐 · +3</option></select></label>
+              </fieldset>
+              <fieldset><legend>结果与预测</legend>
+                <label class="check"><input id="prediction" type="checkbox">随机预测品质与额外产量</label>
+                <button id="recalculate" type="button" class="small-button">重新预测</button>
+                <label class="check"><input id="extra" type="checkbox">展开品质与加工明细</label>
+                <label class="check"><input id="disable-links" type="checkbox">隐藏作物百科链接</label>
+              </fieldset>
+            </div>
+          </details>
+          <p id="input-message" class="input-message" role="status"></p>
+        </form>
+      </section>
+      <section class="profits" aria-labelledby="profits-title">
+        <div class="profits-toolbar"><h2 id="profits-title"><img src="assets/crops/gold.png" alt="">作物收益</h2><div class="view-tabs" aria-label="结果视图"><button data-view="chart" aria-pressed="true">排行</button><button data-view="table" aria-pressed="false">列表</button></div></div>
+        <div class="metric-tabs" aria-label="收益指标"><button data-metric="0" aria-pressed="true">总利润</button><button data-metric="1" aria-pressed="false">日均利润</button><button data-metric="2" aria-pressed="false">回报率</button><button data-metric="3" aria-pressed="false">日均回报率</button></div>
+        <div id="result-context" class="result-context"></div>
+        <div id="crop-results" class="crop-results" aria-live="polite"></div>
+        <div class="result-footer"><button id="show-all" class="text-button">查看全部作物</button><span id="result-count"></span></div>
+        <section id="crop-detail" class="crop-detail" aria-label="作物收益明细"></section>
+        <p class="model-note">收益为估算，不含加工与陈酿耗时。</p>
+      </section>
+    </div>
+    <footer class="app-footer"><span>Jiaxuan Tao</span><span>Stardew Valley 1.6.15</span></footer>
+  </main>
+  <dialog id="detail-dialog" class="detail-dialog"><div class="dialog-heading"><h2>收益明细</h2><button class="icon-button" data-close="detail-dialog" title="关闭收益明细" aria-label="关闭收益明细" data-icon="x"></button></div><div id="detail-sheet-content"></div></dialog>
+  <dialog id="help-dialog"><div class="dialog-heading"><h2>计算口径</h2><button class="icon-button" data-close="help-dialog" title="关闭说明" aria-label="关闭说明" data-icon="x"></button></div>
+    <div class="help-body"><h3>这本账怎么算？</h3><p>每种作物分别占满设置的耕地，按选定日期种植并及时浇水、收获与补种。排行比较的是不同方案，不是混种后的农场总收益。</p><p>净利润 = 销售收入 − 计入的种子与肥料成本。预算只限制首批种子的购买数量，不是所有补种费用的上限。</p><h3>哪些是估算？</h3><p>默认用期望品质与额外产量；随机预测会重新抽样，不对应你的存档随机种子。加工设备按批次限制，不计算实际加工速度；陈酿直接使用目标品质价格，不扣除陈酿天数。</p><p>跨季仅延长下一季仍可种植的作物。茶叶、野生种子和留种规则沿用计算模型。生长加速为近似计算，不逐阶段模拟游戏生长。顶级肥料与顶级生长激素按自制、成本 0 处理。</p><h3>数据与保存</h3><p>数据适配 Stardew Valley 1.6.15，不包括果树、蜂蜜、巨型作物、动物、模组和存档导入。设置保存在这台设备的浏览器；不会上传。</p><p>此工具为非官方玩家项目。第三方源码与素材说明见项目文档。</p></div>
+  </dialog>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

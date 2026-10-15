@@ -1,0 +1,3 @@
+# Keep upstream source snapshots and license bytes unchanged for hash checks.
+vendor/** -whitespace
+assets/fonts/** -whitespace
