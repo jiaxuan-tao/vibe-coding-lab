@@ -39,4 +39,6 @@
 - [x] Add user-facing README, source/third-party notices and verification record.
 - [x] Update root README, project index, showcase and Pages workflow without removing existing entries.
 - [x] Run Node tests, browser tests, production build and production-directory checks.
-- [ ] Review changes, commit only scoped files, push and confirm Pages deployment and live URL.
+- [x] Review changes, commit only scoped files, push and confirm Pages deployment and live URL.
+
+Published application revision: `04b23e3`. [Successful Pages run](https://github.com/jiaxuan-tao/vibe-coding-lab/actions/runs/38863039080). Live smoke checks: 15/15 passed; the showcase entry and application were also opened directly.
