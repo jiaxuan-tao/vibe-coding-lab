@@ -18,6 +18,7 @@
 - [`pool-chase-score/` Pool Chase Score｜台球追分计分台](../pool-chase-score/README.md)
 - [`ai-review-workspace/` AI 复习工作台](../ai-review-workspace/README.md)
 - [`stardew-crop-ledger/` Stardew Crop Ledger｜星露谷作物账本](../stardew-crop-ledger/README.md)
+- [`personal-workbench/` Personal Workbench｜个人工作台](../personal-workbench/README.md)
 
 ## Project Structure｜单个项目结构
 

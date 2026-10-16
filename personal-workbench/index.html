@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="个人日程、待办、工作记录、笔记与灵感的本地优先工作台。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://60s.viki.moe https://qt.gtimg.cn; object-src 'none'; base-uri 'self'; form-action 'self'">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="工作台">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>Personal Workbench｜个人工作台</title>
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/monochrome.css">
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="brand">
+      <span class="brand-logo">
+        <img src="icons/icon-192.png" width="28" height="28" alt="">
+      </span>
+      <span class="brand-name">个人工作台</span>
+    </div>
+    <nav id="nav" aria-label="主导航"></nav>
+    <div class="sidebar-foot">
+      <button id="saveChip" class="save-chip" type="button" title="数据备份与保存状态"></button>
+      <span class="author">Jiaxuan Tao</span>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header id="mobile-top">
+      <span class="brand-logo">
+        <img src="icons/icon-192.png" width="24" height="24" alt="">
+      </span>
+      <span class="brand-name">个人工作台</span>
+      <button id="saveChipM" class="save-chip" type="button" title="数据备份与保存状态"></button>
+    </header>
+    <div id="view" tabindex="-1"></div>
+  </main>
+
+  <nav id="tabbar" aria-label="移动端导航"></nav>
+</div>
+
+<div id="modal-root"></div>
+<div id="toast-root" role="status" aria-live="polite"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+export const CITIES = {
+  beijing:{name:'北京',latitude:39.90,longitude:116.41},
+  shanghai:{name:'上海',latitude:31.23,longitude:121.47},
+  guangzhou:{name:'广州',latitude:23.13,longitude:113.26},
+  shenzhen:{name:'深圳',latitude:22.54,longitude:114.06},
+  hangzhou:{name:'杭州',latitude:30.27,longitude:120.15},
+  chengdu:{name:'成都',latitude:30.57,longitude:104.07},
+  chongqing:{name:'重庆',latitude:29.56,longitude:106.55},
+  wuhan:{name:'武汉',latitude:30.59,longitude:114.31},
+  nanjing:{name:'南京',latitude:32.06,longitude:118.80},
+  xian:{name:'西安',latitude:34.34,longitude:108.94},
+  kunming:{name:'昆明',latitude:25.04,longitude:102.72},
+  changsha:{name:'长沙',latitude:28.23,longitude:112.94},
+  zhengzhou:{name:'郑州',latitude:34.75,longitude:113.62},
+  xiamen:{name:'厦门',latitude:24.48,longitude:118.09},
+  tianjin:{name:'天津',latitude:39.08,longitude:117.20},
+  hefei:{name:'合肥',latitude:31.82,longitude:117.23},
+};

@@ -60,12 +60,16 @@
   中文像素农场收益计算器，比较季节、肥料、职业和六种出售方式下的作物收益，并查看成本明细。
   [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/stardew-crop-ledger/)
 
+- [Personal Workbench 个人工作台](personal-workbench/README.md)
+  黑白灰配色的本地优先个人工作台，集中管理待办日程、工作记录、笔记、灵感与学习打卡，支持数据备份。
+  [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/personal-workbench/)
+
 ---
 
 ## Repository Structure｜仓库结构 📂
 
 - 根目录项目文件夹
-  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`pm-workflow-codex-skill/`、`user-feedback-insight-skill/`、`computer-file-organizer-skill/`、`what-to-eat/`、`pool-chase-score/`、`ai-review-workspace/` 和 `stardew-crop-ledger/`。
+  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`pm-workflow-codex-skill/`、`user-feedback-insight-skill/`、`computer-file-organizer-skill/`、`what-to-eat/`、`pool-chase-score/`、`ai-review-workspace/`、`stardew-crop-ledger/` 和 `personal-workbench/`。
 
 - `projects/`
   用于维护项目目录说明和后续归档信息。
