@@ -49,4 +49,7 @@ TARGET_URL=https://jiaxuan-tao.github.io/vibe-coding-lab/text-compare/ node scri
 
 ## 发布验证
 
-发布后记录 GitHub Actions 与线上冒烟结果；本地通过不等同于已经上线。
+- 发布提交：`dfa6b07d8aac24663a4bfc0bab53001f665a9bb1`。
+- [GitHub Actions 发布记录](https://github.com/jiaxuan-tao/vibe-coding-lab/actions/runs/39031753985)：完成，结果为 success。
+- [线上体验](https://jiaxuan-tao.github.io/vibe-coding-lab/text-compare/)：已执行 `scripts/smoke.mjs`，11 项通过，无浏览器异常。
+- 线上检查包含中文默认、中文差异、中英文切换保留输入、HTML 报告下载、分享确认与恢复、手机布局、Service Worker 作用域、许可证与署名、嵌套入口资源和离线重载。
