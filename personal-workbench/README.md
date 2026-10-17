@@ -64,11 +64,3 @@ npm run build
 生产静态文件输出到 `dist/`，可部署到 GitHub Pages 等静态托管。
 
 验收范围和已知限制见 [验证记录](docs/verification.md)。
-
-## 来源与改动
-
-基于 [TMJ97-10/workbench](https://github.com/TMJ97-10/workbench) 的布局和功能复刻，引用版本为 `cff3aacc2770d6ddee810528b276033c80217d76`。按照项目所有者提供的作者授权进行本项目改造；上游未提供通用开源许可证，不能据此推断任何人都获得了上游代码的再利用许可。
-
-本版主要改动：黑白灰主题、本地事务存储与备份校验、移除 GitHub 凭据及云同步、移动端导航、表单和富文本安全处理、离线缓存作用域、天气城市选择、数据缺失提示，以及测试和实验室部署集成。
-
-第三方说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。本项目与 OpenAI/Codex 无隶属关系。
