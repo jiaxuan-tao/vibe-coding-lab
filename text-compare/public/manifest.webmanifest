@@ -1,0 +1,28 @@
+{
+  "name": "文本对比台 Text Compare",
+  "short_name": "文本对比台",
+  "description": "本地文本、文档与图片对比工具 / Local text, document and image comparison",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#171717",
+  "theme_color": "#171717",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

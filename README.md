@@ -64,12 +64,16 @@
   黑白灰配色的本地优先个人工作台，集中管理待办日程、工作记录、笔记、灵感与学习打卡，支持数据备份。
   [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/personal-workbench/)
 
+- [Text Compare 文本对比台](text-compare/README.md)
+  支持中英文切换的本地内容对比工具，比较文本、JSON、Word、Excel、PDF 和图片，支持差异合并、本地记录与报告导出。
+  [在线体验](https://jiaxuan-tao.github.io/vibe-coding-lab/text-compare/)
+
 ---
 
 ## Repository Structure｜仓库结构 📂
 
 - 根目录项目文件夹
-  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`pm-workflow-codex-skill/`、`user-feedback-insight-skill/`、`computer-file-organizer-skill/`、`what-to-eat/`、`pool-chase-score/`、`ai-review-workspace/`、`stardew-crop-ledger/` 和 `personal-workbench/`。
+  每个可独立体验的产品或工具使用一个同级文件夹，例如 `vibe-coding-prompt-library/`、`prompt-manager/`、`poker-ev-coach/`、`quota-float-native/`、`ai-topic-collector-skill/`、`web-app-acceptance-skill/`、`prd-decision-review-skill/`、`pm-workflow-codex-skill/`、`user-feedback-insight-skill/`、`computer-file-organizer-skill/`、`what-to-eat/`、`pool-chase-score/`、`ai-review-workspace/`、`stardew-crop-ledger/`、`personal-workbench/` 和 `text-compare/`。
 
 - `projects/`
   用于维护项目目录说明和后续归档信息。

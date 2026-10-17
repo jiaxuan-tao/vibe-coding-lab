@@ -19,6 +19,7 @@
 - [`ai-review-workspace/` AI 复习工作台](../ai-review-workspace/README.md)
 - [`stardew-crop-ledger/` Stardew Crop Ledger｜星露谷作物账本](../stardew-crop-ledger/README.md)
 - [`personal-workbench/` Personal Workbench｜个人工作台](../personal-workbench/README.md)
+- [`text-compare/` Text Compare｜文本对比台](../text-compare/README.md)
 
 ## Project Structure｜单个项目结构
 

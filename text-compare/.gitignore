@@ -1,0 +1,10 @@
+node_modules/
+dist/
+dist-e2e/
+test-results/
+playwright-report/
+*.log
+
+.env
+.env.local
+.env.*.local

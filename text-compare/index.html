@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--seo:head--><title>文本对比台</title><!--/seo:head-->
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#171717" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./icon-48.png" sizes="48x48" type="image/png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <script>
+      // apply the saved theme before first paint
+      try {
+        var t = JSON.parse(localStorage.getItem("vcl.text-compare:prefs") || "{}").theme;
+        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+      // Share links carry the compared text after "#". Take it out of the address bar
+      // before anything else runs, so it never appears in history-based page tracking.
+      (function () {
+        function take() {
+          if (location.hash.indexOf("#v") !== 0) return false;
+          window.__shareHash = location.hash;
+          history.replaceState(null, "", location.pathname + location.search);
+          return true;
+        }
+        take();
+        function onNav() {
+          if (take()) dispatchEvent(new Event("sharelink"));
+        }
+        addEventListener("popstate", onNav);
+        addEventListener("hashchange", onNav);
+      })();
+    </script>
+  </head>
+  <body>
+    <!--seo:config--><!--/seo:config-->
+    <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Text Compare home">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="5" width="13" height="4" rx="1.5" class="bm-del" />
+          <rect x="9" y="15" width="13" height="4" rx="1.5" class="bm-add" />
+          <rect x="2" y="10.5" width="20" height="3" rx="1.5" class="bm-eq" />
+        </svg>
+        <span>Text Compare</span>
+      </a>
+
+      <nav class="toolbar" aria-label="Comparison tools">
+        <div class="seg" role="group" aria-label="Layout">
+          <button type="button" data-view="split">Side by side</button>
+          <button type="button" data-view="unified">Unified</button>
+          <button type="button" data-view="data" title="Compare JSON, CSV or TSV by structure">Data</button>
+        </div>
+
+        <label class="select-wrap" title="Syntax highlighting">
+          <span class="sr-only">Language</span>
+          <select id="lang"></select>
+        </label>
+
+        <div class="pop-anchor">
+          <button type="button" id="options-btn" class="btn">Options <span class="badge" id="options-badge" hidden></span></button>
+          <div class="popover options-panel" id="options-panel" hidden>
+            <fieldset>
+              <legend>What counts as a difference</legend>
+              <label class="check"><input type="checkbox" id="opt-case" /> Ignore upper/lower case</label>
+              <label class="check"><input type="checkbox" id="opt-blank" /> Ignore blank lines</label>
+              <label class="radio"><input type="radio" name="ws" value="none" /> Compare all whitespace</label>
+              <label class="radio"><input type="radio" name="ws" value="trailing" /> Ignore spaces at line ends</label>
+              <label class="radio"><input type="radio" name="ws" value="all" /> Ignore all whitespace</label>
+            </fieldset>
+            <fieldset>
+              <legend>Ignore text that matches</legend>
+              <div id="preset-list"></div>
+              <label class="field-label" for="opt-patterns">Your own patterns, one regular expression per line</label>
+              <textarea id="opt-patterns" rows="3" spellcheck="false" placeholder="e.g. build-\d+"></textarea>
+              <p class="field-error" id="patterns-error" hidden></p>
+            </fieldset>
+            <fieldset>
+              <legend>Highlight changes by</legend>
+              <label class="radio"><input type="radio" name="gran" value="word" /> Whole words</label>
+              <label class="radio"><input type="radio" name="gran" value="char" /> Single characters</label>
+              <label class="check"><input type="checkbox" id="opt-moves" /> Show moved blocks</label>
+            </fieldset>
+            <fieldset>
+              <legend>Display</legend>
+              <label class="check"><input type="checkbox" id="opt-prose" /> Document mode, for prose</label>
+              <label class="check"><input type="checkbox" id="opt-collapse" /> Hide unchanged lines</label>
+              <label class="check"><input type="checkbox" id="opt-wrap" /> Wrap long lines</label>
+              <label class="check"><input type="checkbox" id="opt-revert" /> Merge arrows copy right to left</label>
+            </fieldset>
+            <fieldset>
+              <legend>Privacy</legend>
+              <label class="check"><input type="checkbox" id="opt-history" /> Keep a history of my comparisons</label>
+              <label class="check"><input type="checkbox" id="opt-remember" /> Reopen my last text on this device</label>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="nav-group" role="group" aria-label="Changes">
+          <button type="button" id="prev" class="btn icon" title="Previous change (Shift+F7)" aria-label="Previous change">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 10 8 5.5l4.5 4.5" /></svg>
+          </button>
+          <span id="position" class="position">0 of 0</span>
+          <button type="button" id="next" class="btn icon" title="Next change (F7)" aria-label="Next change">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6" /></svg>
+          </button>
+        </div>
+
+        <div class="spacer"></div>
+
+        <button type="button" id="library-btn" class="btn" aria-controls="library" aria-expanded="false" aria-label="Library" title="Saved comparisons and history">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2.5h3v11H3zM7.5 2.5h3v11h-3zM11.6 3.2l2.6-.7 2.5 10.2" transform="translate(-1 0)" /></svg>
+          <span class="label">Library</span>
+        </button>
+        <button type="button" id="save-btn" class="btn" aria-label="Save" title="Save this comparison (Ctrl+S)">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h8v11L8 10.5l-4 3z" /></svg>
+          <span class="label">Save</span>
+        </button>
+
+        <div class="pop-anchor">
+          <button type="button" id="tools-btn" class="btn">Tools</button>
+          <div class="popover menu" id="tools-panel" hidden>
+            <button type="button" data-action="swap">Swap sides</button>
+            <button type="button" data-action="format-json">Format JSON and sort keys</button>
+            <button type="button" data-action="trim">Remove spaces at line ends</button>
+            <button type="button" data-action="sort-lines">Sort lines on both sides</button>
+            <hr />
+            <button type="button" data-action="clear">Clear both sides</button>
+          </div>
+        </div>
+
+        <div class="pop-anchor">
+          <button type="button" id="export-btn" class="btn">Export</button>
+          <div class="popover menu" id="export-panel" hidden>
+            <button type="button" data-action="report">Download report (HTML)</button>
+            <button type="button" data-action="print">Print or save report as PDF</button>
+            <hr />
+            <button type="button" data-action="copy-diff">Copy diff</button>
+            <button type="button" data-action="download-patch">Download .patch</button>
+            <button type="button" data-action="download-a">Download original</button>
+            <button type="button" data-action="download-b">Download changed</button>
+          </div>
+        </div>
+
+        <button type="button" id="share" class="btn primary">Copy link</button>
+
+        <label class="locale-picker"><span class="sr-only">Interface language</span><select id="ui-locale" aria-label="Interface language" data-no-translate><option value="zh-CN">中文</option><option value="en">EN</option></select></label>
+
+        <button type="button" id="theme" class="btn icon" aria-label="Theme">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" /><path d="M8 2.5v11a5.5 5.5 0 0 0 0-11z" class="fill" /></svg>
+        </button>
+        <button type="button" id="help" class="btn icon" title="Shortcuts and about (?)" aria-label="Help">?</button>
+      </nav>
+    </header>
+
+    <section class="summary" id="summary" aria-live="polite"></section>
+
+    <main class="workspace" id="workspace">
+      <div class="pane-heads" id="pane-heads">
+        <div class="pane-head" data-side="a">
+          <input class="name" id="name-a" value="" placeholder="Original" aria-label="Original name" spellcheck="false" />
+          <span class="meta" id="meta-a"></span>
+          <button type="button" class="link" data-open="a">Open file</button>
+          <button type="button" class="link" data-paste="a">Paste</button>
+          <button type="button" class="link" data-clear="a">Clear</button>
+        </div>
+        <div class="pane-head" data-side="b">
+          <input class="name" id="name-b" value="" placeholder="Changed" aria-label="Changed name" spellcheck="false" />
+          <span class="meta" id="meta-b"></span>
+          <button type="button" class="link" data-open="b">Open file</button>
+          <button type="button" class="link" data-paste="b">Paste</button>
+          <button type="button" class="link" data-clear="b">Clear</button>
+        </div>
+      </div>
+      <section class="data-panel" id="data-panel" hidden aria-label="Structured comparison"></section>
+      <section class="image-panel" id="image-panel" hidden aria-label="Image comparison">
+        <div class="img-toolbar">
+          <div class="seg" role="group" aria-label="Image view">
+            <button type="button" data-img-mode="side">Side by side</button>
+            <button type="button" data-img-mode="slider">Slider</button>
+            <button type="button" data-img-mode="onion">Overlay</button>
+            <button type="button" data-img-mode="diff">Difference</button>
+          </div>
+          <label class="opacity" id="opacity-wrap" hidden>Changed image <input type="range" id="img-opacity" min="0" max="100" value="50" /></label>
+          <span class="img-info" id="img-info"></span>
+          <button type="button" class="btn" id="img-close">Back to text</button>
+        </div>
+        <div class="img-stage" id="img-stage"></div>
+      </section>
+      <div class="editor-row" id="editor-row">
+        <div id="editor" class="editor-host"></div>
+        <div id="changemap" class="changemap" aria-label="Change map"></div>
+      </div>
+      <div class="drop-overlay" id="drop-overlay" hidden>
+        <div class="drop-half" data-side="a">Drop to open as original</div>
+        <div class="drop-half" data-side="b">Drop to open as changed</div>
+      </div>
+      <input type="file" id="file-a" hidden />
+      <input type="file" id="file-b" hidden />
+    </main>
+    <footer class="site-footer">
+      <a href="../">Vibe Coding Lab</a>
+      <a href="https://github.com/jiaxuan-tao/vibe-coding-lab/tree/main/text-compare" target="_blank" rel="noopener">Source code</a>
+      <span>Made by <a href="https://jamesclaypatton.com" target="_blank" rel="noopener">James Patton</a></span>
+      <span class="license-label">AGPL-3.0</span>
+    </footer>
+    </div>
+
+    <dialog id="help-dialog" aria-labelledby="help-title">
+      <form method="dialog" class="dialog-body">
+        <h2 id="help-title">Text Compare</h2>
+        <p>
+          Compare two texts and see exactly what changed. The comparison runs in your browser, and this site has no ads.
+        </p>
+        <h3>Privacy</h3>
+        <ul>
+          <li>Text you paste and files you open (Word, Excel, PDF, images) are read in your browser. Comparing never sends them anywhere.</li>
+          <li>History and saves stay in this browser. You can turn history off above, under Options.</li>
+          <li>Copy link puts the text inside the link itself, in the part after the #, which is never sent to a server.</li>
+          <li>There are no accounts, no analytics and no tracking.</li>
+        </ul>
+        <h3>Keyboard</h3>
+        <dl class="keys">
+          <dt><kbd>F7</kbd> or <kbd>Alt</kbd> <kbd>↓</kbd></dt><dd>Next change</dd>
+          <dt><kbd>Shift</kbd> <kbd>F7</kbd> or <kbd>Alt</kbd> <kbd>↑</kbd></dt><dd>Previous change</dd>
+          <dt><kbd>Ctrl</kbd> <kbd>F</kbd></dt><dd>Find and replace in a side</dd>
+          <dt><kbd>Ctrl</kbd> <kbd>Z</kbd></dt><dd>Undo an edit or merge</dd>
+          <dt><kbd>Ctrl</kbd> <kbd>S</kbd></dt><dd>Save the comparison to your library</dd>
+          <dt><kbd>?</kbd></dt><dd>Show this help</dd>
+        </dl>
+        <h3>Tips</h3>
+        <ul>
+          <li>Save a comparison with <kbd>Ctrl</kbd> <kbd>S</kbd> and find it later in the Library, along with your recent history.</li>
+          <li>Drop two files at once to compare them straight away. Word, Excel, PDF and image files work too.</li>
+          <li>Blocks that moved are shown in violet with a tag that jumps to where they went.</li>
+          <li>The Data tab compares JSON and CSV by structure, so reordered keys or rows don't count as changes.</li>
+          <li>Export a report to send someone, or print it as a PDF redline.</li>
+          <li>Both sides are editable. Use the arrows between them to copy a block across.</li>
+          <li>Options can ignore case, whitespace and blank lines.</li>
+        </ul>
+        <p class="fine">AGPL-3.0 · Made by <a href="https://jamesclaypatton.com" target="_blank" rel="noopener">James Patton</a> · <a href="https://github.com/jiaxuan-tao/vibe-coding-lab/tree/main/text-compare" target="_blank" rel="noopener">Source code</a></p>
+        <div class="dialog-actions"><button class="btn primary" value="close">Close</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="share-dialog" aria-labelledby="share-title">
+      <form method="dialog" class="dialog-body">
+        <h2 id="share-title">Share comparison</h2>
+        <p>This link contains the full text and filenames, not encrypted. Anyone with it can read them. Do not share confidential content.</p>
+        <div class="dialog-actions"><button class="btn" value="cancel">Cancel</button><button class="btn primary" value="confirm">Copy share link</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="copy-dialog" aria-labelledby="copy-title">
+      <form method="dialog" class="dialog-body">
+        <h2 id="copy-title">Copy this</h2>
+        <p>Your browser blocked automatic copying. Select the text below and copy it.</p>
+        <textarea id="copy-text" readonly rows="6"></textarea>
+        <div class="dialog-actions"><button class="btn primary" value="close">Done</button></div>
+      </form>
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
