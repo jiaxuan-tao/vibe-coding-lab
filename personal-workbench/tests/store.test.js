@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createStore, store, StorageWriteError, STORAGE_KEY } from '../js/store.js';
 import { createEmptyData, parseBackup, serializeBackup } from '../js/data.js';
+import { createDemoData, alignDemoDates } from '../js/demo.js';
 
 function storageWith(entries = {}) {
   const values = new Map(Object.entries(entries));
@@ -18,6 +19,57 @@ function storageWith(entries = {}) {
 }
 
 function addTodo(d) { d.todos.push({ id: 't1', title: 'Task', done: false, priority: 'mid', date: '', createdAt: 1 }); }
+
+test('a configured demo store reads and writes only its own key, leaving personal bytes unchanged', () => {
+  const key = 'vcl.personal-workbench.demo.v1';
+  const personal = '  {"settings":{"displayName":"私人空间"}}\n';
+  const storage = storageWith({ [STORAGE_KEY]: personal });
+  const initialData = createEmptyData(); addTodo(initialData);
+  const local = createStore({ storage, storageKey: key, initialData });
+  assert.equal(local.data.todos.length, 1);
+  assert.deepEqual(storage.reads, [key]);
+  assert.equal(storage.writes.length, 0);
+  local.update(d => { d.todos[0].done = true; });
+  assert.deepEqual(storage.writes.map(([k]) => k), [key]);
+  assert.equal(storage.raw(), personal);
+  const reloaded = createStore({ storage, storageKey: key, initialData });
+  assert.equal(reloaded.data.todos[0].done, true);
+  reloaded.importBackup('{}');
+  assert.equal(storage.raw(), personal);
+});
+
+test('prepareData adapts loaded demo content without startup writes or bypassing conflict checks', () => {
+  const key = 'vcl.personal-workbench.demo.v1';
+  const storage = storageWith({ [key]: '{}' });
+  const local = createStore({ storage, storageKey: key, prepareData: d => { if (!d.todos.length) addTodo(d); return d; } });
+  assert.equal(local.data.todos.length, 1);
+  assert.equal(storage.writes.length, 0);
+  storage.setItem(key, '{"settings":{"displayName":"其他页面"}}');
+  assert.throws(() => local.update(() => {}), StorageWriteError);
+});
+
+test('a page editing across midnight aligns existing demo records before adding newly dated records', () => {
+  let day = '2026-10-31';
+  const storage = storageWith();
+  const local = createStore({ storage, storageKey: 'demo', initialData: createDemoData(day), prepareData: d => alignDemoDates(d, day) });
+  day = '2026-11-01';
+  local.update(d => {
+    d.todos.push({ id: 'new-day', title: '跨日后新增', date: day });
+    d.work.plans.push({ id: 'new-month', title: '跨月后新增', month: '2026-11' });
+  });
+  assert.equal(local.data.meta.device, 'demo-v1:2026-11-01');
+  const reloaded = createStore({ storage, storageKey: 'demo', prepareData: d => alignDemoDates(d, day) });
+  assert.equal(reloaded.data.todos.find(t => t.id === 'new-day').date, day);
+  assert.equal(reloaded.data.work.plans.find(t => t.id === 'new-month').month, '2026-11');
+});
+
+test('old demo backups align at import time, not on a later reload', () => {
+  const local = createStore({ storage: storageWith(), storageKey: 'demo', prepareData: d => alignDemoDates(d, '2026-11-01') });
+  local.importBackup(serializeBackup(createDemoData('2026-10-29')));
+  assert.equal(local.data.meta.device, 'demo-v1:2026-11-01');
+  assert.ok(local.data.todos.some(t => t.date === '2026-11-01'));
+  assert.ok(local.data.work.plans.some(t => t.month === '2026-11'));
+});
 
 test('singleton imports without browser globals and reports unavailable storage honestly', () => {
   assert.ok(store.data);

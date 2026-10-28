@@ -1,6 +1,6 @@
 // ============ 记账理财 ============
 import { el, icon, formModal, confirmBox, emptyState, viewHead, cardTitle, todayStr, fmtMoney, toast } from '../util.js';
-import { store } from '../store.js';
+import { store, isDemo } from '../store.js';
 import { donutChart, barChart } from '../charts.js';
 
 const OUT_CATS = ['餐饮', '交通', '购物', '居家', '娱乐', '医疗', '教育', '其他'];
@@ -103,4 +103,5 @@ export function render(root) {
                 }, icon('trash', 14))))))))
         : emptyState('coin', '还没有任何收支记录', '点右上角「+ 记一笔」，今天就开始记账'))
   );
+  if (isDemo) root.querySelector('.view-head')?.after(el('p', { class: 'module-notice' }, '模拟收支 · 非个人真实账目'));
 }

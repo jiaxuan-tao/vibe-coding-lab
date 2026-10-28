@@ -1,8 +1,9 @@
 // ============ 综合信息面板（所选城市天气 / 热榜新闻 / 快捷网址） ============
 import { el, icon, viewHead, cardTitle, fmtHM } from '../util.js';
 import { safeUrl } from '../validation.js';
-import { store } from '../store.js';
+import { store, isDemo } from '../store.js';
 import { CITIES } from '../weather.js';
+import { publicSnapshot } from '../public-snapshot.js';
 
 // ---- 天气代码映射（WMO weathercode）----
 function weatherInfo(code) {
@@ -126,7 +127,47 @@ const QUICK_LINKS = [
   { name: '抖音', url: 'https://www.douyin.com', icon: '🎵', bg: 'rgba(244,63,94,.12)' },
 ];
 
+function renderSnapshot(root) {
+  const { weather, articles, collectedOn } = publicSnapshot;
+  const { current, daily } = weather.raw;
+  const [description, symbol] = weatherInfo(current.weather_code);
+  root.append(
+    viewHead('信息面板', '公开资料与产品观察'),
+    el('div', { class: 'grid grid-2' },
+      el('section', { class: 'card' }, cardTitle('cloud', '武汉 · 天气快照'),
+        el('div', { class: 'weather-now' }, el('span', { class: 'ic' }, symbol),
+          el('div', {}, el('div', { class: 'tp num' }, `${current.temperature_2m}°`), el('div', { class: 'muted' }, description)),
+          el('div', { class: 'tiny muted' }, el('div', {}, `湿度 ${current.relative_humidity_2m}%`), el('div', {}, `风速 ${current.wind_speed_10m} km/h`))),
+        el('div', { class: 'forecast' }, daily.time.map((date, i) => {
+          const [text, symbol] = weatherInfo(daily.weather_code[i]);
+          return el('div', { class: 'fc' }, el('div', { class: 'muted' }, date.slice(5).replace('-', '/')),
+            el('div', { style: 'font-size:20px;margin:4px 0' }, symbol), el('div', { class: 'tiny muted' }, text),
+            el('div', { class: 'num' }, `${daily.temperature_2m_min[i]}° / ${daily.temperature_2m_max[i]}°`));
+        })),
+        el('div', { class: 'snapshot-meta', style: 'margin-top:14px' },
+          el('div', {}, `模型数据时间：${current.time.replace('T', ' ')} · 北京时间`),
+          el('div', {}, `采集：${weather.collectedOn} · 非实时 · 未来日期为预报`),
+          el('a', { href: weather.sourceUrl, target: '_blank', rel: 'noopener noreferrer' }, '来源：Open-Meteo'))),
+      el('section', { class: 'card' }, cardTitle('note', '阅读关注'),
+        el('h2', { class: 'reading-focus-title' }, '从能力发布，到可交付的工作流'),
+        el('div', { class: 'reading-focus-list' },
+          el('div', {}, el('span', { class: 'tag' }, '协作'), el('span', {}, '自动化归属谁，离队后谁接手？')),
+          el('div', {}, el('span', { class: 'tag' }, '权限'), el('span', {}, '哪些步骤自动继续，哪些必须确认？')),
+          el('div', {}, el('span', { class: 'tag' }, '评测'), el('span', {}, '工具参数、失败恢复是否可复现？'))),
+        el('div', { class: 'snapshot-meta' }, `${articles.length} 条官方资料 · ${collectedOn} 采集`),
+        el('div', { class: 'tiny muted', style: 'margin-top:6px' }, '下方“观察”是独立解读，不是官方结论。'))),
+    el('section', { class: 'snapshot-articles' },
+      el('div', { class: 'snapshot-heading' }, el('h2', {}, 'AI 资讯 · 资料快照'), el('span', { class: 'tiny muted' }, '原始发布日期 · 非实时更新')),
+      articles.map(a => el('article', { class: 'snapshot-article' },
+        el('div', { class: 'tiny muted' }, `${a.category} · ${a.source} · 发布于 ${a.publishedOn}`),
+        el('h3', {}, el('a', { href: safeUrl(a.url), target: '_blank', rel: 'noopener noreferrer' }, a.title, ' ↗')),
+        el('p', {}, a.summary),
+        el('p', { class: 'snapshot-observation' }, el('strong', {}, '观察 · '), a.observation)))),
+  );
+}
+
 export function render(root) {
+  if (isDemo) return renderSnapshot(root);
   const weatherBox = el('div', {});
   const newsBox = el('div', {});
   root.append(

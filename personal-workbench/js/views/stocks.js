@@ -1,7 +1,7 @@
 // ============ 股票记录（交易 / 持仓 / 自选 / 投资笔记） ============
 // 盈亏以正负号和文字区分，外观沿用全局黑白主题。
 import { el, icon, formModal, confirmBox, emptyState, viewHead, cardTitle, todayStr, fmtMoney, fmtPct, fmtDateTime, toast, richToHtml } from '../util.js';
-import { store } from '../store.js';
+import { store, isDemo } from '../store.js';
 import { fetchQuotes, normCode } from '../quotes.js';
 
 let tab = 'trades';
@@ -116,7 +116,7 @@ async function renderPositions(box) {
       el('div', { class: 'it' }, el('div', { class: 'lb' }, '持仓成本'), el('div', { class: 'vl num' }, fmtMoney(totalCost))),
       el('div', { style: 'margin-left:auto;display:flex;align-items:center;gap:10px' },
         offline ? el('span', { class: 'offline-badge' }, store.data.settings.quotesEnabled?'行情不可用 · 有缓存时显示缓存':'行情查询未开启') : null,
-        el('button', { class: 'btn btn-sm', onclick: () => renderPositions(box) }, icon('refresh', 14), '刷新'))),
+        el('button', { class: 'btn btn-sm', onclick: () => renderPositions(box) }, icon('refresh', 14), isDemo ? '重新计算' : '刷新'))),
     el('div', { class: 'table-wrap' }, el('table', { class: 'table' },
       el('thead', {}, el('tr', {}, ['代码 / 名称', '持仓', '成本价', '现价', '浮动盈亏', '盈亏%', '已实现'].map(h => el('th', {}, h)))),
       el('tbody', {}, positions.map(p => {
@@ -163,8 +163,8 @@ async function refreshWatch(box, { silent } = {}) {
   box.append(
     el('div', { style: 'display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap' },
       el('button', { class: 'btn btn-primary btn-sm', onclick: watchModal }, '+ 加自选'),
-      el('button', { class: 'btn btn-sm', onclick: () => refreshWatch(box) }, icon('refresh', 14), '刷新'),
-      el('span', { class: 'tiny muted' }, '每 30 秒自动刷新（页面不可见时暂停）'),
+      el('button', { class: 'btn btn-sm', onclick: () => refreshWatch(box) }, icon('refresh', 14), isDemo ? '重新计算' : '刷新'),
+      el('span', { class: 'tiny muted' }, isDemo ? '固定模拟参考价 · 非市场行情' : '每 30 秒自动刷新（页面不可见时暂停）'),
       r.offline ? el('span', { class: 'offline-badge' }, store.data.settings.quotesEnabled?'行情不可用 · 有缓存时显示缓存':'行情查询未开启') : null),
     el('div', { class: 'table-wrap' }, el('table', { class: 'table' },
       el('thead', {}, el('tr', {}, ['名称', '代码', '现价', '涨跌幅', '涨跌额', '最高', '最低', '成交量', ''].map(h => el('th', {}, h)))),
@@ -238,6 +238,7 @@ export function render(root) {
   const content = el('div', {});
   root.append(
     viewHead('股票记录', '交易流水 · 持仓盈亏 · 自选行情 · 投资笔记'),
+    isDemo ? el('p', { class: 'module-notice' }, '模拟交易与参考价 · 非真实资产或市场行情 · 不构成投资建议') : null,
     el('div', { class: 'tabs stock-tabs' },
       ...[['trades', '交易记录'], ['positions', '持仓盈亏'], ['watch', '自选股行情'], ['notes', '投资笔记']].map(([k, label]) =>
         el('button', {
@@ -260,6 +261,7 @@ export function render(root) {
   }
   function startPolling() {
     stopPolling();
+    if (isDemo) return;
     timer = setInterval(() => { if (!document.hidden) refreshWatch(content, { silent: true }); }, 30000);
   }
 

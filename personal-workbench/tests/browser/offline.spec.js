@@ -43,3 +43,28 @@ test('offline: local workflows survive reload and activation preserves other app
   expect(await page.evaluate(()=>caches.has('vcl-personal-workbench-obsolete-fixture'))).toBe(false);
   expect(errors).toEqual([]);
 });
+
+test('offline demo: query-mode entry, data edits and public snapshots survive complete network loss', async ({ page, context }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('./?demo=1');
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) await new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true }));
+  });
+  await expect(page.locator('#view')).toContainText('知识库');
+  await context.setOffline(true);
+  await page.goto('./?demo=1#/info');
+  await expect(page.locator('#view')).toContainText('武汉');
+  await expect(page.locator('.snapshot-article')).toHaveCount(5);
+  await page.goto('./?demo=1#/todos');
+  const row = page.locator('.todo-item').filter({ hasText: '对照评测集复查知识库回答引用' });
+  await row.getByRole('button', { name: '完成', exact: true }).click();
+  await page.reload();
+  await expect(row).toHaveClass(/done/);
+  await page.getByRole('button', { name: '退出演示', exact: true }).click();
+  await expect(page.locator('#workspace-bar')).toContainText('个人空间');
+  await page.getByRole('button', { name: '体验演示', exact: true }).click();
+  await expect(page.locator('#view')).toContainText('知识库');
+  expect(errors).toEqual([]);
+});

@@ -1,5 +1,6 @@
 // Public quote responses are parsed as data, never executed as remote scripts.
-import { store } from './store.js';
+import { store, isDemo } from './store.js';
+import { DEMO_QUOTES } from './demo.js';
 // 用法：fetchQuotes(['sh600519','hk00700','usAAPL']) -> { quotes: {code: quote|null}, offline: bool }
 // 真实数据格式（2026-09 实测）：
 //   window.v_<code> 的值就是 ~ 分隔的内容本体，不含 v_="..." 包装
@@ -83,6 +84,7 @@ export function fetchQuotes(codes) {
     return c.toLowerCase();
   }))];
   if (!uniq.length) return Promise.resolve({ quotes: {}, offline: false });
+  if (isDemo) return Promise.resolve({ quotes: Object.fromEntries(uniq.map(code => [code, DEMO_QUOTES[code] ? { ...DEMO_QUOTES[code] } : null])), offline: false, simulated: true });
 
   return new Promise(resolve => {
     const cache = readCache();

@@ -1,4 +1,5 @@
 import { createEmptyData, normalizeData, parseBackup, serializeBackup } from './data.js';
+import { DEMO_STORAGE_KEY, isDemoLocation, createDemoData, alignDemoDates } from './demo.js';
 
 export const STORAGE_KEY = 'vcl.personal-workbench.data.v1';
 
@@ -25,8 +26,9 @@ function notify(listeners, value) {
 }
 
 export function createStore(options = {}) {
+  const storageKey = options.storageKey ?? STORAGE_KEY;
   let storage;
-  let data = freeze(createEmptyData());
+  let data = freeze(normalizeData(options.initialData ?? createEmptyData()));
   let loadError = null;
   let rawLocalData = null;
   // undefined means no successful read; null means the key was confirmed absent.
@@ -42,9 +44,12 @@ export function createStore(options = {}) {
       throw new Error('本地存储不可用。');
     }
     // Keep the initial bytes even after recovery, so they can be exported verbatim.
-    rawLocalData = storage.getItem(STORAGE_KEY);
+    rawLocalData = storage.getItem(storageKey);
     lastSeenRaw = rawLocalData;
-    if (rawLocalData !== null) data = freeze(parseBackup(rawLocalData));
+    if (rawLocalData !== null) {
+      const parsed = parseBackup(rawLocalData);
+      data = freeze(normalizeData(options.prepareData ? options.prepareData(parsed) : parsed));
+    }
   } catch (error) {
     loadError = error instanceof Error ? error : new Error('本地存储读取失败。', { cause: error });
     status = Object.freeze({
@@ -76,10 +81,10 @@ export function createStore(options = {}) {
       }
       // Optimistic check only: localStorage has no atomic compare-and-set, so a
       // simultaneous writer can still interleave between this read and setItem.
-      if (storage.getItem(STORAGE_KEY) !== expectedRaw) {
+      if (storage.getItem(storageKey) !== expectedRaw) {
         throw new StorageWriteError('本地数据已在其他页面或操作中更新，已阻止覆盖。请先保留当前未保存内容，再刷新页面读取最新数据后重试。');
       }
-      storage.setItem(STORAGE_KEY, serialized);
+      storage.setItem(storageKey, serialized);
     } catch (cause) {
       const error = cause instanceof StorageWriteError ? cause : new StorageWriteError(undefined, { cause });
       setStatus('error', error.message);
@@ -109,7 +114,7 @@ export function createStore(options = {}) {
       }
       if (typeof mutator !== 'function') throw new TypeError('Expected a synchronous mutator function.');
       const expectedRaw = lastSeenRaw;
-      const draft = normalizeData(data);
+      const draft = normalizeData(options.prepareData ? options.prepareData(data) : data);
       const result = mutator(draft);
       if (result && typeof result.then === 'function') {
         Promise.resolve(result).catch(() => {});
@@ -120,10 +125,16 @@ export function createStore(options = {}) {
     },
     importBackup(text) {
       const expectedRaw = lastSeenRaw;
-      return commit(parseBackup(text), 'import', expectedRaw);
+      const parsed = parseBackup(text);
+      return commit(options.prepareData ? options.prepareData(parsed) : parsed, 'import', expectedRaw);
     },
     exportBackup() { return serializeBackup(data); },
   };
 }
 
-export const store = createStore();
+export const isDemo = isDemoLocation(globalThis.location);
+export const store = createStore(isDemo ? {
+  storageKey: DEMO_STORAGE_KEY,
+  initialData: createDemoData(),
+  prepareData: alignDemoDates,
+} : {});

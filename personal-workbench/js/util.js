@@ -1,5 +1,10 @@
 // ============ 通用工具 ============
 import { validateNumber, isValidDate } from './validation.js';
+import { isDemoLocation } from './demo.js';
+
+export const THEME_STORAGE_KEY = isDemoLocation(globalThis.location)
+  ? 'vcl.personal-workbench.demo.theme'
+  : 'vcl.personal-workbench.theme';
 
 export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -298,7 +303,7 @@ export function setTheme(id) {
   if (!['light', 'dark'].includes(id)) id = 'light';
   document.documentElement.dataset.theme = id;
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', id === 'dark' ? '#212121' : '#ffffff');
-  try { localStorage.setItem('vcl.personal-workbench.theme', id); } catch {}
+  try { localStorage.setItem(THEME_STORAGE_KEY, id); } catch {}
 }
 
 // ==================== 富文本：字体颜色 + 段落底色 ====================

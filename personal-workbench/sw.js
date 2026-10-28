@@ -1,10 +1,11 @@
 const PREFIX = 'vcl-personal-workbench-';
-const CACHE = PREFIX + 'v1';
+const CACHE = PREFIX + 'demo-v2';
 const scopePath = new URL('./', self.location.href).pathname;
 const SHELL = [
   './','./index.html','./manifest.webmanifest','./css/style.css','./css/monochrome.css',
   './js/app.js','./js/util.js','./js/validation.js','./js/data.js','./js/store.js','./js/weather.js',
   './js/quotes.js','./js/charts.js','./js/excel.js','./vendor/xlsx.full.min.js',
+  './js/demo.js','./js/public-snapshot.js',
   ...['ai','dashboard','ideas','info','learning','ledger','notes','settings','stocks','todos','work'].map(name=>'./js/views/'+name+'.js'),
   './icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png',
 ];

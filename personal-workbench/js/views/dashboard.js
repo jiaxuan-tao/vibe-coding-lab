@@ -1,6 +1,7 @@
 // ============ 首页 Dashboard ============
-import { el, icon, viewHead, todayStr, thisWeekDates, fmtMoney, fmtPct, WEEK_CN, emptyState } from '../util.js';
-import { store } from '../store.js';
+import { el, icon, cardTitle, todayStr, thisWeekDates, fmtMoney, fmtPct, WEEK_CN } from '../util.js';
+import { store, isDemo } from '../store.js';
+import { publicSnapshot } from '../public-snapshot.js';
 import { fetchQuotes } from '../quotes.js';
 import { calcPositions } from './stocks.js';
 
@@ -32,7 +33,8 @@ function greet() {
 function todayCard() {
   const d = store.data;
   const today = todayStr();
-  const todos = d.todos.filter(t => !t.done && (t.date === today || !t.date)).slice(0, 5);
+  const pending = d.todos.filter(t => !t.done && (t.date === today || !t.date));
+  const todos = pending.slice(0, 5);
   const events = d.events.filter(e => e.date === today);
   const body = el('div', { class: 'focus-rows' });
   if (!todos.length && !events.length) {
@@ -46,9 +48,33 @@ function todayCard() {
   return el('div', { class: 'card hoverable focus-card', onclick: () => go('todos'), style: 'cursor:pointer' },
     el('div', { class: 'card-title' }, icon('todo', 17), '今日概览', el('span', { class: 'right tiny muted' }, '管理 →')),
     el('div', { style: 'display:flex;gap:22px' },
-      el('div', {}, el('div', { class: 'big num', style: 'color:var(--accent)' }, String(todos.length)), el('div', { class: 'tiny muted' }, '待办事项')),
+      el('div', {}, el('div', { class: 'big num', 'data-testid': 'today-todos', style: 'color:var(--accent)' }, String(pending.length)), el('div', { class: 'tiny muted' }, '待办事项')),
       el('div', {}, el('div', { class: 'big num', style: 'color:var(--accent2)' }, String(events.length)), el('div', { class: 'tiny muted' }, '今日日程'))),
     body);
+}
+
+function projectCard() {
+  const plans = store.data.work.plans.filter(p => p.month === todayStr().slice(0, 7));
+  const completed = plans.filter(p => p.done).length;
+  const progress = plans.length ? Math.round(completed / plans.length * 100) : 0;
+  return el('div', { class: 'card focus-card' },
+    cardTitle('briefcase', '本月项目', el('button', { class: 'icon-btn', title: '查看工作计划', onclick: () => go('work') }, icon('link', 14))),
+    el('div', { class: 'project-name' }, '知识库问答助手'),
+    el('div', { class: 'project-progress' }, el('span', { class: 'big num', 'data-testid': 'project-progress' }, `${progress}%`), el('span', { class: 'tiny muted' }, `${completed} / ${plans.length} 项计划完成`)),
+    el('div', { class: 'progress' }, el('i', { style: `width:${progress}%` })),
+    el('div', { class: 'project-next muted tiny' }, plans.find(p => !p.done)?.title || '本月计划已完成'));
+}
+
+function readingBand() {
+  const articles = publicSnapshot.articles.slice(0, 2);
+  return el('section', { class: 'reading-band', 'aria-label': 'AI 资讯摘要' },
+    el('div', { class: 'reading-heading' }, el('h2', {}, '值得留意'),
+      el('span', { class: 'tiny muted' }, `${publicSnapshot.collectedOn} 采集 · 资料快照`),
+      el('button', { class: 'btn btn-sm', onclick: () => go('info') }, '全部资讯', icon('link', 14))),
+    el('div', { class: 'reading-grid' }, articles.map(a => el('article', {},
+      el('div', { class: 'tiny muted' }, `${a.source} · ${a.publishedOn}`),
+      el('a', { class: 'reading-title', href: a.url, target: '_blank', rel: 'noopener noreferrer' }, a.title),
+      el('p', { class: 'muted' }, a.summary)))));
 }
 
 // ---------- 焦点 2：投资 ----------
@@ -135,7 +161,8 @@ export function render(root) {
         el('div', { class: 'date' }, dateStr)),
       el('button', { class: 'btn', onclick: () => go('todos') }, icon('plus', 15), '安排今天')),
 
-    el('div', { class: 'focus-grid' }, todayCard(), stocksCard(), learningCard()),
+    el('div', { class: 'focus-grid' }, todayCard(), isDemo ? projectCard() : stocksCard(), learningCard()),
+    isDemo ? readingBand() : null,
 
     el('div', { class: 'card-title', style: 'margin:6px 0 12px;font-size:14px;color:var(--text-2)' }, icon('grid', 16), '全部模块'),
     el('div', { class: 'entry-grid' }, ENTRIES.map(e => el('button', { class: 'entry-card', onclick: () => go(e.id) },

@@ -1,9 +1,11 @@
 // ============ 应用外壳：导航 / 路由 / 视图调度 ============
-import { el, icon, closeModal, setTheme, menuModal, toast } from './util.js';
-import { store } from './store.js';
+import { el, icon, closeModal, setTheme, menuModal, toast, confirmBox, THEME_STORAGE_KEY } from './util.js';
+import { store, isDemo } from './store.js';
+import { createDemoData } from './demo.js';
+import { serializeBackup } from './data.js';
 
 // 启动即应用本机保存的外观主题（渲染前执行，避免闪色）
-setTheme((() => { try { return localStorage.getItem('vcl.personal-workbench.theme'); } catch { return null; } })());
+setTheme((() => { try { return localStorage.getItem(THEME_STORAGE_KEY); } catch { return null; } })());
 
 import * as dashboard from './views/dashboard.js';
 import * as todos from './views/todos.js';
@@ -37,6 +39,29 @@ const tabbarEl = document.getElementById('tabbar');
 
 let currentId = null;
 let cleanup = null;
+
+function changeSpace(demo) {
+  const url = new URL(location.href);
+  if (demo) url.searchParams.set('demo', '1'); else url.searchParams.delete('demo');
+  url.hash = '/dashboard';
+  location.assign(url.href);
+}
+
+const workspaceBar = el('div', { id: 'workspace-bar', class: 'workspace-bar' },
+  el('div', { class: 'workspace-label' },
+    el('span', { class: 'workspace-dot', 'aria-hidden': 'true' }),
+    el('strong', {}, isDemo ? '演示模式' : '个人空间'),
+    isDemo ? el('span', { class: 'tiny muted workspace-detail' }, '示例记录 · 公开信息快照') : null),
+  el('div', { class: 'workspace-actions' },
+    isDemo ? el('button', { class: 'btn btn-sm', onclick: async () => {
+      if (!await confirmBox('只重置演示空间中的编辑。个人空间的数据保持不变。', '重置演示数据')) return;
+      store.importBackup(serializeBackup(createDemoData()));
+      go('dashboard');
+      toast('演示数据已重置', 'ok');
+    } }, icon('refresh', 14), '重置演示') : null,
+    el('button', { class: 'btn btn-sm' + (isDemo ? '' : ' btn-primary'), onclick: () => changeSpace(!isDemo) },
+      isDemo ? '退出演示' : '体验演示')));
+viewEl.before(workspaceBar);
 
 // ---------- 构建导航 ----------
 for (const v of VIEWS) {
@@ -95,7 +120,7 @@ const chips = [document.getElementById('saveChip'), document.getElementById('sav
 chips.forEach(c => c && c.addEventListener('click', () => go('settings')));
 function paintSave() {
   const {state} = store.status;
-  chips.forEach(c => { if (!c) return; c.dataset.state=state; c.replaceChildren(el('span',{class:'dot'}),state==='error'?'保存异常':'本机保存'); });
+  chips.forEach(c => { if (!c) return; c.dataset.state=state; c.replaceChildren(el('span',{class:'dot'}),state==='error'?'保存异常':isDemo?'演示空间':'本机保存'); });
 }
 store.onStatus(paintSave);
 function handleStorageError(error, event) {
