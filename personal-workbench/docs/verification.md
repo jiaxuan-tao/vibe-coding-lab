@@ -19,7 +19,14 @@
 - 武汉天气保留实际读取的模型数据和单位，资讯保留官方原始链接、发布日期与采集日期，详见 [数据说明](demo-data.md)。这不是持续实时服务。
 - 独立代码复查发现的同页跨日写入及旧备份日期对齐问题，均先增加失败回归用例再修复。
 
-本节为本地生产构建验收；线上发布结果以实际部署检查为准。以下保留原版本验证记录。
+### 线上验收
+
+- 应用提交：`527a453`。[GitHub 自动测试与 Pages 部署](https://github.com/jiaxuan-tao/vibe-coding-lab/actions/runs/40746848842)成功。
+- 对[正式演示地址](https://jiaxuan-tao.github.io/vibe-coding-lab/personal-workbench/?demo=1#/dashboard)执行 `BASE_URL=https://jiaxuan-tao.github.io/vibe-coding-lab/personal-workbench/ CI=1 npx playwright test tests/browser/demo.spec.js tests/browser/offline.spec.js`，13/13 通过。
+- 覆盖真实线上路径下的模式切换、个人数据隔离、编辑与刷新、重置确认、备份恢复、日期调整、主题隔离、各宽度布局与 Service Worker 离线使用。测试使用独立浏览器上下文，不改用户已有数据。
+- 本地备用静态包包含 Python 启动脚本，压缩完整性检查通过；本地与线上数据不自动同步。
+
+以下保留原版本验证记录。
 
 ## 2026-10-16 基础版本验收
 
