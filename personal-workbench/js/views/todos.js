@@ -37,8 +37,8 @@ function todoList(d) {
     el('span', { class: 'prio ' + (t.priority || 'mid'), title: '优先级：' + PRIO_LABEL[t.priority || 'mid'] }),
     el('div', { class: 'grow' },
       el('div', { class: 'td-title' }, t.title),
-      t.date ? el('div', { class: 'tiny muted num' }, t.date, t.date === today ? ' · 今天' : '') : null),
-    el('span', { class: 'tag ' + (t.priority === 'high' ? 'red' : t.priority === 'mid' ? 'amber' : 'gray') }, PRIO_LABEL[t.priority || 'mid']),
+      t.date ? el('div', { class: 'tiny num todo-date ' + (!t.done && t.date < today ? 'overdue' : 'muted') }, t.date, t.date === today ? ' · 今天' : !t.done && t.date < today ? ' · 已逾期' : '') : null),
+    el('span', { class: 'tag ' + (t.priority === 'high' ? 'amber' : 'gray') }, PRIO_LABEL[t.priority || 'mid']),
     el('button', { class: 'icon-btn', title: '编辑', onclick: () => addTodoModal(t) }, icon('edit', 15)),
     el('button', {
       class: 'icon-btn danger', title: '删除',

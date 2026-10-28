@@ -1,5 +1,5 @@
 const PREFIX = 'vcl-personal-workbench-';
-const CACHE = PREFIX + 'demo-v2';
+const CACHE = PREFIX + 'semantic-v3';
 const scopePath = new URL('./', self.location.href).pathname;
 const SHELL = [
   './','./index.html','./manifest.webmanifest','./css/style.css','./css/monochrome.css',

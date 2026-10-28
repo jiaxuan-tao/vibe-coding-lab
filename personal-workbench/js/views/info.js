@@ -8,18 +8,18 @@ import { publicSnapshot } from '../public-snapshot.js';
 // ---- 天气代码映射（WMO weathercode）----
 function weatherInfo(code) {
   const M = {
-    0: ['晴', '☀️'], 1: ['大部晴朗', '🌤️'], 2: ['多云', '⛅'], 3: ['阴', '☁️'],
-    45: ['雾', '🌫️'], 48: ['冻雾', '🌫️'],
-    51: ['小毛毛雨', '🌦️'], 53: ['毛毛雨', '🌦️'], 55: ['浓毛毛雨', '🌧️'],
-    56: ['冻毛毛雨', '🌧️'], 57: ['冻毛毛雨', '🌧️'],
-    61: ['小雨', '🌧️'], 63: ['中雨', '🌧️'], 65: ['大雨', '🌧️'],
-    66: ['冻雨', '🌧️'], 67: ['冻雨', '🌧️'],
-    71: ['小雪', '🌨️'], 73: ['中雪', '❄️'], 75: ['大雪', '❄️'], 77: ['雪粒', '❄️'],
-    80: ['小阵雨', '🌦️'], 81: ['阵雨', '🌦️'], 82: ['强阵雨', '⛈️'],
-    85: ['阵雪', '🌨️'], 86: ['强阵雪', '🌨️'],
-    95: ['雷阵雨', '⛈️'], 96: ['雷阵雨伴冰雹', '⛈️'], 99: ['雷阵雨伴冰雹', '⛈️'],
+    0: ['晴', 'sun'], 1: ['大部晴朗', 'sun'], 2: ['多云', 'cloud'], 3: ['阴', 'cloud'],
+    45: ['雾', 'fog'], 48: ['冻雾', 'fog'],
+    51: ['小毛毛雨', 'rain'], 53: ['毛毛雨', 'rain'], 55: ['浓毛毛雨', 'rain'],
+    56: ['冻毛毛雨', 'rain'], 57: ['冻毛毛雨', 'rain'],
+    61: ['小雨', 'rain'], 63: ['中雨', 'rain'], 65: ['大雨', 'rain'],
+    66: ['冻雨', 'rain'], 67: ['冻雨', 'rain'],
+    71: ['小雪', 'snow'], 73: ['中雪', 'snow'], 75: ['大雪', 'snow'], 77: ['雪粒', 'snow'],
+    80: ['小阵雨', 'rain'], 81: ['阵雨', 'rain'], 82: ['强阵雨', 'storm'],
+    85: ['阵雪', 'snow'], 86: ['强阵雪', 'snow'],
+    95: ['雷阵雨', 'storm'], 96: ['雷阵雨伴冰雹', 'storm'], 99: ['雷阵雨伴冰雹', 'storm'],
   };
-  return M[code] || ['未知', '🌡️'];
+  return M[code] || ['未知', 'cloud'];
 }
 
 async function loadWeather(box) {
@@ -42,7 +42,7 @@ async function loadWeather(box) {
     box.innerHTML = '';
     box.append(
       el('div', { class: 'weather-now' },
-        el('span', { class: 'ic' }, wIcon),
+        el('span', { class: 'ic' }, icon(wIcon, 36)),
         el('div', {},
           el('div', { class: 'tp num' }, Math.round(cur.temperature_2m) + '°'),
           el('div', { class: 'muted', style: 'font-size:13px' }, `${city.name} · ${wText}`)),
@@ -59,7 +59,7 @@ async function loadWeather(box) {
         const label = i === 0 ? '今天' : `${dd.getMonth() + 1}/${dd.getDate()}`;
         return el('div', { class: 'fc' },
           el('div', { class: 'muted' }, label),
-          el('div', { style: 'font-size:20px;margin:4px 0' }, ic),
+          el('div', { class: 'weather-symbol' }, icon(ic, 22)),
           el('div', { class: 'tiny muted' }, t),
           el('div', { class: 'num', style: 'font-weight:600;margin-top:2px' },
             `${Math.round(j.daily.temperature_2m_min[i])}° / ${Math.round(j.daily.temperature_2m_max[i])}°`));
@@ -68,7 +68,7 @@ async function loadWeather(box) {
   } catch (e) {
     box.innerHTML = '';
     box.append(el('div', { class: 'empty' },
-      el('span', { class: 'em-icon' }, '🌥️'),
+      el('span', { class: 'em-icon' }, icon('cloud', 28)),
       '天气暂时加载失败（可能是网络问题）',
       el('div', { class: 'em-hint' },
         el('button', { class: 'btn btn-sm', style: 'margin-top:8px', onclick: () => loadWeather(box) }, '重试'))));
@@ -83,10 +83,10 @@ const NEWS_SOURCES = [
 ];
 
 const NEWS_ENTRIES = [
-  { name: '财联社', url: 'https://www.cls.cn', icon: '📈', desc: '7×24 财经快讯' },
-  { name: '新浪财经', url: 'https://finance.sina.com.cn', icon: '💹', desc: '综合财经资讯' },
-  { name: '36氪', url: 'https://36kr.com', icon: '🚀', desc: '科技与创投' },
-  { name: '知乎热榜', url: 'https://www.zhihu.com/billboard', icon: '🔥', desc: '全网热议话题' },
+  { name: '财联社', url: 'https://www.cls.cn', icon: 'chart', desc: '7×24 财经快讯' },
+  { name: '新浪财经', url: 'https://finance.sina.com.cn', icon: 'coin', desc: '综合财经资讯' },
+  { name: '36氪', url: 'https://36kr.com', icon: 'bulb', desc: '科技与创投' },
+  { name: '知乎热榜', url: 'https://www.zhihu.com/billboard', icon: 'grid', desc: '全网热议话题' },
 ];
 
 async function loadNews(box) {
@@ -117,14 +117,14 @@ async function loadNews(box) {
   box.append(
     el('div', { class: 'tiny muted', style: 'margin-bottom:10px' }, '热榜暂时拉取失败，可直接访问这些新闻入口：'),
     el('div', { class: 'grid grid-2' }, NEWS_ENTRIES.map(n => el('a', { class: 'link-card', href: n.url, target: '_blank', rel: 'noopener' },
-      el('span', { class: 'lk', style: 'background:var(--accent-dim)' }, n.icon),
+      el('span', { class: 'lk' }, icon(n.icon, 18)),
       el('div', {}, el('div', {}, n.name), el('div', { class: 'tiny muted', style: 'font-weight:400' }, n.desc))))));
 }
 
 const QUICK_LINKS = [
-  { name: 'B站', url: 'https://www.bilibili.com', icon: '📺', bg: 'rgba(0,161,214,.15)' },
-  { name: '知识星球', url: 'https://wx.zsxq.com', icon: '🪐', bg: 'rgba(52,211,153,.15)' },
-  { name: '抖音', url: 'https://www.douyin.com', icon: '🎵', bg: 'rgba(244,63,94,.12)' },
+  { name: 'B站', url: 'https://www.bilibili.com', icon: 'link' },
+  { name: '知识星球', url: 'https://wx.zsxq.com', icon: 'book' },
+  { name: '抖音', url: 'https://www.douyin.com', icon: 'link' },
 ];
 
 function renderSnapshot(root) {
@@ -135,13 +135,13 @@ function renderSnapshot(root) {
     viewHead('信息面板', '公开资料与产品观察'),
     el('div', { class: 'grid grid-2' },
       el('section', { class: 'card' }, cardTitle('cloud', '武汉 · 天气快照'),
-        el('div', { class: 'weather-now' }, el('span', { class: 'ic' }, symbol),
+        el('div', { class: 'weather-now' }, el('span', { class: 'ic' }, icon(symbol, 36)),
           el('div', {}, el('div', { class: 'tp num' }, `${current.temperature_2m}°`), el('div', { class: 'muted' }, description)),
           el('div', { class: 'tiny muted' }, el('div', {}, `湿度 ${current.relative_humidity_2m}%`), el('div', {}, `风速 ${current.wind_speed_10m} km/h`))),
         el('div', { class: 'forecast' }, daily.time.map((date, i) => {
           const [text, symbol] = weatherInfo(daily.weather_code[i]);
           return el('div', { class: 'fc' }, el('div', { class: 'muted' }, date.slice(5).replace('-', '/')),
-            el('div', { style: 'font-size:20px;margin:4px 0' }, symbol), el('div', { class: 'tiny muted' }, text),
+            el('div', { class: 'weather-symbol' }, icon(symbol, 22)), el('div', { class: 'tiny muted' }, text),
             el('div', { class: 'num' }, `${daily.temperature_2m_min[i]}° / ${daily.temperature_2m_max[i]}°`));
         })),
         el('div', { class: 'snapshot-meta', style: 'margin-top:14px' },
@@ -179,7 +179,7 @@ export function render(root) {
     el('div', { class: 'card' },
       cardTitle('link', '快捷网址'),
       el('div', { class: 'link-cards' }, QUICK_LINKS.map(l => el('a', { class: 'link-card', href: l.url, target: '_blank', rel: 'noopener' },
-        el('span', { class: 'lk', style: `background:${l.bg}` }, l.icon),
+        el('span', { class: 'lk' }, icon(l.icon, 18)),
         l.name, el('span', { class: 'tiny muted', style: 'margin-left:auto' }, '↗')))))
   );
   loadWeather(weatherBox);

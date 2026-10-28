@@ -12,7 +12,7 @@ export function render(root) {
     if (text.length > 200) { toast('灵感太长，控制在 200 字以内', 'err'); return; }
     const tags = tagInp.value.split(/[,，]/).map(s => s.trim()).filter(Boolean);
     store.update(dd => dd.inspirations.unshift({ id: 'i' + Math.random().toString(36).slice(2, 9), text: textInp.value.trim(), tags, createdAt: Date.now() }));
-    toast('灵感已收藏 ✨', 'ok');
+    toast('灵感已收藏', 'ok');
     textInp.value = '';
   };
   textInp = richText({ placeholder: '一句话灵感，想到就记…（选中文字可变色，回车保存）', single: true, rows: 1, onEnter: submit });

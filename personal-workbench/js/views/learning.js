@@ -60,14 +60,14 @@ export function render(root) {
           ? el('div', {}, d.learning.plans.map(p => el('div', { class: 'plan-item' },
             el('div', { style: 'display:flex;align-items:center;gap:10px;margin-bottom:6px' },
               el('span', { style: 'font-weight:600' }, p.name),
-              el('span', { class: 'num', style: 'margin-left:auto;font-weight:700;color:var(--accent)' }, p.progress + '%'),
+              el('span', { class: 'num progress-value' + (p.progress === 100 ? ' is-complete' : ''), style: 'margin-left:auto;font-weight:700' }, p.progress + '%'),
               el('button', { class: 'icon-btn', title: '编辑', onclick: () => planModal(p) }, icon('edit', 14)),
               el('button', {
                 class: 'icon-btn danger', title: '删除',
                 onclick: async () => { if (await confirmBox(`删除计划「${p.name}」？`)) store.update(dd => { dd.learning.plans = dd.learning.plans.filter(x => x.id !== p.id); }); }
               }, icon('trash', 14))),
             p.goal ? el('div', { class: 'tiny muted', style: 'margin-bottom:9px' }, p.goal) : null,
-            el('div', { class: 'progress' }, el('i', { style: `width:${p.progress}%` })),
+            el('div', { class: 'progress' + (p.progress === 100 ? ' is-complete' : '') }, el('i', { style: `width:${p.progress}%` })),
             el('div', { style: 'display:flex;gap:8px;margin-top:10px' },
               el('button', {
                 class: 'btn btn-sm', onclick: () => store.update(dd => {
@@ -97,7 +97,7 @@ export function render(root) {
             onclick: () => {
               if (checkedToday) return;
               store.update(dd => dd.learning.checkins.push(today));
-              toast('打卡成功，继续保持！💪', 'ok');
+              toast('打卡成功', 'ok');
             }
           }, icon('check', 16), checkedToday ? '今天已打卡' : '今日打卡'),
           el('span', { class: 'tiny muted' }, checkedToday ? '明天再来～' : '点击按钮完成今天的学习打卡')),

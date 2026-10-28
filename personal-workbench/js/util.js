@@ -53,6 +53,11 @@ const ICON_PATHS = {
   briefcase: '<rect x="3" y="7" width="18" height="14" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 12.5h18"/>',
   check: '<path d="m4 12.5 5 5L20 6.5"/>',
   cloud: '<path d="M7 18a5 5 0 0 1-.9-9.9A6 6 0 0 1 17.7 9 4.5 4.5 0 0 1 17 18z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>',
+  rain: '<path d="M7 15a4 4 0 0 1-.7-7.9A5.5 5.5 0 0 1 17 8a3.5 3.5 0 0 1 0 7M8 18l-1 3M13 17l-1 3M18 18l-1 3"/>',
+  fog: '<path d="M7 12a4 4 0 0 1-.7-7.9A5.5 5.5 0 0 1 17 5a3.5 3.5 0 0 1 0 7M4 16h16M6 20h12"/>',
+  snow: '<path d="M7 14a4 4 0 0 1-.7-7.9A5.5 5.5 0 0 1 17 7a3.5 3.5 0 0 1 0 7M8 17v5M5.8 18.2l4.4 2.6M5.8 20.8l4.4-2.6M17 17v5M14.8 18.2l4.4 2.6M14.8 20.8l4.4-2.6"/>',
+  storm: '<path d="M7 15a4 4 0 0 1-.7-7.9A5.5 5.5 0 0 1 17 8a3.5 3.5 0 0 1 0 7M13 14l-3 5h4l-3 4"/>',
   down: '<path d="M12 3v12m0 0 5-5m-5 5-5-5"/><path d="M4 19h16"/>',
   up: '<path d="M12 15V3m0 0 5 5m-5-5-5 5"/><path d="M4 19h16"/>',
 };
@@ -60,6 +65,7 @@ export function icon(name, size) {
   const s = size || 18;
   const span = document.createElement('span');
   span.innerHTML = `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[name] || ''}</svg>`;
+  span.firstChild.setAttribute('aria-hidden', 'true');
   return span.firstChild;
 }
 

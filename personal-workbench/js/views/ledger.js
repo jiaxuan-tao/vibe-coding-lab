@@ -66,9 +66,9 @@ export function render(root) {
       el('button', { class: 'btn btn-primary', onclick: () => recordModal() }, '+ 记一笔')),
 
     el('div', { class: 'stat-cards' },
-      el('div', { class: 'stat-card' }, el('div', { class: 'lb' }, '本月收入'), el('div', { class: 'vl num', style: 'color:var(--accent2)' }, '¥' + fmtMoney(mIn))),
-      el('div', { class: 'stat-card' }, el('div', { class: 'lb' }, '本月支出'), el('div', { class: 'vl num', style: 'color:var(--up)' }, '¥' + fmtMoney(mOut))),
-      el('div', { class: 'stat-card' }, el('div', { class: 'lb' }, '本月结余'), el('div', { class: 'vl num', style: `color:${mIn - mOut >= 0 ? 'var(--accent)' : 'var(--up)'}` }, fmtMoney(mIn - mOut, true)))),
+      el('div', { class: 'stat-card' }, el('div', { class: 'lb' }, '本月收入'), el('div', { class: 'vl num', style: 'color:var(--success)' }, '¥' + fmtMoney(mIn))),
+      el('div', { class: 'stat-card' }, el('div', { class: 'lb' }, '本月支出'), el('div', { class: 'vl num', style: 'color:var(--info)' }, '¥' + fmtMoney(mOut))),
+      el('div', { class: 'stat-card' }, el('div', { class: 'lb' }, '本月结余'), el('div', { class: 'vl num', style: `color:${mIn - mOut >= 0 ? 'var(--text)' : 'var(--danger)'}` }, fmtMoney(mIn - mOut, true)))),
 
     el('div', { class: 'grid grid-2' },
       el('div', { class: 'card' },
@@ -80,7 +80,7 @@ export function render(root) {
           : emptyState('coin', '本月还没有支出记录', '点右上角「+ 记一笔」开始')),
       el('div', { class: 'card' },
         cardTitle('chart', '近 6 个月收支', el('span', { class: 'tiny' },
-          el('span', { style: 'color:var(--text)' }, '■ 收入'), '　', el('span', { style: 'color:var(--text-3)' }, '■ 支出'))),
+          el('span', { 'data-legend': 'income', style: 'color:var(--success)' }, '■ 收入'), '　', el('span', { 'data-legend': 'expense', style: 'color:var(--info)' }, '■ 支出'))),
         el('div', { class: 'chart-wrap' }, barChart(months, arrIn, arrOut)))),
 
     el('div', { style: 'height:16px' }),
@@ -91,9 +91,9 @@ export function render(root) {
             el('thead', {}, el('tr', {}, ['日期', '类型', '类别', '金额', '备注', ''].map(h => el('th', {}, h)))),
             el('tbody', {}, recent.map(r => el('tr', {},
               el('td', { class: 'num muted' }, r.date),
-              el('td', {}, el('span', { class: 'tag ' + (r.type === 'in' ? 'green' : 'red') }, r.type === 'in' ? '收入' : '支出')),
+              el('td', {}, el('span', { class: 'tag ' + (r.type === 'in' ? 'green' : 'blue') }, r.type === 'in' ? '收入' : '支出')),
               el('td', {}, r.category),
-              el('td', { class: 'num', style: `font-weight:600;color:${r.type === 'in' ? 'var(--accent2)' : 'var(--up)'}` }, (r.type === 'in' ? '+' : '-') + fmtMoney(r.amount)),
+              el('td', { class: 'num', style: `font-weight:600;color:${r.type === 'in' ? 'var(--success)' : 'var(--info)'}` }, (r.type === 'in' ? '+' : '-') + fmtMoney(r.amount)),
               el('td', { class: 'muted' }, r.note || '—'),
               el('td', { style: 'white-space:nowrap' },
                 el('button', { class: 'icon-btn', title: '编辑', onclick: () => recordModal(r) }, icon('edit', 14)),

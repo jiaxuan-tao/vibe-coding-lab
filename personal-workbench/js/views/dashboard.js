@@ -61,7 +61,7 @@ function projectCard() {
     cardTitle('briefcase', '本月项目', el('button', { class: 'icon-btn', title: '查看工作计划', onclick: () => go('work') }, icon('link', 14))),
     el('div', { class: 'project-name' }, '知识库问答助手'),
     el('div', { class: 'project-progress' }, el('span', { class: 'big num', 'data-testid': 'project-progress' }, `${progress}%`), el('span', { class: 'tiny muted' }, `${completed} / ${plans.length} 项计划完成`)),
-    el('div', { class: 'progress' }, el('i', { style: `width:${progress}%` })),
+    el('div', { class: 'progress' + (progress === 100 ? ' is-complete' : '') }, el('i', { style: `width:${progress}%` })),
     el('div', { class: 'project-next muted tiny' }, plans.find(p => !p.done)?.title || '本月计划已完成'));
 }
 

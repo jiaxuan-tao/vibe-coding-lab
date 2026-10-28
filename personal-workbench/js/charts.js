@@ -1,7 +1,21 @@
 // ============ 手绘 SVG 图表（无外部依赖） ============
 import { el } from './util.js';
 
-export const PALETTE = ['#303030', '#777777', '#aaaaaa', '#555555', '#cccccc', '#888888', '#444444', '#bbbbbb', '#666666', '#999999'];
+export const PALETTE = Array.from({ length: 11 }, (_, i) => `var(--chart-${i + 1})`);
+const CATEGORY_COLORS = new Map([
+  ['餐饮', 0], ['交通', 1], ['购物', 2], ['居家', 3], ['娱乐', 4], ['医疗', 7],
+  ['教育', 6], ['学习', 8], ['订阅', 9], ['日用', 10], ['其他', 5],
+]);
+
+// Categories retain their color even when amounts change the ranking.
+export function categoryColor(label) {
+  let index = CATEGORY_COLORS.get(label);
+  if (index === undefined) {
+    index = 0;
+    for (const char of label) index = (index * 31 + char.codePointAt(0)) % PALETTE.length;
+  }
+  return PALETTE[index];
+}
 
 /**
  * 环形图。segs: [{label, value}]
@@ -18,23 +32,25 @@ export function donutChart(segs, { size = 170, thick = 24, centerLabel = '' } = 
   svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
   svg.setAttribute('width', '100%');
   svg.style.maxWidth = size + 'px';
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', centerLabel + '分类占比，数值见图例');
 
   // 底环
   const bg = document.createElementNS(ns, 'circle');
   bg.setAttribute('cx', cx); bg.setAttribute('cy', cy); bg.setAttribute('r', r);
-  bg.setAttribute('fill', 'none'); bg.setAttribute('stroke', 'rgba(255,255,255,.06)');
+  bg.setAttribute('fill', 'none'); bg.setAttribute('stroke', 'var(--border)');
   bg.setAttribute('stroke-width', thick);
   svg.append(bg);
 
   if (total > 0) {
     let offset = 0;
-    data.forEach((s, i) => {
+    data.forEach(s => {
       const frac = s.value / total;
       const len = Math.max(frac * C - 2, 0.5);
       const c = document.createElementNS(ns, 'circle');
       c.setAttribute('cx', cx); c.setAttribute('cy', cy); c.setAttribute('r', r);
       c.setAttribute('fill', 'none');
-      c.setAttribute('stroke', PALETTE[i % PALETTE.length]);
+      c.setAttribute('stroke', categoryColor(s.label));
       c.setAttribute('stroke-width', thick);
       c.setAttribute('stroke-dasharray', `${len} ${C - len}`);
       c.setAttribute('stroke-dashoffset', -offset);
@@ -63,8 +79,8 @@ export function donutChart(segs, { size = 170, thick = 24, centerLabel = '' } = 
   svg.append(t1, t2);
 
   const legend = el('div', { class: 'legend' },
-    data.map((s, i) => el('div', { class: 'li' },
-      el('span', { class: 'sw', style: `background:${PALETTE[i % PALETTE.length]}` }),
+    data.map(s => el('div', { class: 'li' },
+      el('span', { class: 'sw', 'aria-hidden': 'true', style: `background:${categoryColor(s.label)}` }),
       el('span', { class: 'muted' }, s.label),
       el('span', { class: 'num', style: 'margin-left:auto;font-weight:600' }, '¥' + s.value.toLocaleString('zh-CN', { maximumFractionDigits: 0 })),
       el('span', { class: 'muted tiny num', style: 'width:44px;text-align:right' }, (s.value / total * 100).toFixed(0) + '%')
@@ -83,6 +99,8 @@ export function barChart(months, income, expense) {
   const svg = document.createElementNS(ns, 'svg');
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.setAttribute('width', '100%');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', '近六个月收入与支出，各柱可查看金额');
 
   const max = Math.max(1, ...income, ...expense) * 1.15;
   const innerW = W - padL * 2, innerH = H - padT - padB;
@@ -92,16 +110,16 @@ export function barChart(months, income, expense) {
   const mk = (tag, attrs) => { const n = document.createElementNS(ns, tag); for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v); return n; };
 
   // 基线
-  svg.append(mk('line', { x1: padL, y1: H - padB, x2: W - padL, y2: H - padB, stroke: 'rgba(255,255,255,.12)', 'stroke-width': 1 }));
+  svg.append(mk('line', { x1: padL, y1: H - padB, x2: W - padL, y2: H - padB, stroke: 'var(--border-2)', 'stroke-width': 1 }));
 
   months.forEach((m, i) => {
     const gx = padL + i * groupW + groupW / 2;
     const iv = income[i] || 0, ev = expense[i] || 0;
     const ih = iv / max * innerH, eh = ev / max * innerH;
 
-    const r1 = mk('rect', { x: gx - barW - 2, y: H - padB - ih, width: barW, height: Math.max(ih, 0.5), rx: 3, fill: 'var(--text)', opacity: iv ? 1 : 0.15 });
+    const r1 = mk('rect', { x: gx - barW - 2, y: H - padB - ih, width: barW, height: Math.max(ih, 0.5), rx: 3, fill: 'var(--success)', 'data-series': 'income', opacity: iv ? 1 : 0.15 });
     r1.append(mk('title', {})); r1.querySelector('title').textContent = `${m} 收入 ¥${iv.toFixed(0)}`;
-    const r2 = mk('rect', { x: gx + 2, y: H - padB - eh, width: barW, height: Math.max(eh, 0.5), rx: 3, fill: 'var(--text-3)', opacity: ev ? 1 : 0.15 });
+    const r2 = mk('rect', { x: gx + 2, y: H - padB - eh, width: barW, height: Math.max(eh, 0.5), rx: 3, fill: 'var(--info)', 'data-series': 'expense', opacity: ev ? 1 : 0.15 });
     r2.append(mk('title', {})); r2.querySelector('title').textContent = `${m} 支出 ¥${ev.toFixed(0)}`;
     svg.append(r1, r2);
 
